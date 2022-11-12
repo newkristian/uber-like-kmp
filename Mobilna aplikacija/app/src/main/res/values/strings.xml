@@ -6,4 +6,19 @@
     <string name="sign_in">Prijava</string>
     <string name="or">ili</string>
     <string name="sign_up">Registracija</string>
+    <string name="logout">Odjava</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">email@mail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Početna</string>
+    <string name="menu_inbox">Poruke</string>
+    <string name="menu_account">Nalog</string>
+    <string name="menu_ride_history">Istorija vožnji</string>
+    <string name="title_activity_driver_main">DriverMainActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

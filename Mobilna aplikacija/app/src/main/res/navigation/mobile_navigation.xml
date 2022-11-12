@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.uberapp_tim9.main_page.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="com.example.uberapp_tim9.main_page.ui.account.AccountFragment"
+        android:label="@string/menu_account"
+        tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/nav_inbox"
+        android:name="com.example.uberapp_tim9.main_page.ui.inbox.InboxFragment"
+        android:label="@string/menu_inbox"
+        tools:layout="@layout/fragment_inbox" />
+
+    <fragment
+        android:id="@+id/nav_ride_history"
+        android:name="com.example.uberapp_tim9.main_page.ui.ride_history.RideHistoryFragment"
+        android:label="@string/menu_ride_history"
+        tools:layout="@layout/fragment_ride_history" />
+</navigation>

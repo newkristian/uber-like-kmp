@@ -42,6 +42,7 @@
         android:layout_height="58dp"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/light_wine"
+        android:onClick="openDriverMainActivity"
         android:text="@string/sign_up"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

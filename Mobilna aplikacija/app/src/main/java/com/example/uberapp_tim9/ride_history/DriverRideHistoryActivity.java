@@ -1,8 +1,8 @@
 package com.example.uberapp_tim9.ride_history;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.R;
 
