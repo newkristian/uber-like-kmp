@@ -4,12 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.example.uberapp_tim9.model.Passenger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +62,7 @@ public class PassengerAccountFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -63,6 +70,18 @@ public class PassengerAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passenger_account, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Passenger passenger = new Passenger(0, "Ivan", "Ivanovic", "", "0623339998", "email@mail.com", "Resavska 23", "123456789", false);
+        ((EditText)view.findViewById(R.id.name_edit_text)).setText(String.format("%s %s", passenger.getmName(), passenger.getmSurname()));
+        ((EditText)view.findViewById(R.id.phone_number_edit_text)).setText(passenger.getmPhoneNumber());
+        ((EditText)view.findViewById(R.id.email_edit_text)).setText(passenger.getmEmail());
+        ((EditText)view.findViewById(R.id.address_edit_text)).setText(passenger.getmAddress());
+        ((ImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_people);
+        ((CheckBox)view.findViewById(R.id.blocked_checkbox)).setChecked(passenger.ismIsBlocked());
     }
 
     @NonNull
