@@ -1,7 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
-    tools:context=".main_page.ui.account.AccountFragment" />
+    tools:context=".PassengerAccountFragment">
+
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/profile_picture_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_people"
+            android:contentDescription="@string/profile_picture" />
+
+        <TextView
+            android:id="@+id/name_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/passenger_account_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="none"
+            android:text=""
+            android:textColor="@color/dark_grey" />
+
+        <TextView
+            android:id="@+id/phone_number_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/passenger_account_phone_number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/phone_number_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="none"
+            android:textColor="@color/dark_grey" />
+
+        <TextView
+            android:id="@+id/email_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/passenger_email"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/email_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="none"
+            android:textColor="@color/dark_grey" />
+
+        <TextView
+            android:id="@+id/address_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/passenger_address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/address_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="none"
+            android:textColor="@color/dark_grey" />
+
+    </LinearLayout>
+</FrameLayout>
