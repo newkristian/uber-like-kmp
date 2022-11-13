@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_page.ui.ride_history.RideHistoryFragment">
+    android:background="@color/beige"
+    tools:context=".main_page.ui.ride_history.RideHistoryFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/rides_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/beige"
-        android:text="Ovde" />
-
+        android:background="@color/beige" />
 </FrameLayout>

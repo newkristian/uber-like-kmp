@@ -14,12 +14,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="start">Početak:</string>
+    <string name="end">Kraj:</string>
+
     <string name="menu_home">Početna</string>
     <string name="menu_inbox">Poruke</string>
     <string name="menu_account">Nalog</string>
     <string name="menu_ride_history">Istorija vožnji</string>
     <string name="title_activity_driver_main">DriverMainActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_activity_passenger_main">PassengerMainActivity</string>
 </resources>
