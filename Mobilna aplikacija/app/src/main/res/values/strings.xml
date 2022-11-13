@@ -26,4 +26,9 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_passenger_main">PassengerMainActivity</string>
+    <string name="register">Registracija</string>
+    <string name="name_placeholder">Ime</string>
+    <string name="surname_placeholder">Prezime</string>
+    <string name="phone_number_placeholder">Broj telefona</string>
+    <string name="adress_placeholder">Adresa</string>
 </resources>
