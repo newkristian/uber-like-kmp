@@ -31,4 +31,5 @@
     <string name="surname_placeholder">Prezime</string>
     <string name="phone_number_placeholder">Broj telefona</string>
     <string name="adress_placeholder">Adresa</string>
+    <string name="support">Tehnicka\npodrska</string>
 </resources>
