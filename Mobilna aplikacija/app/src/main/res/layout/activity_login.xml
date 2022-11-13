@@ -42,7 +42,6 @@
         android:layout_height="58dp"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/light_wine"
-        android:onClick="openDriverMainActivity"
         android:text="@string/sign_up"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +84,7 @@
         android:id="@+id/email_input"
         android:layout_width="339dp"
         android:layout_height="49dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:autofillHints="@string/email_placeholder"
         android:background="@color/white"
         android:ems="10"
@@ -96,7 +95,6 @@
         android:textColorHint="#455A64"
         app:circularflow_radiusInDP="5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_label" />
 
