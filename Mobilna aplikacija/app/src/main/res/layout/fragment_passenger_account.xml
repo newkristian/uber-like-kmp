@@ -18,14 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:src="@drawable/ic_people" />
+            android:src="@drawable/ic_people"
+            android:contentDescription="@string/profile_picture" />
 
         <TextView
             android:id="@+id/name_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="Ime:"
+            android:text="@string/passenger_account_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
@@ -35,7 +36,7 @@
             android:ems="10"
             android:enabled="false"
             android:inputType="none"
-            android:text="Test"
+            android:text=""
             android:textColor="@color/dark_grey" />
 
         <TextView
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="Broj telefona:"
+            android:text="@string/passenger_account_phone_number"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
@@ -60,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="E-mail adresa:"
+            android:text="@string/passenger_email"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
@@ -77,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="Adresa:"
+            android:text="@string/passenger_address"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
@@ -100,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="Blokiran: "
+                android:text="@string/passenger_account_blocked"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <CheckBox
