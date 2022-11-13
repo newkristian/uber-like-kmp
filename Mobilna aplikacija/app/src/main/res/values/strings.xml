@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">UberApp_Tim9</string>
     <string name="company_name">CarGoBrrr</string>
-    <string name="username_placeholder">Username</string>
-    <string name="password_placeholder">Password</string>
+    <string name="email_placeholder">E-mail</string>
+    <string name="password_placeholder">Lozinka</string>
     <string name="sign_in">Prijava</string>
     <string name="or">ili</string>
     <string name="sign_up">Registracija</string>
