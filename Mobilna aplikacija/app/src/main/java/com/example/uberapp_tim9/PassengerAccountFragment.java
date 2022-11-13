@@ -1,9 +1,12 @@
 package com.example.uberapp_tim9;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,5 +63,13 @@ public class PassengerAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passenger_account, container, false);
+    }
+
+    @NonNull
+    @Override
+    public LayoutInflater onGetLayoutInflater(Bundle savedInstanceState) {
+        LayoutInflater inflater = super.onGetLayoutInflater(savedInstanceState);
+        Context contextThemeWrapper = new ContextThemeWrapper(requireContext(), R.style.Theme_UberApp_Tim9_Basic);
+        return inflater.cloneInContext(contextThemeWrapper);
     }
 }
