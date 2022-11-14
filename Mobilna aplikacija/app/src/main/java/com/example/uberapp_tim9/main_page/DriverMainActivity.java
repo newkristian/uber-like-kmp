@@ -60,9 +60,9 @@ public class DriverMainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(DriverMainActivity.this, "Konektovan na internet!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DriverMainActivity.this, "Online", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(DriverMainActivity.this, "Nekonektovan na internet!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DriverMainActivity.this, "Offline", Toast.LENGTH_SHORT).show();
                 }
             }
         });
