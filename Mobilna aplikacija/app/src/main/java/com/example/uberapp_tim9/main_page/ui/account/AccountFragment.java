@@ -79,7 +79,7 @@ public class AccountFragment extends Fragment {
         ((EditText)view.findViewById(R.id.phone_number_edit_text)).setText(passenger.getmPhoneNumber());
         ((EditText)view.findViewById(R.id.email_edit_text)).setText(passenger.getmEmail());
         ((EditText)view.findViewById(R.id.address_edit_text)).setText(passenger.getmAddress());
-        ((ImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_people);
+        ((ImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_simic);
         ((CheckBox)view.findViewById(R.id.blocked_checkbox)).setChecked(passenger.ismIsBlocked());
     }
 

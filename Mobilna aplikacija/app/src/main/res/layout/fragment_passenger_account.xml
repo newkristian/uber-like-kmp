@@ -15,11 +15,13 @@
 
         <ImageView
             android:id="@+id/profile_picture_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_width="130dp"
+            android:layout_height="118dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/profile_picture"
             android:src="@drawable/ic_people"
-            android:contentDescription="@string/profile_picture" />
+            app:srcCompat="@drawable/ic_branislav" />
 
         <TextView
             android:id="@+id/name_textview"
