@@ -12,4 +12,13 @@ public class Passenger extends User {
                      boolean mIsBlocked) {
         super(mID, mName, mSurname, mProfilePicture, mPhoneNumber, mEmail, mAddress, mPassword, mIsBlocked);
     }
+
+    public Passenger() {
+        super();
+    }
+
+    public Passenger(String mIme, String mPrezime) {
+        super(mIme, mPrezime);
+    }
+
 }

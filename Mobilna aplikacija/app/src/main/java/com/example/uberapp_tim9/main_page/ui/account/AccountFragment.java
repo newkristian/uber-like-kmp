@@ -1,12 +1,11 @@
 package com.example.uberapp_tim9.main_page.ui.account;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.uberapp_tim9.R;
 
