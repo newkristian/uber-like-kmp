@@ -28,6 +28,10 @@ public class Path {
         return mID;
     }
 
+    public Path(double mKilometers) {
+        this.mKilometers = mKilometers;
+    }
+
     public Location getmStartPoint() {
         return mStartPoint;
     }

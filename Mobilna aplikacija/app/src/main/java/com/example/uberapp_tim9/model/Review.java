@@ -15,6 +15,11 @@ public class Review {
         this.ride = ride;
     }
 
+    public Review(int mRating, String mComment) {
+        this.mRating = mRating;
+        this.mComment = mComment;
+    }
+
     public int getmID() {
         return mID;
     }

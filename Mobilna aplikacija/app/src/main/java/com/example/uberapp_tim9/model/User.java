@@ -31,6 +31,15 @@ public class User {
         this.mIsBlocked = mIsBlocked;
     }
 
+    public User() {
+
+    }
+
+    public User(String mName, String mSurname) {
+        this.mName = mName;
+        this.mSurname = mSurname;
+    }
+
     public int getmID() {
         return mID;
     }

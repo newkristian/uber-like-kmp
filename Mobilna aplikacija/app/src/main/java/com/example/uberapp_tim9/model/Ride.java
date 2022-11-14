@@ -22,4 +22,44 @@ public class Ride {
     private VehicleType mVehicleType;
     private Driver mDriver;
     private Rejection mRejection;
+
+    public Ride(int mID, LocalDateTime mStartTime, LocalDateTime mEndTime, List<Passenger> mPassengers) {
+        this.mID = mID;
+        this.mStartTime = mStartTime;
+        this.mEndTime = mEndTime;
+        this.mPassengers = mPassengers;
+    }
+
+    public Ride(double mTotalPrice, List<Path> mPaths) {
+        this.mTotalPrice = mTotalPrice;
+        this.mPaths = mPaths;
+    }
+
+    public int getmID() {
+        return mID;
+    }
+
+    public double getmTotalPrice() {
+        return mTotalPrice;
+    }
+
+    public LocalDateTime getmStartTime() {
+        return mStartTime;
+    }
+
+    public LocalDateTime getmEndTime() {
+        return mEndTime;
+    }
+
+    public List<Passenger> getmPassengers() {
+        return mPassengers;
+    }
+
+    public double getTotalKilometers() {
+        double total = 0;
+        for (Path path : mPaths) {
+            total += path.getmKilometers();
+        }
+        return total;
+    }
 }
