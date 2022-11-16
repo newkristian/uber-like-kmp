@@ -1,1 +1,1 @@
-Projekat Uber aplikacija tim 9
+Uber aplikacija tim 9
