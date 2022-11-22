@@ -5,22 +5,69 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <include
-        android:id="@+id/app_bar_driver_main"
         layout="@layout/app_bar_driver_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/dark_grey"
         android:fitsSystemWindows="false"
-        app:headerLayout="@layout/nav_header_driver_main"
-        app:menu="@menu/activity_driver_main_drawer"
-        app:theme="@style/ThemeOverlay.AppCompat.navTheme" />
+        app:headerLayout="@layout/profile_navigation_header"
+        app:itemHorizontalPadding="25dp"
+        app:itemIconTint="@color/white"
+        app:itemShapeFillColor="@color/selected_nav_item"
+        app:itemTextAppearance="@style/menu_text_style"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/activity_driver_main_drawer">
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switch1"
+            style="@style/Widget.App.Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="140dp"
+            android:backgroundTint="@color/sky_blue"
+            android:fontFamily="sans-serif-thin"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:text="@string/active"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/sky_blue"
+            android:textSize="20sp"
+            app:thumbTint="@color/teal" />
+
+        <Button
+            android:id="@+id/logout_button"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="155dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@color/bright_orange"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/logout"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/white"
+            android:textSize="22dp"
+            app:icon="@drawable/ic_logout"
+            app:iconPadding="0dp"
+            app:iconSize="30dp"
+            app:iconTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.652" />
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

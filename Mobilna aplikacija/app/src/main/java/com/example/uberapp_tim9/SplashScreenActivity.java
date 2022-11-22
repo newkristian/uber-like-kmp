@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.login.LoginActivity;
+import com.example.uberapp_tim9.main_page.DriverMainActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

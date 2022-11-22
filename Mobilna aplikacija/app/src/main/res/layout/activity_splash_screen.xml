@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@color/beige"
-    android:fitsSystemWindows="true"
+    android:background="@color/light_grey"
     tools:context=".SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="146dp"
-        android:layout_height="253dp"
+        android:id="@+id/imageView10"
+        android:layout_width="149dp"
+        android:layout_height="159dp"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

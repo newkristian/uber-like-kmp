@@ -7,8 +7,12 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.customview.widget.Openable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,51 +27,36 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityDriverMainBinding binding;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_driver_main);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding = ActivityDriverMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarDriverMain.toolbar);
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_account, R.id.nav_inbox,R.id.nav_ride_history)
-                .setOpenableLayout(drawer)
+                .setOpenableLayout(drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_driver_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+
+        // to make the Navigation drawer icon always appear on the action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.driver_main, menu);
 
-        //Deo koda za handlovanje switch elementa za konektovanje na internet
-        MenuItem connection_switch = menu.findItem(R.id.connection_switch);
-        connection_switch.setActionView(R.layout.switch_item);
-        Switch con_switch = (Switch) menu.findItem(R.id.connection_switch).getActionView().findViewById(R.id.con_switch);
-
-        con_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Toast.makeText(DriverMainActivity.this, "Online", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(DriverMainActivity.this, "Offline", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
