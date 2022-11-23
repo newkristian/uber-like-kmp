@@ -26,8 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 public class DriverMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityDriverMainBinding binding;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,14 @@ public class DriverMainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        SwitchCompat activeSwitch = findViewById(R.id.activeSwitch);
+        activeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(activeSwitch.isChecked()) Toast.makeText(getApplicationContext(),"Aktivan!",Toast.LENGTH_SHORT).show();
+                else Toast.makeText(getApplicationContext(),"Neaktivan!",Toast.LENGTH_SHORT).show();
+
+        });
 
     }
 
@@ -64,5 +68,7 @@ public class DriverMainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 
 }

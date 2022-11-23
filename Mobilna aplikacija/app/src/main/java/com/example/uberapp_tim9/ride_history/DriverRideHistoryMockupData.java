@@ -6,6 +6,7 @@ import com.example.uberapp_tim9.model.Review;
 import com.example.uberapp_tim9.model.Ride;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,19 +18,32 @@ public class DriverRideHistoryMockupData {
         ArrayList<Ride> rides = new ArrayList<Ride>();
         Ride r1 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 20, 15, 13),
                 LocalDateTime.of(2022, Month.AUGUST, 20, 15, 45),
-                Arrays.asList(new Passenger[]{new Passenger(), new Passenger()}));
+                850,
+                LocalTime.of(0,15,32),
+                Arrays.asList(new Path[]{new Path(0.4), new Path(0.3)}));
 
         Ride r2 = new Ride(2, LocalDateTime.of(2022, Month.AUGUST, 25, 18, 04),
                 LocalDateTime.of(2022, Month.AUGUST, 25, 18, 15),
-                Arrays.asList(new Passenger[]{new Passenger()}));
+                1150,
+                LocalTime.of(0,24,19),
+                Arrays.asList(new Path[]{new Path(2.4)}));
 
         Ride r3 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 29, 20, 14),
                 LocalDateTime.of(2022, Month.AUGUST, 29, 20, 51),
-                Arrays.asList(new Passenger[]{new Passenger(), new Passenger(), new Passenger()}));
+                350,
+                LocalTime.of(0,6,28),
+                Arrays.asList(new Path[]{new Path(1), new Path(0.2), new Path(0.5)}));
+
+        Ride r4 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 30, 16, 48),
+                LocalDateTime.of(2022, Month.AUGUST, 30, 15, 59),
+                430,
+                LocalTime.of(0,8,54),
+                Arrays.asList(new Path[]{new Path(0.96)}));
 
         rides.add(r1);
         rides.add(r2);
         rides.add(r3);
+        rides.add(r4);
 
         return rides;
     }
