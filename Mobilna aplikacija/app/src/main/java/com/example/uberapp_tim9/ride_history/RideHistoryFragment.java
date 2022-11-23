@@ -31,10 +31,8 @@ public class RideHistoryFragment extends Fragment {
         list.setLayoutManager(llm);
         list.setAdapter(adapter);
 
-
         return view;
 
     }
-
 
 }

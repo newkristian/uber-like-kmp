@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.main_page.DriverMainActivity;
+import com.example.uberapp_tim9.ride_history.RideDetailsActivity;
 
 
 public class PassengerRegisterActivity extends AppCompatActivity {

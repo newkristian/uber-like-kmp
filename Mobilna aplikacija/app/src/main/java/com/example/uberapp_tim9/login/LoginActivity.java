@@ -29,8 +29,4 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), PassengerRegisterActivity.class)));
     }
 
-    public void openDriverMainActivity(View view)
-    {
-        startActivity(new Intent(LoginActivity.this, DriverMainActivity.class));
-    }
 }

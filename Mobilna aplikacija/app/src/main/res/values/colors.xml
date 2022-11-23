@@ -13,5 +13,9 @@
     <color name="sky_blue">#00ADB5</color>
     <color name="bright_red">#FD1C1C</color>
     <color name="dirty_grey">#D9D9D9</color>
+    <color name="dark">#222831</color>
+    <color name="light_yellow">#FFE7A2</color>
+    <color name="yellow">#FFD043</color>
+    <color name="deep_blue">#0E5E6F</color>
 
 </resources>

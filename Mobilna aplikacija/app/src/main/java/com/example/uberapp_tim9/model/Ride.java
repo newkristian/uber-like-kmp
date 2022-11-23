@@ -44,14 +44,20 @@ public class Ride {
         this.mPaths = mPaths;
     }
 
+    public Ride(int mID, LocalDateTime mStartTime, LocalDateTime mEndTime, double mTotalPrice, List<Path> mPaths, List<Passenger> mPassengers) {
+        this.mID = mID;
+        this.mStartTime = mStartTime;
+        this.mEndTime = mEndTime;
+        this.mTotalPrice = mTotalPrice;
+        this.mPaths = mPaths;
+        this.mPassengers = mPassengers;
+    }
+
     public Ride(double mTotalPrice, List<Path> mPaths) {
         this.mTotalPrice = mTotalPrice;
         this.mPaths = mPaths;
     }
 
-    public int getmID() {
-        return mID;
-    }
 
     public double getmTotalPrice() {
         return mTotalPrice;
@@ -79,5 +85,10 @@ public class Ride {
 
     public LocalTime getmEstimatedTime() {
         return mEstimatedTime;
+    }
+
+    public int getTotalPassengers()
+    {
+        return mPassengers.size();
     }
 }

@@ -1,20 +1,20 @@
 package com.example.uberapp_tim9.ride_history.adapters;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.ride_history.DriverRideHistoryMockupData;
-
-import org.w3c.dom.Text;
+import com.example.uberapp_tim9.ride_history.RideDetailsActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -24,11 +24,13 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         //public TextView pathTextView;
-        public TextView startTimeTextView;
-        public TextView endTimeTextView;
-        public TextView distanceTextView;
-        public TextView timeTotalTextView;
-        public TextView priceTotalTextView;
+        private TextView mStartTimeTextView;
+        private TextView mEndTimeTextView;
+        private TextView mDistanceTextView;
+        private TextView mPassengersTotalTextView;
+        private TextView mPriceTotalTextView;
+        private FloatingActionButton mInfoButton;
+
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -38,59 +40,68 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
             super(itemView);
 
             //pathTextView = (TextView) itemView.findViewById(R.id.path);
-            startTimeTextView = (TextView) itemView.findViewById(R.id.start_time);
-            endTimeTextView = (TextView) itemView.findViewById(R.id.end_time);
-            distanceTextView = (TextView) itemView.findViewById(R.id.distance);
-            timeTotalTextView = (TextView) itemView.findViewById(R.id.timeTotal);
-            priceTotalTextView = (TextView) itemView.findViewById(R.id.priceTotal);
+            mStartTimeTextView = (TextView) itemView.findViewById(R.id.start_time);
+            mEndTimeTextView = (TextView) itemView.findViewById(R.id.end_time);
+            mDistanceTextView = (TextView) itemView.findViewById(R.id.distance);
+            mPassengersTotalTextView = (TextView) itemView.findViewById(R.id.passengersTotal);
+            mPriceTotalTextView = (TextView) itemView.findViewById(R.id.priceTotal);
+            mInfoButton = (FloatingActionButton) itemView.findViewById(R.id.infoButton);
         }
 
-       /* public TextView getPathTextView() {
-            return pathTextView;
-        }*/
 
-        public TextView getStartTimeTextView() {
-            return startTimeTextView;
+        public TextView getmStartTimeTextView() {
+            return mStartTimeTextView;
         }
 
-        public TextView getEndTimeTextView() {
-            return endTimeTextView;
+        public TextView getmEndTimeTextView() {
+            return mEndTimeTextView;
         }
 
-        public TextView getDistanceTextView() {
-            return distanceTextView;
+        public TextView getmDistanceTextView() {
+            return mDistanceTextView;
         }
 
-        public TextView getTimeTotalTextView() {
-            return timeTotalTextView;
+        public TextView getmPassengersTotalTextView() {
+            return mPassengersTotalTextView;
         }
 
-        public TextView getPriceTotalTextView() {
-            return priceTotalTextView;
+        public TextView getmPriceTotalTextView() {
+            return mPriceTotalTextView;
         }
+
+        public FloatingActionButton getmInfoButton() { return mInfoButton; }
     }
+
 
     @NonNull
     @Override
     public RidesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rides_list_item, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RidesAdapter.ViewHolder holder, int position) {
         List<Ride> rides = DriverRideHistoryMockupData.getRides();
-        holder.getStartTimeTextView().setText(rides.get(position).getmStartTime().toString());
-        holder.getEndTimeTextView().setText(rides.get(position).getmEndTime().toString());
-        holder.getDistanceTextView().setText(Double.toString(rides.get(position).getTotalKilometers()) + " km");
-        holder.getTimeTotalTextView().setText(rides.get(position).getmEstimatedTime().toString());
-        holder.getPriceTotalTextView().setText(Double.toString(rides.get(position).getmTotalPrice()) + " din");
+        holder.getmStartTimeTextView().setText(rides.get(position).getmStartTime().toString());
+        holder.getmEndTimeTextView().setText(rides.get(position).getmEndTime().toString());
+        holder.getmDistanceTextView().setText(Double.toString(rides.get(position).getTotalKilometers()) + " km");
+        holder.getmPassengersTotalTextView().setText(Integer.toString(rides.get(position).getTotalPassengers()));
+        holder.getmPriceTotalTextView().setText(Double.toString(rides.get(position).getmTotalPrice()) + " din");
+
+        holder.itemView.setOnClickListener(v -> {
+            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            activity.startActivity(new Intent(activity.getBaseContext(), RideDetailsActivity.class));
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return DriverRideHistoryMockupData.getRides().size();
     }
+
+
+
 }

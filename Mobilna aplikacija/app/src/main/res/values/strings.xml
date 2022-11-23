@@ -16,6 +16,9 @@
     <string name="forgot_password">Zaboravljena lozinka? Promenite </string>
     <string name="here">ovde</string>
     <string name="active">Aktivan</string>
+    <string name="path">Putanja:</string>
+    <string name="passengers">Putnici:</string>
+    <string name="reviews">Ocene:</string>
 
     <string name="start">Početak:</string>
     <string name="end">Kraj:</string>

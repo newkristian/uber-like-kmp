@@ -41,7 +41,7 @@ public class DriverMainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_account, R.id.nav_inbox,R.id.nav_ride_history)
+                R.id.nav_home, R.id.nav_account, R.id.nav_inbox,R.id.nav_ride_history,R.id.nav_ride_details)
                 .setOpenableLayout(drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_driver_main);

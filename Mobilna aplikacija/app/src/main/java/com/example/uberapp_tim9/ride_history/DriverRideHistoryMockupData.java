@@ -19,26 +19,26 @@ public class DriverRideHistoryMockupData {
         Ride r1 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 20, 15, 13),
                 LocalDateTime.of(2022, Month.AUGUST, 20, 15, 45),
                 850,
-                LocalTime.of(0,15,32),
-                Arrays.asList(new Path[]{new Path(0.4), new Path(0.3)}));
+                Arrays.asList(new Path[]{new Path(0.4), new Path(0.3)}),
+                Arrays.asList(new Passenger[]{new Passenger(), new Passenger()}));
 
         Ride r2 = new Ride(2, LocalDateTime.of(2022, Month.AUGUST, 25, 18, 04),
                 LocalDateTime.of(2022, Month.AUGUST, 25, 18, 15),
                 1150,
-                LocalTime.of(0,24,19),
-                Arrays.asList(new Path[]{new Path(2.4)}));
+                Arrays.asList(new Path[]{new Path(2.4)}),
+                Arrays.asList(new Passenger[]{new Passenger()}));
 
         Ride r3 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 29, 20, 14),
                 LocalDateTime.of(2022, Month.AUGUST, 29, 20, 51),
                 350,
-                LocalTime.of(0,6,28),
-                Arrays.asList(new Path[]{new Path(1), new Path(0.2), new Path(0.5)}));
+                Arrays.asList(new Path[]{new Path(1), new Path(0.2), new Path(0.5)}),
+                Arrays.asList(new Passenger[]{new Passenger(), new Passenger(),new Passenger()}));
 
         Ride r4 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 30, 16, 48),
                 LocalDateTime.of(2022, Month.AUGUST, 30, 15, 59),
                 430,
-                LocalTime.of(0,8,54),
-                Arrays.asList(new Path[]{new Path(0.96)}));
+                Arrays.asList(new Path[]{new Path(0.96)}),
+                Arrays.asList(new Passenger[]{new Passenger()}));
 
         rides.add(r1);
         rides.add(r2);
@@ -51,8 +51,8 @@ public class DriverRideHistoryMockupData {
 
     public static List<Review> getRideReviews() {
         ArrayList<Review> reviews = new ArrayList<Review>();
-        Review r1 = new Review(5, "Plitak");
-        Review r2 = new Review(5, "Potok");
+        Review r1 = new Review(5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        Review r2 = new Review(5, "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
         reviews.add(r1);
         reviews.add(r2);
         return reviews;

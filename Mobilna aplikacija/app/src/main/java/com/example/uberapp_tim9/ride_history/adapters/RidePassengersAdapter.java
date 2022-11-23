@@ -1,46 +1,59 @@
 package com.example.uberapp_tim9.ride_history.adapters;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Passenger;
+import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.ride_history.DriverRideHistoryMockupData;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class RidePassengersAdapter extends BaseAdapter {
-    private Activity mParentActivity;
+import java.util.List;
 
-    public RidePassengersAdapter(Activity mParentActivity) {
-        this.mParentActivity = mParentActivity;
+public class RidePassengersAdapter extends RecyclerView.Adapter<RidePassengersAdapter.ViewHolder> {
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView mNameSurnameTextView;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.name_surname);
+        }
+
+        public TextView getmNameSurnameTextView() {
+            return mNameSurnameTextView;
+        }
+    }
+
+    @NonNull
+    @Override
+    public RidePassengersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.passenger_list_item, parent, false);
+        return new RidePassengersAdapter.ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull RidePassengersAdapter.ViewHolder holder, int position) {
+        List<Passenger> passengers = DriverRideHistoryMockupData.getPassengers();
+        holder.getmNameSurnameTextView().setText(passengers.get(position).getmName() + " " + passengers.get(position).getmSurname());
+    }
+
+
+    @Override
+    public int getItemCount() {
         return DriverRideHistoryMockupData.getPassengers().size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return DriverRideHistoryMockupData.getPassengers().get(i);
-    }
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        Passenger passenger = DriverRideHistoryMockupData.getPassengers().get(i);
-        View listItem = view;
-        if (view == null) {
-            listItem = mParentActivity.getLayoutInflater().inflate(R.layout.passenger_list_item, null);
-        }
-        ((TextView) listItem.findViewById(R.id.name_surname)).setText(passenger.getmName() + " " + passenger.getmSurname());
-
-        return listItem;
-    }
 }
