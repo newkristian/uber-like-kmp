@@ -9,7 +9,7 @@
     tools:context=".ride_history.RideDetailsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar3"
+        android:id="@+id/toolbarRideDetails"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_gravity="center"
@@ -19,12 +19,13 @@
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         android:theme="?attr/actionBarTheme"
+        app:buttonGravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:logoAdjustViewBounds="true"
-        app:logoScaleType="fitCenter">
+        app:logoScaleType="fitCenter"
+        app:navigationIconTint="@color/white">
 
         <ImageView
             android:id="@+id/imageView13"
@@ -43,11 +44,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar3">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarRideDetails">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +65,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/putanjaLabel"
@@ -202,7 +203,31 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="20dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <Button
+                    android:id="@+id/messagesButton"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/bright_orange"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_vertical"
+                    android:text="Razmenjene poruke"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    app:icon="@drawable/ic_message"
+                    app:iconSize="20dp"
+                    app:iconTint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

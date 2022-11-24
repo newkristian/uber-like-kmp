@@ -27,7 +27,8 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:logoAdjustViewBounds="true"
-            app:logoScaleType="fitCenter">
+            app:logoScaleType="fitCenter"
+            app:navigationIconTint="@color/white">
 
             <ImageView
                 android:id="@+id/imageView13"

@@ -7,7 +7,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.login.LoginActivity;
-import com.example.uberapp_tim9.main_page.DriverMainActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -16,13 +15,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent transition = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(transition);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent transition = new Intent(SplashScreenActivity.this, LoginActivity.class);
+            startActivity(transition);
+            finish();
         }, 1000);
     }
 

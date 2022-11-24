@@ -16,13 +16,12 @@
         android:clickable="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        app:cardBackgroundColor="@color/yellow"
+        app:cardBackgroundColor="@color/bright_blue"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        app:strokeColor="@color/yellow"
-        app:strokeWidth="1dp"
+        app:strokeWidth="0dp"
         tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
@@ -308,7 +307,7 @@
                     android:outlineAmbientShadowColor="#FFFFFF"
                     android:outlineSpotShadowColor="@color/white"
                     android:tint="@color/white"
-                    app:backgroundTint="@color/deep_blue"
+                    app:backgroundTint="@color/bright_orange"
                     app:fabCustomSize="50dp"
                     app:fabSize="mini"
                     app:layout_constraintBottom_toBottomOf="parent"

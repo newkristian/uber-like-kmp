@@ -20,7 +20,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.uberapp_tim9.R;
-import com.example.uberapp_tim9.databinding.ActivityDriverMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 public class DriverMainActivity extends AppCompatActivity {
