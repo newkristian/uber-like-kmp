@@ -4,19 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:fitsSystemWindows="true"
     tools:context=".main_page.PassengerMainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/passengerAppBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="57dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/dark_grey"
+        android:fitsSystemWindows="false"
+        android:gravity="center_vertical"
         android:theme="@style/Theme.UberApp_Tim9.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/passenger_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/light_wine"
-            app:popupTheme="@style/Theme.UberApp_Tim9.PopupOverlay" />
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:background="@color/dark_grey"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:logoAdjustViewBounds="true"
+            app:logoScaleType="fitCenter"
+            app:navigationIconTint="@color/white">
+
+            <ImageView
+                android:id="@+id/passengerNavBarLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/ic_logo" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
