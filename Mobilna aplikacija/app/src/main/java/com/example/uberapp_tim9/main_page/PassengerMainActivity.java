@@ -1,11 +1,8 @@
 package com.example.uberapp_tim9.main_page;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,7 +15,6 @@ import com.google.android.material.navigation.NavigationView;
 public class PassengerMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    //private ActivityPassengerMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
