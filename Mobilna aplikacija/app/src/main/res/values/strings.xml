@@ -37,7 +37,8 @@
     <string name="phone_number_placeholder">Broj telefona</string>
     <string name="adress_placeholder">Adresa</string>
     <string name="support">Tehnicka\npodrska</string>
-    <string name="passenger_account_name">Ime i prezime</string>
+    <string name="passenger_account_first_name">Ime</string>
+    <string name="passenger_account_last_name">Prezime</string>
     <string name="profile_picture">profile picture</string>
     <string name="passenger_account_phone_number">Broj telefona</string>
     <string name="passenger_email">E-mail adresa</string>
