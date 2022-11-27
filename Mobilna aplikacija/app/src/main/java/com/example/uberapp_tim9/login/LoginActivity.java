@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         Button register = findViewById(R.id.sign_up_button);
         register.setOnClickListener(view ->
         {startActivity(new Intent(getApplicationContext(), PassengerRegisterActivity.class));
-                this.finish();});
+                });
     }
 
 }

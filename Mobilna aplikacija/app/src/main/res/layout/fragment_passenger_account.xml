@@ -4,39 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
+    android:background="@color/dark_grey"
     tools:context=".PassengerAccountFragment">
 
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners_card_white"
         android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_picture_image_view"
             android:layout_width="141dp"
             android:layout_height="140dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/profile_picture"
             android:cropToPadding="false"
             android:padding="10dp"
             android:scaleType="fitXY"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/profile_picture"
             android:src="@drawable/ic_people"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:srcCompat="@drawable/ic_branislav"
             app:strokeColor="@color/bright_orange"
-            app:strokeWidth="5dp"
-            app:srcCompat="@drawable/ic_branislav" />
+            app:strokeWidth="5dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/passenger_account_name"
             android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
@@ -47,10 +48,10 @@
                 android:id="@+id/name_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/black"
-                android:textColorLink="@color/black"
-                android:enabled="false" />
+                android:textColorLink="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/passenger_account_phone_number"
             android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
@@ -71,11 +72,11 @@
                 android:id="@+id/phone_number_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="phone"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/black"
-                android:textColorLink="@color/black"
-                android:inputType="phone"
-                android:enabled="false" />
+                android:textColorLink="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,8 +85,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/passenger_email"
             android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
@@ -96,11 +97,11 @@
                 android:id="@+id/email_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/black"
-                android:textColorLink="@color/black"
-                android:inputType="textEmailAddress"
-                android:enabled="false" />
+                android:textColorLink="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,8 +110,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:hint="@string/passenger_address"
             android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
@@ -121,11 +122,11 @@
                 android:id="@+id/address_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="textPostalAddress"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/black"
-                android:textColorLink="@color/black"
-                android:inputType="textPostalAddress"
-                android:enabled="false" />
+                android:textColorLink="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
