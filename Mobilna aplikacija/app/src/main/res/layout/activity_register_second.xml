@@ -69,8 +69,43 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.589">
 
+        <Button
+            android:id="@+id/right_button"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/sky_blue"
+            android:enabled="false"
+            app:icon="@drawable/ic_right"
+            app:iconSize="30dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.72"
+            app:layout_constraintStart_toEndOf="@+id/left_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.93" />
+
+        <Button
+            android:id="@+id/left_button"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="174dp"
+            android:backgroundTint="@color/sky_blue"
+            app:icon="@drawable/ic_left"
+            app:iconSize="30dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/right_button"
+            app:layout_constraintHorizontal_bias="0.14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.93" />
+
         <TextView
-            android:id="@+id/prijava_label"
+            android:id="@+id/registracija_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_text_view_dark_grey"
@@ -78,7 +113,7 @@
             android:paddingTop="10dp"
             android:paddingRight="140dp"
             android:paddingBottom="10dp"
-            android:text="@string/sign_in"
+            android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -104,7 +139,7 @@
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.311">
+            app:layout_constraintVertical_bias="0.35000002">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_input"
@@ -133,8 +168,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.466">
+            app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+            app:layout_constraintVertical_bias="0.060000002">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_input"
@@ -147,90 +182,55 @@
                 android:textCursorDrawable="@null" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/login_button"
-            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="155dp"
-            android:layout_height="65dp"
-            android:backgroundTint="@color/bright_orange"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/sign_in"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/white"
-            android:textSize="22dp"
-            app:icon="@drawable/ic_login"
-            app:iconPadding="0dp"
-            app:iconSize="30dp"
-            app:iconTint="@android:color/white"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ponovi_password_layout"
+            android:layout_width="355dp"
+            android:layout_height="60dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxStrokeColor="@color/sky_blue"
+            app:hintTextColor="@color/sky_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.652" />
+            app:layout_constraintTop_toBottomOf="@+id/password_input_layout"
+            app:layout_constraintVertical_bias="0.060000002">
 
-        <TextView
-            android:id="@+id/ili"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/or"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.73" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ponovi_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/password_repeat_placeholder"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/black"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/sign_up_button"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="200dp"
+            android:layout_width="180dp"
             android:layout_height="65dp"
-            android:backgroundTint="@color/bright_orange"
+            android:backgroundTint="@color/sky_blue"
             android:fontFamily="sans-serif-light"
             android:text="@string/sign_up"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/white"
-            android:textSize="22dp"
+            android:textSize="20dp"
             app:icon="@drawable/ic_signup"
             app:iconPadding="0dp"
             app:iconSize="30dp"
             app:iconTint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.843" />
-
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView17"
-            app:layout_constraintHorizontal_bias="0.906"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_up_button"
-            app:layout_constraintVertical_bias="0.522" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="@string/here"
-            android:textColor="@color/bright_orange"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.801"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_up_button"
-            app:layout_constraintVertical_bias="0.522" />
+            app:layout_constraintVertical_bias="0.93" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
