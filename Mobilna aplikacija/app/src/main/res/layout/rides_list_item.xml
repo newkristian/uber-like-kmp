@@ -16,7 +16,7 @@
         android:clickable="false"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        app:cardBackgroundColor="@color/light_teal"
+        app:cardBackgroundColor="@color/grey"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
