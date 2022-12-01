@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="@string/passenger_account_name"
+            android:text="@string/passenger_account_first_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText

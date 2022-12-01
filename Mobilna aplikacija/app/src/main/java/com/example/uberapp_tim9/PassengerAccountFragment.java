@@ -12,13 +12,10 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.uberapp_tim9.model.Passenger;
-
-import androidx.fragment.app.Fragment;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,12 +76,12 @@ public class PassengerAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Passenger passenger = new Passenger(0, "Ivan", "Ivanovic", "", "0623339998", "email@mail.com", "Resavska 23", "123456789", false);
-        ((EditText)view.findViewById(R.id.name_edit_text)).setText(String.format("%s %s", passenger.getmName(), passenger.getmSurname()));
-        ((EditText)view.findViewById(R.id.phone_number_edit_text)).setText(passenger.getmPhoneNumber());
-        ((EditText)view.findViewById(R.id.email_edit_text)).setText(passenger.getmEmail());
-        ((EditText)view.findViewById(R.id.address_edit_text)).setText(passenger.getmAddress());
-        ((ImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_branislav);
-        ((CheckBox)view.findViewById(R.id.blocked_checkbox)).setChecked(passenger.ismIsBlocked());
+        ((TextInputEditText)view.findViewById(R.id.first_name_text_input_edit_text)).setText(passenger.getmName());
+        ((TextInputEditText)view.findViewById(R.id.last_name_text_input_edit_text)).setText(passenger.getmSurname());
+        ((TextInputEditText)view.findViewById(R.id.phone_number_text_input_edit_text)).setText(passenger.getmPhoneNumber());
+        ((TextInputEditText)view.findViewById(R.id.email_text_input_edit_text)).setText(passenger.getmEmail());
+        ((TextInputEditText)view.findViewById(R.id.address_text_input_edit_text)).setText(passenger.getmAddress());
+        ((ShapeableImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_branislav);
     }
 
     @NonNull
