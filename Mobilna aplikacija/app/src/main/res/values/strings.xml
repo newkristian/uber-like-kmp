@@ -44,4 +44,5 @@
     <string name="passenger_email">E-mail adresa</string>
     <string name="passenger_address">Adresa</string>
     <string name="passenger_account_blocked">Blokiran</string>
+    <string name="password_repeat_placeholder">Ponovi lozinku</string>
 </resources>
