@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/passenger_nav_home"
-        android:name="com.example.uberapp_tim9.PassengerMainFragment"
+        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerMainFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_passenger_main" />
 
     <fragment
         android:id="@+id/passenger_nav_account"
-        android:name="com.example.uberapp_tim9.PassengerAccountFragment"
+        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerAccountFragment"
         android:label="@string/menu_account"
         tools:layout="@layout/fragment_passenger_account" />
 
     <fragment
         android:id="@+id/passenger_nav_inbox"
-        android:name="com.example.uberapp_tim9.PassengerInboxFragment"
+        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerInboxFragment"
         android:label="@string/menu_inbox"
         tools:layout="@layout/fragment_passenger_inbox" />
 
     <fragment
         android:id="@+id/passenger_nav_ride_history"
-        android:name="com.example.uberapp_tim9.PassengerRideHistoryFragment"
+        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerRideHistoryFragment"
         android:label="@string/menu_ride_history"
         tools:layout="@layout/fragment_passenger_ride_history" />
 </navigation>

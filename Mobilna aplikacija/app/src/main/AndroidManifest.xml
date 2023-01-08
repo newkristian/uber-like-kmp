@@ -13,7 +13,7 @@
         android:theme="@style/Theme.UberApp_Tim9"
         tools:targetApi="31">
         <activity
-            android:name=".main_page.DriverMainActivity"
+            android:name=".driver.DriverMainActivity"
             android:exported="false"
             android:label="@string/title_activity_driver_main"
             android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
@@ -22,7 +22,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".main_page.PassengerMainActivity"
+            android:name=".passenger.PassengerMainActivity"
             android:exported="false"
             android:label="@string/title_activity_passenger_main"
             android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
@@ -31,17 +31,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".registration.PassengerRegisterSecondActivity"
-            android:exported="false"
-            android:label="@string/title_activity_passenger_main"
-            android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-
-        <activity
-            android:name=".ride_history.RideDetailsActivity"
+            android:name=".unregistered_user.registration.RegisterSecondActivity"
             android:exported="false"
             android:label="@string/title_activity_passenger_main"
             android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
@@ -51,21 +41,31 @@
         </activity>
 
         <activity
-            android:name=".registration.PassengerRegisterActivity"
+            android:name=".driver.ride_history.DriverRideDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_passenger_main"
+            android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".unregistered_user.registration.RegisterFirstActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".unregistered_user.LoginActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".unregistered_user.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

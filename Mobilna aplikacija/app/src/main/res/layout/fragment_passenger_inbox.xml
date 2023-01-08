@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     android:clipToPadding="false"
-    tools:context=".PassengerInboxFragment">
+    tools:context=".passenger.fragments.PassengerInboxFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

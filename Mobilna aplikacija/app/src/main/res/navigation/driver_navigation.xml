@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.uberapp_tim9.main_page.ui.home.HomeFragment"
+        android:name="com.example.uberapp_tim9.driver.fragments.DriverMainFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_driver_home" />
 
     <fragment
         android:id="@+id/nav_account"
-        android:name="com.example.uberapp_tim9.main_page.ui.account.AccountFragment"
+        android:name="com.example.uberapp_tim9.driver.fragments.DriverAccountFragment"
         android:label="@string/menu_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_driver_account" />
 
     <fragment
         android:id="@+id/nav_inbox"
-        android:name="com.example.uberapp_tim9.main_page.ui.inbox.InboxFragment"
+        android:name="com.example.uberapp_tim9.driver.fragments.DriverInboxFragment"
         android:label="@string/menu_inbox"
-        tools:layout="@layout/fragment_inbox" />
+        tools:layout="@layout/fragment_driver_inbox" />
 
     <fragment
         android:id="@+id/nav_ride_history"
-        android:name="com.example.uberapp_tim9.ride_history.RideHistoryFragment"
+        android:name="com.example.uberapp_tim9.driver.ride_history.DriverRideHistoryFragment"
         android:label="@string/menu_ride_history"
-        tools:layout="@layout/fragment_ride_history" />
+        tools:layout="@layout/fragment_driver_ride_history" />
     <fragment
         android:id="@+id/nav_ride_details"
         android:name="com.example.uberapp_tim9.ride_history.RideDetailsFragment"
