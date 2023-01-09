@@ -3,6 +3,7 @@ package com.example.uberapp_tim9.unregistered_user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        Button login = findViewById(R.id.login_button);
+        Button login = findViewById(R.id.reset_button);
         login.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class)));
 
@@ -26,6 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(view ->
         {startActivity(new Intent(getApplicationContext(), RegisterFirstActivity.class));
                 });
+
+        TextView reset_password_link = findViewById(R.id.reset_password_link);
+        reset_password_link.setOnClickListener(view ->
+        {startActivity(new Intent(getApplicationContext(), PasswordResetActivity.class));
+        });
     }
 
 }

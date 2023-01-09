@@ -124,7 +124,7 @@
             app:layout_constraintVertical_bias="0.086" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_input_layout"
+            android:id="@+id/new_password_input"
             android:layout_width="355dp"
             android:layout_height="60dp"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -155,7 +155,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_input_layout"
+            android:id="@+id/new_password_again_input"
             android:layout_width="355dp"
             android:layout_height="60dp"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -168,7 +168,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/new_password_input"
             app:layout_constraintVertical_bias="0.060000002">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -196,7 +196,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/new_password_again_input"
             app:layout_constraintVertical_bias="0.060000002">
 
             <com.google.android.material.textfield.TextInputEditText

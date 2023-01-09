@@ -45,4 +45,8 @@
     <string name="passenger_address">Adresa</string>
     <string name="passenger_account_blocked">Blokiran</string>
     <string name="password_repeat_placeholder">Ponovi lozinku</string>
+    <string name="password_reset">Promena lozinke</string>
+    <string name="new_password">Nova lozinka</string>
+    <string name="repeat_new_password">Ponovi novu lozinku</string>
+    <string name="reset">Promeni</string>
 </resources>

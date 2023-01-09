@@ -89,7 +89,7 @@
             app:layout_constraintVertical_bias="0.086" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_input_layout"
+            android:id="@+id/new_password_input"
             android:layout_width="355dp"
             android:layout_height="60dp"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -120,7 +120,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_input_layout"
+            android:id="@+id/new_password_again_input"
             android:layout_width="355dp"
             android:layout_height="60dp"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -148,7 +148,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/reset_button"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="155dp"
             android:layout_height="65dp"
@@ -211,14 +211,14 @@
             android:textColor="@color/black"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView17"
+            app:layout_constraintEnd_toStartOf="@+id/reset_password_link"
             app:layout_constraintHorizontal_bias="0.906"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sign_up_button"
             app:layout_constraintVertical_bias="0.522" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/reset_password_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
