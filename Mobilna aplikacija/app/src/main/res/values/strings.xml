@@ -49,4 +49,8 @@
     <string name="new_password">Nova lozinka</string>
     <string name="repeat_new_password">Ponovi novu lozinku</string>
     <string name="reset">Promeni</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="permissions">Permisije</string>
+    <string name="location_disabled_message">Aplikacija zahteva uključenu lokaciju. Da li želite da je uključite?</string>
 </resources>
