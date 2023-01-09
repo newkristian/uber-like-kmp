@@ -5,16 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.uberapp_tim9.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PassengerMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PassengerMainFragment extends Fragment {
+public class PassengerMainFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,12 +60,20 @@ public class PassengerMainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_passenger_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_passenger_main, container, false);
+        FragmentManager fm = getChildFragmentManager();
+        MapFragment mapFragment = new MapFragment();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.map_container, mapFragment);
+        fragmentTransaction.commit();
+        fm.executePendingTransactions();
+        return v;
     }
+
 }
