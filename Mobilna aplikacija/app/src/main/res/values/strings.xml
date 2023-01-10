@@ -53,4 +53,11 @@
     <string name="no">Ne</string>
     <string name="permissions">Permisije</string>
     <string name="location_disabled_message">Aplikacija zahteva uključenu lokaciju. Da li želite da je uključite?</string>
+    <string name="exchanged_messages">Razmenjene poruke</string>
+    <string name="review">review</string>
+    <string name="order_route_now">Poruči ovu rutu odmah</string>
+    <string name="reserve_route">Zakaži ovu rutu za kasnije</string>
+    <string name="add_to_favorites_route">Dodaj u omiljene rute</string>
+    <string name="review_ride">Oceni vožnju</string>
+    <string name="driver">Vozač:</string>
 </resources>

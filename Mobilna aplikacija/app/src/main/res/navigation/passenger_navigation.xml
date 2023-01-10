@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/passenger_nav_ride_history"
-        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerRideHistoryFragment"
+        android:name="com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryFragment"
         android:label="@string/menu_ride_history"
         tools:layout="@layout/fragment_passenger_ride_history" />
 </navigation>
