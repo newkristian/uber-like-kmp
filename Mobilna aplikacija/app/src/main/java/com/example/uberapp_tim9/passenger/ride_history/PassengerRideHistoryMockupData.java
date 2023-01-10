@@ -1,5 +1,6 @@
 package com.example.uberapp_tim9.passenger.ride_history;
 
+import com.example.uberapp_tim9.model.Driver;
 import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.model.Path;
 import com.example.uberapp_tim9.model.Review;
@@ -66,6 +67,10 @@ public class PassengerRideHistoryMockupData {
         return passengers;
     }
 
+    public static Driver getDriver() {
+        Driver driver = new Driver("Mare", "Marić");
+        return driver;
+    }
 
     public static Ride getRideStats() {
         return new Ride(1500, Arrays.asList(new Path[]{new Path(2), new Path(5)}));

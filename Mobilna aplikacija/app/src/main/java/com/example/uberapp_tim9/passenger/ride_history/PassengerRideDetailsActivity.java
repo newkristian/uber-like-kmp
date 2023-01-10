@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideDriverAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidePassengersAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideReviewAdapter;
 
@@ -32,6 +33,12 @@ public class PassengerRideDetailsActivity extends AppCompatActivity {
         LinearLayoutManager passengersLlm = new LinearLayoutManager(getApplicationContext());
         passengerList.setLayoutManager(passengersLlm);
         passengerList.setAdapter(passengerAdapter);
+
+        PassengerRideDriverAdapter driverAdapter = new PassengerRideDriverAdapter();
+        RecyclerView driverList = findViewById(R.id.driversList);
+        LinearLayoutManager driversLlm = new LinearLayoutManager(getApplicationContext());
+        driverList.setLayoutManager(driversLlm);
+        driverList.setAdapter(driverAdapter);
 
         PassengerRideReviewAdapter reviewAdapter = new PassengerRideReviewAdapter();
         RecyclerView reviewList = findViewById(R.id.reviewList);
