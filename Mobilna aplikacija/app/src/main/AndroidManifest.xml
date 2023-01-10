@@ -99,7 +99,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <receiver android:name=".driver.notificationManager.SyncReceiver"></receiver>
+        <receiver android:name=".driver.notificationManager.NotificationActionReceiver"></receiver>
     </application>
 
 </manifest>

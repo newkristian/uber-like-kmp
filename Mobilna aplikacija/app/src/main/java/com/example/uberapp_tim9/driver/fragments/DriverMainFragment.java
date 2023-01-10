@@ -1,6 +1,9 @@
 package com.example.uberapp_tim9.driver.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +11,11 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.driver.DriverMainActivity;
+import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
+import com.example.uberapp_tim9.driver.sockets_config.SocketsConfiguration;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +28,7 @@ public class DriverMainFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -54,6 +63,11 @@ public class DriverMainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //Subscribe to events from websocket (ride is ordered)
+        Disposable subscription = socketsConfiguration.stompClient.topic("/ride-ordered/get-ride").subscribe(message ->
+                NotificationService.createRideAcceptanceNotification(getActivity(),message.getPayload(), DriverMainActivity.CHANNEL_ID),
+        throwable -> Log.e(TAG, throwable.getMessage()));
     }
 
     @Override
