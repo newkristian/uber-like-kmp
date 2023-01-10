@@ -51,4 +51,7 @@
     <string name="reset">Promeni</string>
     <string name="exchanged_messages">Razmenjene poruke</string>
     <string name="review">review</string>
+    <string name="order_route_now">Poruči ovu rutu odmah</string>
+    <string name="reserve_route">Zakaži ovu rutu za kasnije</string>
+    <string name="add_to_favorites_route">Dodaj u omiljene rute</string>
 </resources>
