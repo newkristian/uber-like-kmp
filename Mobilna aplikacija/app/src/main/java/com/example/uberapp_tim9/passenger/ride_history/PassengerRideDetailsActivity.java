@@ -54,6 +54,13 @@ public class PassengerRideDetailsActivity extends AppCompatActivity {
         reviewList.setLayoutManager(reviewsLlm);
         reviewList.setAdapter(reviewAdapter);
 
+        Button leaveReviewButton = findViewById(R.id.leaveReviewButton);
+
+        leaveReviewButton.setOnClickListener(v -> {
+            leaveReviewButton.setVisibility(Button.GONE);
+            reviewList.setVisibility(RecyclerView.VISIBLE);
+        });
+
         Button messageButton = findViewById(R.id.messagesButton);
         messageButton.setOnClickListener(v -> {
             Toast.makeText(getBaseContext(), "Referenca ka inboxu", Toast.LENGTH_SHORT).show();

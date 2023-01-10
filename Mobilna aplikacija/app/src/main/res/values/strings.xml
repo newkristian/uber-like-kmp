@@ -54,4 +54,6 @@
     <string name="order_route_now">Poruči ovu rutu odmah</string>
     <string name="reserve_route">Zakaži ovu rutu za kasnije</string>
     <string name="add_to_favorites_route">Dodaj u omiljene rute</string>
+    <string name="review_ride">Oceni vožnju</string>
+    <string name="driver">Vozač:</string>
 </resources>

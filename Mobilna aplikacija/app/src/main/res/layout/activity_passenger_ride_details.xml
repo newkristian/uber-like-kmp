@@ -253,7 +253,7 @@
                         android:paddingTop="5dp"
                         android:paddingRight="100dp"
                         android:paddingBottom="5dp"
-                        android:text="Vozač:"
+                        android:text="@string/driver"
                         android:textColor="@color/white"
                         android:textSize="30dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -299,7 +299,7 @@
                         android:paddingTop="5dp"
                         android:paddingRight="100dp"
                         android:paddingBottom="5dp"
-                        android:text="@string/reviews"
+                        android:text="Ocena:"
                         android:textColor="@color/white"
                         android:textSize="30dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -331,9 +331,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone" >
 
                 </androidx.recyclerview.widget.RecyclerView>
+
+                <Button
+                    android:id="@+id/leaveReviewButton"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/bright_orange"
+                    android:enabled="true"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_vertical"
+                    android:text="@string/review_ride"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    app:icon="@drawable/ic_star"
+                    app:iconSize="20dp"
+                    app:iconTint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/messagesButton"
