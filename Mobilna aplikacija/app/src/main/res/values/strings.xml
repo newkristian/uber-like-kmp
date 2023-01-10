@@ -49,4 +49,6 @@
     <string name="new_password">Nova lozinka</string>
     <string name="repeat_new_password">Ponovi novu lozinku</string>
     <string name="reset">Promeni</string>
+    <string name="exchanged_messages">Razmenjene poruke</string>
+    <string name="review">review</string>
 </resources>
