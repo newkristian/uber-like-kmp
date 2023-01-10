@@ -75,4 +75,28 @@ public class User {
     public boolean ismIsBlocked() {
         return mIsBlocked;
     }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public void setmSurname(String mSurname) {
+        this.mSurname = mSurname;
+    }
+
+    public void setmProfilePicture(String mProfilePicture) {
+        this.mProfilePicture = mProfilePicture;
+    }
+
+    public void setmPhoneNumber(String mPhoneNumber) {
+        this.mPhoneNumber = mPhoneNumber;
+    }
+
+    public void setmEmail(String mEmail) {
+        this.mEmail = mEmail;
+    }
+
+    public void setmAddress(String mAddress) {
+        this.mAddress = mAddress;
+    }
 }
