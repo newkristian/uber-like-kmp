@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.uberapp_tim9.driver.DriverMainActivity;
+import com.example.uberapp_tim9.driver.RideRejectionActivity;
 import com.example.uberapp_tim9.driver.rest.RestApiInterface;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
 
@@ -66,9 +67,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     public void denyRide(Context context){
-        Toast.makeText(context, "Deny", Toast.LENGTH_SHORT).show();
-        notificationManager.cancel(notificationId);
-        NotificationService.NOTIFICATION_ID += 1;
+
+        Intent getDenyReason = new Intent(context, RideRejectionActivity.class);
+        getDenyReason.putExtra("ride_id",RIDE_ID);
+        getDenyReason.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(getDenyReason);
     }
 
 }

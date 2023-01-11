@@ -16,7 +16,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_reset);
 
-        Button resetPassword = findViewById(R.id.reset_button);
+        Button resetPassword = findViewById(R.id.reject_button);
         resetPassword.setOnClickListener(v ->
         {
             Toast.makeText(getBaseContext(),

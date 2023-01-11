@@ -3,5 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
-    tools:context=".driver.fragments.DriverMainFragment" />
+    android:background="@color/dark_grey"
+    tools:context=".driver.fragments.DriverMainFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_container_driver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners_card_white">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -53,4 +53,7 @@
     <string name="no">Ne</string>
     <string name="permissions">Permisije</string>
     <string name="location_disabled_message">Aplikacija zahteva uključenu lokaciju. Da li želite da je uključite?</string>
+    <string name="rejection">Razlog odbijanja</string>
+    <string name="send">Pošalji</string>
+    <string name="zeroLengthError">Polje ne sme biti prazno!</string>
 </resources>

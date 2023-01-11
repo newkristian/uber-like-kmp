@@ -70,7 +70,7 @@
         app:layout_constraintVertical_bias="0.589">
 
         <TextView
-            android:id="@+id/prijava_label"
+            android:id="@+id/reason_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_text_view_dark_grey"
@@ -89,7 +89,7 @@
             app:layout_constraintVertical_bias="0.086" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/new_password_input"
+            android:id="@+id/rejection_reason_input"
             android:layout_width="355dp"
             android:layout_height="60dp"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -107,7 +107,7 @@
             app:layout_constraintVertical_bias="0.311">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_input"
+                android:id="@+id/rejection_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
@@ -148,7 +148,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/reset_button"
+            android:id="@+id/reject_button"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="155dp"
             android:layout_height="65dp"

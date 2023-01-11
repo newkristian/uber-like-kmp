@@ -9,15 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
-import com.example.uberapp_tim9.driver.rest.RestApiInterface;
-import com.example.uberapp_tim9.driver.rest.RestApiManager;
 import com.example.uberapp_tim9.driver.sockets_config.SocketsConfiguration;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -85,7 +86,13 @@ public class DriverMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_driver_home, container, false);
+        FragmentManager fm = getChildFragmentManager();
+        MapFragment mapFragment = new MapFragment();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.map_container_driver, mapFragment);
+        fragmentTransaction.commit();
+        fm.executePendingTransactions();
+        return v;
     }
 }
