@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +35,9 @@ public class MapFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            LatLng noviSad = new LatLng(45.24622203930153, 19.851686068990045);
+            googleMap.addMarker(new MarkerOptions().position(noviSad).title("Novi Sad"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noviSad,15.0f));
         }
     };
 
@@ -44,6 +47,11 @@ public class MapFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map, container, false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
     }
 
     @Override

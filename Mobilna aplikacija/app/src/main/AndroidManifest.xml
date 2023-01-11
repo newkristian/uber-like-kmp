@@ -71,6 +71,15 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".passenger.ride_history.PassengerRideDetailsActivity"
+            android:exported="false"
+            android:label="PassengerRideDetails"
+            android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".unregistered_user.registration.RegisterFirstActivity"
             android:exported="false">
             <meta-data
