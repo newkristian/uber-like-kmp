@@ -12,8 +12,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
+import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
+import com.example.uberapp_tim9.driver.rest.RestApiInterface;
+import com.example.uberapp_tim9.driver.rest.RestApiManager;
 import com.example.uberapp_tim9.driver.sockets_config.SocketsConfiguration;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -66,7 +74,11 @@ public class DriverMainFragment extends Fragment {
 
         //Subscribe to events from websocket (ride is ordered)
         Disposable subscription = socketsConfiguration.stompClient.topic("/ride-ordered/get-ride").subscribe(message ->
-                NotificationService.createRideAcceptanceNotification(getActivity(),message.getPayload(), DriverMainActivity.CHANNEL_ID),
+        {
+            RideCreatedDTO retrieved = new Gson().fromJson(message.getPayload(), new TypeToken<RideCreatedDTO>(){}.getType());
+            NotificationActionReceiver.RIDE_ID = Integer.toString(retrieved.getId());
+            NotificationService.createRideAcceptanceNotification(getActivity(),retrieved.getRideSummary(), DriverMainActivity.CHANNEL_ID);
+            },
         throwable -> Log.e(TAG, throwable.getMessage()));
     }
 

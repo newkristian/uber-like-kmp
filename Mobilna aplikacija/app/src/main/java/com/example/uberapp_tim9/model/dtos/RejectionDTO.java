@@ -6,4 +6,20 @@ public class RejectionDTO {
 
     private String reason;
     private LocalDateTime timeOfRejection;
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public LocalDateTime getTimeOfRejection() {
+        return timeOfRejection;
+    }
+
+    public void setTimeOfRejection(LocalDateTime timeOfRejection) {
+        this.timeOfRejection = timeOfRejection;
+    }
 }
