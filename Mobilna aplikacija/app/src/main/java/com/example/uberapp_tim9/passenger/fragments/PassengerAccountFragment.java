@@ -17,6 +17,7 @@ import android.widget.Button;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Passenger;
+import com.example.uberapp_tim9.passenger.PassengerReportActivity;
 import com.example.uberapp_tim9.passenger.favorite_rides.PassengerFavoriteRidesActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -87,6 +88,7 @@ public class PassengerAccountFragment extends Fragment {
         Button confirmButton = view.findViewById(R.id.confirmButton);
         Button cancelButton = view.findViewById(R.id.cancelButton);
         Button favoriteRidesButton = view.findViewById(R.id.favoriteRidesButton);
+        Button reportButton = view.findViewById(R.id.reportsButton);
 
         changeButton.setOnClickListener(view1 -> {
             changeFormEnabled(view, true);
@@ -111,6 +113,8 @@ public class PassengerAccountFragment extends Fragment {
         });
 
         favoriteRidesButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerFavoriteRidesActivity.class)));
+
+        reportButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerReportActivity.class)));
     }
 
     private void buttonsEditMode(Button changeButton, Button confirmButton, Button cancelButton) {
