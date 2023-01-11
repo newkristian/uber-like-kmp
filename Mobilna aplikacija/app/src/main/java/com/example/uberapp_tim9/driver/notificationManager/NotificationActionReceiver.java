@@ -6,13 +6,17 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.RideRejectionActivity;
+import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.rest.RestApiInterface;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
+import com.example.uberapp_tim9.unregistered_user.LoginActivity;
+import com.example.uberapp_tim9.unregistered_user.SplashScreenActivity;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -48,6 +52,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200){
                     Toast.makeText(context, "Vožnja uspešno prihvaćena!", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(() -> {
+                        DriverMainFragment.sendOnLocationNotification(RIDE_ID);
+                        DriverMainFragment.updateUI();
+                        new Handler().postDelayed(() -> {
+                            DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
+                        }, 10000);
+                    }, 5000);
                 }
                 else if (response.code() == 400){
                     Toast.makeText(context, "Ne možete prihvatiti vožnju koja nema status 'Kreirana'!", Toast.LENGTH_SHORT).show();
@@ -67,7 +78,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     public void denyRide(Context context){
-
         Intent getDenyReason = new Intent(context, RideRejectionActivity.class);
         getDenyReason.putExtra("ride_id",RIDE_ID);
         getDenyReason.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

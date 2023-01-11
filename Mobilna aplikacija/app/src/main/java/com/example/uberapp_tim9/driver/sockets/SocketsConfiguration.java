@@ -1,4 +1,4 @@
-package com.example.uberapp_tim9.driver.sockets_config;
+package com.example.uberapp_tim9.driver.sockets;
 
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;

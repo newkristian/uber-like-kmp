@@ -57,4 +57,15 @@ public class NotificationService {
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
+
+    public static void createOnLocationNotification(String channel_id, Context context){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle("Vozač na lokaciji")
+                .setContentText("Vozač poručene vožnje je na odabranom polazištu.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setChannelId(channel_id)
+                .setAutoCancel(true);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }
