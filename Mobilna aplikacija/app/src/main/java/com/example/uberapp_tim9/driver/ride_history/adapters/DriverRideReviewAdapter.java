@@ -40,7 +40,7 @@ public class DriverRideReviewAdapter extends RecyclerView.Adapter<DriverRideRevi
     @Override
     public DriverRideReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.reviews_list_item, parent, false);
+                .inflate(R.layout.driver_reviews_list_item, parent, false);
         return new DriverRideReviewAdapter.ViewHolder(view);
     }
 
