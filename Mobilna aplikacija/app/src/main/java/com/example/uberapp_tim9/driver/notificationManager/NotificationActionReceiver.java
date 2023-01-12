@@ -89,7 +89,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                             destination[0] = new LatLng(route.getDeparture().getLatitude(),route.getDeparture().getLongitude());
                                             break;
                                         }
-                                        init.simulateRoute(departure[0], destination[0],car,false,true);
+                                        //DriverMainFragment.updateUI(false);
+                                        init.simulateRoute(departure[0], destination[0],car,false,true,vehicle.getId());
+
                                         new Handler().postDelayed(() -> {
                                             DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
                                         }, 20000);

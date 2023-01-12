@@ -73,7 +73,7 @@ public class DriverMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_driver_home, container, false);
         FragmentManager fm = getChildFragmentManager();
-        MapFragment mapFragment = new MapFragment();
+        MapFragment mapFragment = new MapFragment(true);
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.map_container_driver, mapFragment);
         fragmentTransaction.commit();
@@ -90,6 +90,7 @@ public class DriverMainFragment extends Fragment {
                         rideHasStarted = true;
                         Marker car = MapFragment.driversMarkers.get(acceptedRide.getDriver().getId());
                         car.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
+                        updateUI(true);
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();
@@ -113,13 +114,19 @@ public class DriverMainFragment extends Fragment {
         socketsConfiguration.stompClient.send("/topic/on-location",rideId).subscribe();
     }
 
-    public static void updateUI() {
-        startRide.setVisibility(View.VISIBLE);
-        for(RouteDTO route : acceptedRide.getLocations()) {
-            routeLabel.setText(route.getDeparture().getAddress() + " - " + route.getDestination().getAddress());
-            break;
+    public static void updateUI(boolean hide) {
+        if(hide) {
+            startRide.setVisibility(View.INVISIBLE);
+            routeLabel.setVisibility(View.INVISIBLE);
         }
-        routeLabel.setVisibility(View.VISIBLE);
+        else {
+            startRide.setVisibility(View.VISIBLE);
+            for (RouteDTO route : acceptedRide.getLocations()) {
+                routeLabel.setText(route.getDeparture().getAddress() + " - " + route.getDestination().getAddress());
+                break;
+            }
+            routeLabel.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void cancelAfter5Minutes(String rideId) {
@@ -131,6 +138,7 @@ public class DriverMainFragment extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Vožnja se odbija (putnici nisu na lokaciji nakon 5 minuta).", Toast.LENGTH_LONG).show();
+                        updateUI(true);
                     }
                 }
 
@@ -139,8 +147,6 @@ public class DriverMainFragment extends Fragment {
                     Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
                 }
             });
-            startRide.setVisibility(View.INVISIBLE);
-            routeLabel.setVisibility(View.INVISIBLE);
         }
     }
 }

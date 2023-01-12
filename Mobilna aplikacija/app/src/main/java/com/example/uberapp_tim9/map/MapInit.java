@@ -1,5 +1,6 @@
 package com.example.uberapp_tim9.map;
 
+
 import static android.content.ContentValues.TAG;
 
 import android.os.AsyncTask;
@@ -7,8 +8,15 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Toast;
 
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
+import com.example.uberapp_tim9.driver.rest.RestApiManager;
+import com.example.uberapp_tim9.model.dtos.LocationDTO;
+import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
+import com.example.uberapp_tim9.passenger.fragments.MapFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.PolyUtil;
@@ -27,6 +35,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapInit {
 
     private class SimulateRoute extends AsyncTask<String, Void, String> {
@@ -34,11 +47,16 @@ public class MapInit {
         private Marker marker;
         private boolean hideMarker;
         private boolean showStart;
+        private int vehicleId;
 
-        public SimulateRoute(Marker marker, boolean hideMarker, boolean showStart) {
+        public SimulateRoute(Marker marker,
+                             boolean hideMarker,
+                             boolean showStart,
+                             int vehicleId) {
             this.marker = marker;
             this.hideMarker = hideMarker;
             this.showStart = showStart;
+            this.vehicleId = vehicleId;
         }
 
         @Override
@@ -59,7 +77,7 @@ public class MapInit {
             List<LatLng> waypoints = null;
             try {
                 waypoints = decodePoly(result);
-                animateMarker(marker,waypoints,hideMarker,showStart);
+                animateMarker(marker,waypoints,hideMarker,showStart,vehicleId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -102,7 +120,11 @@ public class MapInit {
         return movements;
     }
 
-    private void animateMarker(final Marker marker, final List<LatLng> directionPoint, final boolean hideMarker,final boolean showStart) {
+    private void animateMarker(final Marker marker,
+                               final List<LatLng> directionPoint,
+                               final boolean hideMarker,
+                               final boolean showStart,
+                               final int vehicleId) {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -117,16 +139,33 @@ public class MapInit {
                 if (i < directionPoint.size()) {
                     marker.setPosition(directionPoint.get(i));
                     marker.setAnchor(0.5f, 0.5f);
+                    MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
                     i++;
                 }
-                else{
+                else {
                     if(showStart){
-                        DriverMainFragment.updateUI();
+                        DriverMainFragment.updateUI(false);
+                        LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
+                        Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);
+                        changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.code() == 200){
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                            }
+                        });
+                        return;
                     }
                 }
                 if (t < 1.0) {
                     handler.postDelayed(this, 100);
-                } else {
+                }
+                else {
                     if (hideMarker1) {
                         marker.setVisible(false);
                     } else {
@@ -164,9 +203,14 @@ public class MapInit {
     }
 
 
-    public void simulateRoute(LatLng departure, LatLng destination, Marker marker, boolean hideMarker, boolean showStart) {
+    public void simulateRoute(LatLng departure,
+                              LatLng destination,
+                              Marker marker,
+                              boolean hideMarker,
+                              boolean showStart,
+                              int vehicleId) {
         String url = getDirectionsUrl(departure,destination);
-        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart);
+        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId);
         simulation.execute(url);
     }
 }

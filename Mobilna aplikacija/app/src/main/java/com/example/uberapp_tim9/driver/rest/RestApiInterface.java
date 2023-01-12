@@ -1,6 +1,7 @@
 package com.example.uberapp_tim9.driver.rest;
 
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
+import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 
 import okhttp3.ResponseBody;
@@ -15,6 +16,7 @@ public interface RestApiInterface {
 
     String RIDE_API_PATH = "ride/";
     String DRIVER_API_PATH="driver";
+    String VEHICLE_API_PATH="vehicle/";
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -59,5 +61,11 @@ public interface RestApiInterface {
     @GET(RestApiManager.BASE_URL + RIDE_API_PATH + DRIVER_API_PATH + "/{driver_id}/active")
     Call<ResponseBody> getActiveRideForDriver(@Path("driver_id") String driverId);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT(RestApiManager.BASE_URL + VEHICLE_API_PATH  + "{vehicle_id}/location")
+    Call<ResponseBody> changeVehicleLocation(@Path("vehicle_id") String vehicleId, @Body LocationDTO location);
 
 }

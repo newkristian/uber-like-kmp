@@ -49,6 +49,12 @@ import retrofit2.Response;
 public class MapFragment extends Fragment {
 
     public static Map<Integer, Marker> driversMarkers = new HashMap<>();
+    private boolean isDriver;
+    public static GoogleMap map;
+
+    public MapFragment(boolean isDriver){
+        this.isDriver = isDriver;
+    }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -64,7 +70,8 @@ public class MapFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             LatLng noviSad = new LatLng(45.24622203930153, 19.851686068990045);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noviSad,15.0f));
+            map = googleMap;
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(noviSad,15.0f));
 
             Call<ResponseBody> getAllDrivers = RestApiManager.restApiInterface.getAllDrivers();
             getAllDrivers.enqueue(new Callback<ResponseBody>() {
@@ -88,17 +95,21 @@ public class MapFragment extends Fragment {
                                                 activeRide.enqueue(new Callback<ResponseBody>() {
                                                     @Override
                                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                        Marker marker;
                                                         if (response.code() == 200) {
                                                             LatLng vehiclePosition = new LatLng(finalVehicle.getCurrentLocation().getLatitude(), finalVehicle.getCurrentLocation().getLongitude());
-                                                            Marker marker = googleMap.addMarker(new MarkerOptions().position(vehiclePosition)
+                                                            marker = googleMap.addMarker(new MarkerOptions().position(vehiclePosition)
                                                                     .icon(BitmapFromVector(getActivity(), R.drawable.redcar)));
                                                             driversMarkers.put(driver.getId(),marker);
                                                         }
                                                         else{
                                                             LatLng vehiclePosition = new LatLng(finalVehicle.getCurrentLocation().getLatitude(), finalVehicle.getCurrentLocation().getLongitude());
-                                                            Marker marker = googleMap.addMarker(new MarkerOptions().position(vehiclePosition)
+                                                            marker = googleMap.addMarker(new MarkerOptions().position(vehiclePosition)
                                                                     .icon(BitmapFromVector(getActivity(), R.drawable.greencar)));
                                                             driversMarkers.put(driver.getId(),marker);
+                                                        }
+                                                        if(driver.getId() == 4) {
+                                                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
                                                         }
                                                     }
 

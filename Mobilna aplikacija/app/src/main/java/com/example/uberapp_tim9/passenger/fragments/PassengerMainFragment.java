@@ -68,7 +68,7 @@ public class PassengerMainFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_passenger_main, container, false);
         FragmentManager fm = getChildFragmentManager();
-        MapFragment mapFragment = new MapFragment();
+        MapFragment mapFragment = new MapFragment(false);
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.map_container, mapFragment);
         fragmentTransaction.commit();
