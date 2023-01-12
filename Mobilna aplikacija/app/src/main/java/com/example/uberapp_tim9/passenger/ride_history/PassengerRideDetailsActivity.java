@@ -16,7 +16,6 @@ import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideAda
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideDriverAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidePassengersAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideReviewAdapter;
-import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidesAdapter;
 
 public class PassengerRideDetailsActivity extends AppCompatActivity {
 

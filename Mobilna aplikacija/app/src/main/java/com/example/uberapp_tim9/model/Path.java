@@ -24,6 +24,11 @@ public class Path {
         this.mPrice = mPrice;
     }
 
+    public Path(Location mStartPoint, Location mEndPoint) {
+        this.mStartPoint = mStartPoint;
+        this.mEndPoint = mEndPoint;
+    }
+
     public int getmID() {
         return mID;
     }
