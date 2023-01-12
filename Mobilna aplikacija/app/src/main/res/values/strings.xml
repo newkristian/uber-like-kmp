@@ -61,4 +61,8 @@
     <string name="review_ride">Oceni vožnju</string>
     <string name="driver">Vozač:</string>
     <string name="delete_from_favorites">Ukloni iz omiljenih</string>
+    <string name="average">Prosek:</string>
+    <string name="total">Ukupno:</string>
+    <string name="from">Od:</string>
+    <string name="to">Do:</string>
 </resources>
