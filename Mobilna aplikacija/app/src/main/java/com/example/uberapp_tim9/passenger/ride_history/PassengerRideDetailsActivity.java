@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
 import com.example.uberapp_tim9.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideDriverAdapter;
@@ -59,6 +60,9 @@ public class PassengerRideDetailsActivity extends AppCompatActivity {
         Button leaveReviewButton = findViewById(R.id.leaveReviewButton);
 
         leaveReviewButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PassengerReviewRideActivity.class);
+            startActivity(intent);
+
             leaveReviewButton.setVisibility(Button.GONE);
             reviewList.setVisibility(RecyclerView.VISIBLE);
         });
