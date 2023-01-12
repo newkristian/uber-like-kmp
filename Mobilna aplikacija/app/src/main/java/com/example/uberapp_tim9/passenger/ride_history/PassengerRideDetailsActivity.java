@@ -3,20 +3,23 @@ package com.example.uberapp_tim9.passenger.ride_history;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
+import com.example.uberapp_tim9.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideDriverAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidePassengersAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideReviewAdapter;
-import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidesAdapter;
 
 public class PassengerRideDetailsActivity extends AppCompatActivity {
 
@@ -57,13 +60,18 @@ public class PassengerRideDetailsActivity extends AppCompatActivity {
         Button leaveReviewButton = findViewById(R.id.leaveReviewButton);
 
         leaveReviewButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PassengerReviewRideActivity.class);
+            startActivity(intent);
+
             leaveReviewButton.setVisibility(Button.GONE);
             reviewList.setVisibility(RecyclerView.VISIBLE);
         });
 
         Button messageButton = findViewById(R.id.messagesButton);
         messageButton.setOnClickListener(v -> {
-            Toast.makeText(getBaseContext(), "Referenca ka inboxu", Toast.LENGTH_SHORT).show();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content, new PassengerInboxFragment());
+            ft.commit();
         });
     }
 

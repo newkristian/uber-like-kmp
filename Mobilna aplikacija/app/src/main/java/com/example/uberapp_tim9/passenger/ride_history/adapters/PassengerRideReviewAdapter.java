@@ -16,15 +16,15 @@ import java.util.List;
 
 public class PassengerRideReviewAdapter extends RecyclerView.Adapter<PassengerRideReviewAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         private TextView mMarkTextView;
         private TextView mCommentTextView;
-
+        private TextView mReviewedTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mMarkTextView = (TextView) itemView.findViewById(R.id.mark);
-            mCommentTextView = (TextView) itemView.findViewById(R.id.comment);
+            mMarkTextView = itemView.findViewById(R.id.mark);
+            mCommentTextView = itemView.findViewById(R.id.comment);
+            mReviewedTextView = itemView.findViewById(R.id.reviewedTextView);
         }
 
         public TextView getmMarkTextView() {
@@ -33,13 +33,16 @@ public class PassengerRideReviewAdapter extends RecyclerView.Adapter<PassengerRi
         public TextView getmCommentTextView() {
             return mCommentTextView;
         }
+        public TextView getmReviewedTextView() {
+            return mReviewedTextView;
+        }
     }
 
     @NonNull
     @Override
     public PassengerRideReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.reviews_list_item, parent, false);
+                .inflate(R.layout.passenger_reviews_list_item, parent, false);
         return new PassengerRideReviewAdapter.ViewHolder(view);
     }
 
@@ -48,6 +51,11 @@ public class PassengerRideReviewAdapter extends RecyclerView.Adapter<PassengerRi
         List<Review> reviews = PassengerRideHistoryMockupData.getRideReviews();
         holder.getmMarkTextView().setText(Integer.toString(reviews.get(position).getmRating()));
         holder.getmCommentTextView().setText(reviews.get(position).getmComment());
+        if (reviews.get(position).isDriverReview()) {
+            holder.getmReviewedTextView().setText("Vozač");
+        } else {
+            holder.getmReviewedTextView().setText("Vozilo");
+        }
     }
 
 

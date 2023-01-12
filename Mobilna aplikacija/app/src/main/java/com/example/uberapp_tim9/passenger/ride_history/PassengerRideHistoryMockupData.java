@@ -51,8 +51,10 @@ public class PassengerRideHistoryMockupData {
 
     public static List<Review> getRideReviews() {
         ArrayList<Review> reviews = new ArrayList<Review>();
-        Review r1 = new Review(5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        Review r1 = new Review(5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", true);
+        Review r2 = new Review(5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", false);
         reviews.add(r1);
+        reviews.add(r2);
         return reviews;
     }
 

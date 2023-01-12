@@ -6,6 +6,7 @@ public class Review {
     private String mComment;
     private Passenger passenger;
     private Ride ride;
+    private boolean driverReview;
 
     public Review(int mID, int mRating, String mComment, Passenger passenger, Ride ride) {
         this.mID = mID;
@@ -18,6 +19,12 @@ public class Review {
     public Review(int mRating, String mComment) {
         this.mRating = mRating;
         this.mComment = mComment;
+    }
+
+    public Review(int mRating, String mComment, boolean driverReview) {
+        this.mRating = mRating;
+        this.mComment = mComment;
+        this.driverReview = driverReview;
     }
 
     public int getmID() {
@@ -38,5 +45,9 @@ public class Review {
 
     public Ride getRide() {
         return ride;
+    }
+
+    public boolean isDriverReview() {
+        return driverReview;
     }
 }

@@ -57,4 +57,5 @@ dependencies {
     implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.1'
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
