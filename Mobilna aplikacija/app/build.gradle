@@ -51,8 +51,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.apache.commons:commons-text:1.6'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.1'
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
 }

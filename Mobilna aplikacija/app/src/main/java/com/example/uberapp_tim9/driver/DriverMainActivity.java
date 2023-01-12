@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.google.android.material.navigation.NavigationView;
 
 public class DriverMainActivity extends AppCompatActivity {

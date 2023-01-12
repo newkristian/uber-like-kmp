@@ -15,8 +15,21 @@ import com.example.uberapp_tim9.driver.RideRejectionActivity;
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.rest.RestApiInterface;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
+import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.dtos.DriverPageDTO;
+import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.model.dtos.RouteDTO;
+import com.example.uberapp_tim9.model.dtos.VehicleDTO;
+import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.unregistered_user.LoginActivity;
 import com.example.uberapp_tim9.unregistered_user.SplashScreenActivity;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -52,13 +65,47 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200){
                     Toast.makeText(context, "Vožnja uspešno prihvaćena!", Toast.LENGTH_SHORT).show();
-                    new Handler().postDelayed(() -> {
-                        DriverMainFragment.sendOnLocationNotification(RIDE_ID);
-                        DriverMainFragment.updateUI();
-                        new Handler().postDelayed(() -> {
-                            DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
-                        }, 10000);
-                    }, 5000);
+                    try {
+                        RideCreatedDTO ride = new Gson().fromJson(response.body().string(), new TypeToken<RideCreatedDTO>(){}.getType());
+                            DriverMainFragment.sendOnLocationNotification(RIDE_ID);
+                            MapInit init = new MapInit();
+                            Marker car = MapFragment.driversMarkers.get(ride.getDriver().getId());
+                            final LatLng[] departure = new LatLng[1];
+                            final LatLng[] destination = new LatLng[1];
+                            Call<ResponseBody> getVehiclePosition = RestApiManager.restApiInterface.getDriverVehicle(Integer.toString(ride.getDriver().getId()));
+                            getVehiclePosition.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    if (response.code() == 200){
+                                        VehicleDTO vehicle = null;
+                                        try {
+                                            vehicle = new Gson().fromJson(response.body().string(), new TypeToken<VehicleDTO>(){}.getType());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        departure[0] = new LatLng(vehicle.getCurrentLocation().getLatitude(),vehicle.getCurrentLocation().getLongitude());
+                                        for(RouteDTO route : ride.getLocations()){
+                                            destination[0] = new LatLng(route.getDeparture().getLatitude(),route.getDeparture().getLongitude());
+                                            break;
+                                        }
+                                        init.simulateRoute(departure[0], destination[0],car,false,true);
+                                        new Handler().postDelayed(() -> {
+                                            DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
+                                        }, 20000);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                                }
+                            });
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else if (response.code() == 400){
                     Toast.makeText(context, "Ne možete prihvatiti vožnju koja nema status 'Kreirana'!", Toast.LENGTH_SHORT).show();

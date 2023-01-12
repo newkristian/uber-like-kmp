@@ -24,11 +24,13 @@ import com.example.uberapp_tim9.driver.notificationManager.NotificationActionRec
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
 import com.example.uberapp_tim9.driver.sockets.SocketsConfiguration;
+import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
+import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -63,6 +65,7 @@ public class DriverMainFragment extends Fragment {
             NotificationService.createRideAcceptanceNotification(getActivity(),retrieved.getRideSummary(), DriverMainActivity.CHANNEL_ID);
             },
         throwable -> Log.e(TAG, throwable.getMessage()));
+        MapInit mapFunctionalities = new MapInit();
     }
 
     @Override
@@ -85,6 +88,8 @@ public class DriverMainFragment extends Fragment {
                     if (response.code() == 200){
                         Toast.makeText(getActivity(), "Vožnja uspešno startovana!", Toast.LENGTH_SHORT).show();
                         rideHasStarted = true;
+                        Marker car = MapFragment.driversMarkers.get(acceptedRide.getDriver().getId());
+                        car.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();
