@@ -98,10 +98,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                     }
                                     //DriverMainFragment.updateUI(false);
                                     init.simulateRoute(departure[0], destination[0], car, false, true, vehicle.getId());
-
-                                    new Handler().postDelayed(() -> {
-                                        DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
-                                    }, 20000);
                                 }
                             }
 

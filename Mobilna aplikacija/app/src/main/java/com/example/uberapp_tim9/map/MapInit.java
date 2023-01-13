@@ -3,6 +3,9 @@ package com.example.uberapp_tim9.map;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver.RIDE_ID;
+import static com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver.currentVehicle;
+
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -165,6 +168,7 @@ public class MapInit {
                     }
                 } else {
                     LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude, marker.getPosition().longitude);
+                    currentVehicle.setCurrentLocation(locationDTO);
                     Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId), locationDTO);
                     changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
                         @Override
@@ -173,6 +177,10 @@ public class MapInit {
                                 if (DriverMainFragment.rideHasStarted) {
                                     DriverMainFragment.hidePanicButton();
                                     DriverMainFragment.displayEndRideButton();
+                                } else {
+                                    new Handler().postDelayed(() ->
+                                            DriverMainFragment.cancelAfter5Minutes(RIDE_ID),
+                                            5000);
                                 }
                                 handler.removeCallbacksAndMessages(null);
                             }
