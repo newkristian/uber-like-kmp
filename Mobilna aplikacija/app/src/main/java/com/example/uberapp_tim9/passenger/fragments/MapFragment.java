@@ -34,10 +34,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,7 @@ public class MapFragment extends Fragment {
     public static Map<Integer, Marker> driversMarkers = new HashMap<>();
     private boolean isDriver;
     public static GoogleMap map;
+    public static ArrayList<Polyline> polylines = new ArrayList<>();
 
     public MapFragment(boolean isDriver){
         this.isDriver = isDriver;

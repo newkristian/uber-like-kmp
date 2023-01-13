@@ -20,6 +20,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -35,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -76,12 +80,24 @@ public class MapInit {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             List<LatLng> waypoints = null;
+            PolylineOptions lineOptions = null;
             try {
                 waypoints = decodePoly(result);
-                animateMarker(marker,waypoints,hideMarker,showStart,vehicleId);
+
+                lineOptions = new PolylineOptions();
+                lineOptions.addAll(waypoints);
+                lineOptions.width(12);
+                lineOptions.color(0xff0000ff);
+                lineOptions.geodesic(true);
+
+                animateMarker(marker, waypoints, hideMarker, showStart, vehicleId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            for (Polyline polyline : MapFragment.polylines) {
+                polyline.remove();
+            }
+            MapFragment.polylines.add(MapFragment.map.addPolyline(lineOptions));
         }
     }
 
@@ -113,8 +129,7 @@ public class MapInit {
             try {
                 List<LatLng> waypoints = PolyUtil.decode(points);
                 movements.addAll(waypoints);
-            }
-            catch(StringIndexOutOfBoundsException ex) {
+            } catch (StringIndexOutOfBoundsException ex) {
                 continue;
             }
         }
@@ -133,6 +148,7 @@ public class MapInit {
         final boolean hideMarker1 = hideMarker;
         handler.post(new Runnable() {
             int i = 0;
+
             @Override
             public void run() {
                 long elapsed = SystemClock.uptimeMillis() - start;
@@ -140,28 +156,28 @@ public class MapInit {
                 if (i < directionPoint.size()) {
                     marker.setPosition(directionPoint.get(i));
                     marker.setAnchor(0.5f, 0.5f);
-                    MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
+                    MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16.0f));
                     i++;
                     if (DriverMainFragment.rideHasStarted) {
                         DriverMainFragment.updateTimer((int) Math.ceil((durationInMs - elapsed) / 1000));
                     }
                 } else {
-                    LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
-                    Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);
+                    LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude, marker.getPosition().longitude);
+                    Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId), locationDTO);
                     changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code() == 204){
+                            if (response.code() == 204) {
                                 handler.removeCallbacksAndMessages(null);
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                            Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                         }
                     });
-                    if(showStart){
+                    if (showStart) {
                         DriverMainFragment.updateUI(false);
                         return;
                     }
@@ -213,7 +229,7 @@ public class MapInit {
                               boolean showStart,
                               int vehicleId) {
         String url = getDirectionsUrl(departure, destination);
-        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId);
+        SimulateRoute simulation = new SimulateRoute(marker, hideMarker, showStart, vehicleId);
         simulation.execute(url);
     }
 }
