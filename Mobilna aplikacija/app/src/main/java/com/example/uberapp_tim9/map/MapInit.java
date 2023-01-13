@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
+import com.example.uberapp_tim9.model.Driver;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
@@ -128,7 +129,7 @@ public class MapInit {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
-        final float durationInMs = 10000;
+        final float durationInMs = directionPoint.size() * 100;
         final boolean hideMarker1 = hideMarker;
         handler.post(new Runnable() {
             int i = 0;
@@ -136,12 +137,14 @@ public class MapInit {
             public void run() {
                 long elapsed = SystemClock.uptimeMillis() - start;
                 float t = interpolator.getInterpolation((float) elapsed / durationInMs);
-//                Log.d("DIRECTIONPOINT SIZE: ", String.valueOf(directionPoint.size()));
                 if (i < directionPoint.size()) {
                     marker.setPosition(directionPoint.get(i));
                     marker.setAnchor(0.5f, 0.5f);
                     MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
                     i++;
+                    if (DriverMainFragment.rideHasStarted) {
+                        DriverMainFragment.updateTimer((int) Math.ceil((durationInMs - elapsed) / 1000));
+                    }
                 } else {
                     LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
                     Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,6 +53,9 @@ public class DriverMainFragment extends Fragment {
     public static boolean rideHasStarted = false;
     private static Context context;
 
+    public static TextView timer;
+    public static CardView timerCard;
+
     public DriverMainFragment() {}
 
     @Override
@@ -81,6 +85,8 @@ public class DriverMainFragment extends Fragment {
         fragmentTransaction.commit();
         fm.executePendingTransactions();
         startRide = v.findViewById(R.id.start_ride);
+        timer = v.findViewById(R.id.timer);
+        timerCard = v.findViewById(R.id.timerCard);
         context = getActivity();
         startRide.setOnClickListener(view -> {
             Call<ResponseBody> call = RestApiManager.restApiInterface.startRide(acceptedRide.getId().toString());
@@ -108,6 +114,7 @@ public class DriverMainFragment extends Fragment {
 
                         MapInit init = new MapInit();
                         init.simulateRoute(departure[0], destination[0], car, false, false, currentVehicle.getId());
+                        displayTimer();
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();
@@ -143,6 +150,22 @@ public class DriverMainFragment extends Fragment {
                 break;
             }
             routeLabel.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void displayTimer() {
+        timerCard.setVisibility(View.VISIBLE);
+    }
+
+    public static void hideTimer() {
+        timerCard.setVisibility(View.INVISIBLE);
+    }
+
+    public static void updateTimer(int time) {
+        if (time > 0) {
+            timer.setText(String.format("%ss do destinacije", String.valueOf(time)));
+        } else {
+            timer.setText("Stigli ste na destinaciju!");
         }
     }
 
