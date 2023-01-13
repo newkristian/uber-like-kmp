@@ -28,8 +28,10 @@ import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
+import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -91,6 +93,21 @@ public class DriverMainFragment extends Fragment {
                         Marker car = MapFragment.driversMarkers.get(acceptedRide.getDriver().getId());
                         car.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
                         updateUI(true);
+
+                        final LatLng[] departure = new LatLng[1];
+                        final LatLng[] destination = new LatLng[1];
+
+                        VehicleDTO currentVehicle = NotificationActionReceiver.currentVehicle;
+
+                        departure[0] = new LatLng(currentVehicle.getCurrentLocation().getLatitude(),
+                                currentVehicle.getCurrentLocation().getLongitude());
+                        for (RouteDTO route : NotificationActionReceiver.currentRide.getLocations()) {
+                            destination[0] = new LatLng(route.getDestination().getLatitude(), route.getDestination().getLongitude());
+                            break;
+                        }
+
+                        MapInit init = new MapInit();
+                        init.simulateRoute(departure[0], destination[0], car, false, false, currentVehicle.getId());
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();

@@ -128,7 +128,7 @@ public class MapInit {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
-        final float durationInMs = 3000;
+        final float durationInMs = 10000;
         final boolean hideMarker1 = hideMarker;
         handler.post(new Runnable() {
             int i = 0;
@@ -136,36 +136,36 @@ public class MapInit {
             public void run() {
                 long elapsed = SystemClock.uptimeMillis() - start;
                 float t = interpolator.getInterpolation((float) elapsed / durationInMs);
+//                Log.d("DIRECTIONPOINT SIZE: ", String.valueOf(directionPoint.size()));
                 if (i < directionPoint.size()) {
                     marker.setPosition(directionPoint.get(i));
                     marker.setAnchor(0.5f, 0.5f);
                     MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
                     i++;
-                }
-                else {
+                } else {
+                    LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
+                    Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);
+                    changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.code() == 204){
+                                handler.removeCallbacksAndMessages(null);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                        }
+                    });
                     if(showStart){
                         DriverMainFragment.updateUI(false);
-                        LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
-                        Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);
-                        changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if (response.code() == 200){
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
-                            }
-                        });
                         return;
                     }
                 }
                 if (t < 1.0) {
                     handler.postDelayed(this, 100);
-                }
-                else {
+                } else {
                     if (hideMarker1) {
                         marker.setVisible(false);
                     } else {
@@ -209,7 +209,7 @@ public class MapInit {
                               boolean hideMarker,
                               boolean showStart,
                               int vehicleId) {
-        String url = getDirectionsUrl(departure,destination);
+        String url = getDirectionsUrl(departure, destination);
         SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId);
         simulation.execute(url);
     }
