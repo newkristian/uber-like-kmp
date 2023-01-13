@@ -3,9 +3,7 @@ package com.example.uberapp_tim9.driver.fragments;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +29,6 @@ import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
-import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
@@ -55,6 +52,7 @@ public class DriverMainFragment extends Fragment {
 
     public static TextView timer;
     public static CardView timerCard;
+    public static Button panicButton;
 
     public DriverMainFragment() {}
 
@@ -87,7 +85,14 @@ public class DriverMainFragment extends Fragment {
         startRide = v.findViewById(R.id.start_ride);
         timer = v.findViewById(R.id.timer);
         timerCard = v.findViewById(R.id.timerCard);
+        panicButton = v.findViewById(R.id.panicButton);
         context = getActivity();
+
+        panicButton.setOnClickListener(view -> {
+            Toast.makeText(context, "Support služba je obaveštena.", Toast.LENGTH_SHORT).show();
+            hidePanicButton();
+        });
+
         startRide.setOnClickListener(view -> {
             Call<ResponseBody> call = RestApiManager.restApiInterface.startRide(acceptedRide.getId().toString());
             call.enqueue(new Callback<ResponseBody>() {
@@ -115,6 +120,7 @@ public class DriverMainFragment extends Fragment {
                         MapInit init = new MapInit();
                         init.simulateRoute(departure[0], destination[0], car, false, false, currentVehicle.getId());
                         displayTimer();
+                        displayPanicButton();
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();
@@ -142,8 +148,7 @@ public class DriverMainFragment extends Fragment {
         if(hide) {
             startRide.setVisibility(View.INVISIBLE);
             routeLabel.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             startRide.setVisibility(View.VISIBLE);
             for (RouteDTO route : acceptedRide.getLocations()) {
                 routeLabel.setText(route.getDeparture().getAddress() + " - " + route.getDestination().getAddress());
@@ -159,6 +164,14 @@ public class DriverMainFragment extends Fragment {
 
     public static void hideTimer() {
         timerCard.setVisibility(View.INVISIBLE);
+    }
+
+    public static void displayPanicButton() {
+        panicButton.setVisibility(View.VISIBLE);
+    }
+
+    public static void hidePanicButton() {
+        panicButton.setVisibility(View.INVISIBLE);
     }
 
     public static void updateTimer(int time) {
