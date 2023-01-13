@@ -61,6 +61,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.652" />
 
+    <Button
+        android:id="@+id/endRideButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="230dp"
+        android:layout_height="65dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/green"
+        android:fontFamily="sans-serif-light"
+        android:text="Završi vožnju"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        android:textSize="22dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_car"
+        app:iconPadding="0dp"
+        app:iconSize="30dp"
+        app:iconTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652" />
+
     <TextView
         android:id="@+id/route_label"
         android:layout_width="381dp"

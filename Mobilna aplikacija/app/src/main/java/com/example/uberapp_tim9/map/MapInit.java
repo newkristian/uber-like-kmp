@@ -97,7 +97,9 @@ public class MapInit {
             for (Polyline polyline : MapFragment.polylines) {
                 polyline.remove();
             }
-            MapFragment.polylines.add(MapFragment.map.addPolyline(lineOptions));
+            if (DriverMainFragment.rideHasStarted) {
+                MapFragment.polylines.add(MapFragment.map.addPolyline(lineOptions));
+            }
         }
     }
 
@@ -168,6 +170,10 @@ public class MapInit {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.code() == 204) {
+                                if (DriverMainFragment.rideHasStarted) {
+                                    DriverMainFragment.hidePanicButton();
+                                    DriverMainFragment.displayEndRideButton();
+                                }
                                 handler.removeCallbacksAndMessages(null);
                             }
                         }

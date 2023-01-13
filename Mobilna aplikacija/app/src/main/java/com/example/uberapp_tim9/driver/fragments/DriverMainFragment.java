@@ -31,6 +31,7 @@ import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -53,6 +54,9 @@ public class DriverMainFragment extends Fragment {
     public static TextView timer;
     public static CardView timerCard;
     public static Button panicButton;
+    public static Button endRideButton;
+
+    private Marker driverMarker;
 
     public DriverMainFragment() {}
 
@@ -86,6 +90,7 @@ public class DriverMainFragment extends Fragment {
         timer = v.findViewById(R.id.timer);
         timerCard = v.findViewById(R.id.timerCard);
         panicButton = v.findViewById(R.id.panicButton);
+        endRideButton = v.findViewById(R.id.endRideButton);
         context = getActivity();
 
         panicButton.setOnClickListener(view -> {
@@ -93,16 +98,50 @@ public class DriverMainFragment extends Fragment {
             hidePanicButton();
         });
 
+        endRideButton.setOnClickListener(view -> {
+            Call<ResponseBody> call = RestApiManager.restApiInterface.endRide(acceptedRide.getId().toString());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.code() == 200){
+                        Toast.makeText(context, "Voznja je završena.", Toast.LENGTH_SHORT).show();
+                        hideTimer();
+                        hidePanicButton();
+                        hideEndRideButton();
+                        rideHasStarted = false;
+                        acceptedRide = null;
+                        NotificationActionReceiver.RIDE_ID = "";
+                        NotificationActionReceiver.currentRide = null;
+                        NotificationActionReceiver.currentVehicle = null;
+                        updateUI(true);
+                        driverMarker.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
+                        for (Polyline polyline : MapFragment.polylines) {
+                            polyline.remove();
+                        }
+                    } else if (response.code() == 400){
+                        Toast.makeText(getActivity(), "Ne možete završiti vožnju koja nije završena.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Vožnja ne postoji!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                }
+            });
+        });
+
         startRide.setOnClickListener(view -> {
             Call<ResponseBody> call = RestApiManager.restApiInterface.startRide(acceptedRide.getId().toString());
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.code() == 200){
+                    if (response.code() == 200) {
                         Toast.makeText(getActivity(), "Vožnja uspešno startovana!", Toast.LENGTH_SHORT).show();
                         rideHasStarted = true;
-                        Marker car = MapFragment.driversMarkers.get(acceptedRide.getDriver().getId());
-                        car.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
+                        driverMarker = MapFragment.driversMarkers.get(acceptedRide.getDriver().getId());
+                        driverMarker.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
                         updateUI(true);
 
                         final LatLng[] departure = new LatLng[1];
@@ -118,7 +157,7 @@ public class DriverMainFragment extends Fragment {
                         }
 
                         MapInit init = new MapInit();
-                        init.simulateRoute(departure[0], destination[0], car, false, false, currentVehicle.getId());
+                        init.simulateRoute(departure[0], destination[0], driverMarker, false, false, currentVehicle.getId());
                         displayTimer();
                         displayPanicButton();
                     }
@@ -172,6 +211,14 @@ public class DriverMainFragment extends Fragment {
 
     public static void hidePanicButton() {
         panicButton.setVisibility(View.INVISIBLE);
+    }
+
+    public static void displayEndRideButton() {
+        endRideButton.setVisibility(View.VISIBLE);
+    }
+
+    public static void hideEndRideButton() {
+        endRideButton.setVisibility(View.INVISIBLE);
     }
 
     public static void updateTimer(int time) {
