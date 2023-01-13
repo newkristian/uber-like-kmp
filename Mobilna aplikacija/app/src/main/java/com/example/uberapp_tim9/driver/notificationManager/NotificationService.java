@@ -68,4 +68,18 @@ public class NotificationService {
                 .setAutoCancel(true);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+    public static void createRideEndedNotification(String channel_id, Context context){
+        String message = "Trenutna vožnja je završena. Opet ste u mogućnosti da poručujete vožnje. Hvala što koristite CarGoBrrr!";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle("Status vožnje")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setChannelId(channel_id)
+                .setAutoCancel(true);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }

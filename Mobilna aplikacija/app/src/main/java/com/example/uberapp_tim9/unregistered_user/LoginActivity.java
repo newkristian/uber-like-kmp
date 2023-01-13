@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
+import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
 import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
 
 public class LoginActivity extends AppCompatActivity {

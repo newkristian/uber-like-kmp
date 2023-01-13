@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +21,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.driver.DriverMainActivity;
+import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
+import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.DriverDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
+import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -41,6 +46,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
@@ -90,7 +96,7 @@ public class PassengerMainFragment extends Fragment{
         MapInit mapUtils = new MapInit();
 
         //Subscribe to events from websocket (ride has started)
-        Disposable subscription = PassengerMainActivity.socketsConfiguration.stompClient.topic("/ride-started/notification").subscribe(message ->
+        Disposable subscriptionRideStarted = PassengerMainActivity.socketsConfiguration.stompClient.topic("/ride-started/notification").subscribe(message ->
                 {
                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
                         @Override
@@ -136,6 +142,26 @@ public class PassengerMainFragment extends Fragment{
                             Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
                         }
                     });
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        Disposable subscriptionRideEnded = PassengerMainActivity.socketsConfiguration.stompClient.topic("/ride-ended/notification").subscribe(message ->
+                {
+                    List<Integer> passengersId  = new Gson().fromJson(message.getPayload(), new TypeToken<List<Integer>>(){}.getType());
+                    if(passengersId.contains(PassengerMainActivity.passengerId)) {
+                        NotificationService.createRideEndedNotification(PassengerMainActivity.CHANNEL_ID,getActivity());
+                        updateUI(true);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                MapFragment.clearCurrentRoute();
+                                Marker currentRideVehicle = MapFragment.driversMarkers.get(currentRide.getDriver().getId());
+                                currentRideVehicle.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
+                            }
+                        });
+
+                        startActivity(new Intent(getActivity(), PassengerReviewRideActivity.class));
+                    }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));
     }
