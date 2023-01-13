@@ -12,6 +12,7 @@
     <color name="bright_orange">#FF5722</color>
     <color name="sky_blue">#00ADB5</color>
     <color name="bright_red">#FD1C1C</color>
+    <color name="light_red">#fc3d3d</color>
     <color name="dirty_grey">#D9D9D9</color>
     <color name="dark">#222831</color>
     <color name="light_yellow">#ffb703</color>
@@ -21,5 +22,6 @@
     <color name ="baby_pink">#FBA2A2</color>
     <color name="grey">#D3D3D3</color>
     <color name="green">#00C112</color>
+    <color name="overlay_black">#66000000</color>
 
 </resources>

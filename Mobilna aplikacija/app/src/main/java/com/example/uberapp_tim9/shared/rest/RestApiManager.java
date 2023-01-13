@@ -1,6 +1,10 @@
-package com.example.uberapp_tim9.driver.rest;
+package com.example.uberapp_tim9.shared.rest;
+
+import com.example.uberapp_tim9.driver.rest.RestApiInterfaceDriver;
+import com.example.uberapp_tim9.passenger.rest.RestApiInterfacePassenger;
 
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,7 +18,8 @@ public class RestApiManager {
                     .client(test())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-    public static RestApiInterface restApiInterface = retrofit.create(RestApiInterface.class);
+    public static RestApiInterfaceDriver restApiInterfaceDriver = retrofit.create(RestApiInterfaceDriver.class);
+    public static RestApiInterfacePassenger restApiInterfacePassenger = retrofit.create(RestApiInterfacePassenger.class);
 
 
     public static OkHttpClient test(){

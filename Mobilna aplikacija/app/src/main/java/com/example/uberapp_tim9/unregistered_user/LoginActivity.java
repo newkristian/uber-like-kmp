@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        Button login = findViewById(R.id.reject_button);
+        Button login = findViewById(R.id.close_panic_overlay_button);
         login.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class)));
 

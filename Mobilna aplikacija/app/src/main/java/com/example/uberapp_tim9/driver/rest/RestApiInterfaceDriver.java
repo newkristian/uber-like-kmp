@@ -1,8 +1,8 @@
 package com.example.uberapp_tim9.driver.rest;
 
-import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -12,7 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface RestApiInterface {
+public interface RestApiInterfaceDriver {
 
     String RIDE_API_PATH = "ride/";
     String DRIVER_API_PATH="driver";

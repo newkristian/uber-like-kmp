@@ -69,4 +69,8 @@
     <string name="total">Ukupno:</string>
     <string name="from">Od:</string>
     <string name="to">Do:</string>
+    <string name="panic">Panic</string>
+    <string name="error_report">Prijavi grešku</string>
+    <string name="reason_plain">Razlog</string>
+    <string name="close">Zatvori</string>
 </resources>

@@ -3,9 +3,7 @@ package com.example.uberapp_tim9.driver.fragments;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +20,13 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
-import com.example.uberapp_tim9.driver.rest.RestApiManager;
-import com.example.uberapp_tim9.driver.sockets.SocketsConfiguration;
+import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
-import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -81,7 +78,7 @@ public class DriverMainFragment extends Fragment {
         startRide = v.findViewById(R.id.start_ride);
         context = getActivity();
         startRide.setOnClickListener(view -> {
-            Call<ResponseBody> call = RestApiManager.restApiInterface.startRide(acceptedRide.getId().toString());
+            Call<ResponseBody> call = RestApiManager.restApiInterfaceDriver.startRide(acceptedRide.getId().toString());
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -132,7 +129,7 @@ public class DriverMainFragment extends Fragment {
     public static void cancelAfter5Minutes(String rideId) {
         if(!rideHasStarted) {
             RejectionReasonDTO reasonDTO = new RejectionReasonDTO("Putnici se nisu pojavili na lokaciji nakon 5 minuta.");
-            Call<ResponseBody> call = RestApiManager.restApiInterface.denyRide(rideId,reasonDTO);
+            Call<ResponseBody> call = RestApiManager.restApiInterfaceDriver.denyRide(rideId,reasonDTO);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

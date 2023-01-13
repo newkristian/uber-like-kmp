@@ -10,20 +10,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.RideRejectionActivity;
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
-import com.example.uberapp_tim9.driver.rest.RestApiInterface;
-import com.example.uberapp_tim9.driver.rest.RestApiManager;
 import com.example.uberapp_tim9.map.MapInit;
-import com.example.uberapp_tim9.model.dtos.DriverPageDTO;
-import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
-import com.example.uberapp_tim9.unregistered_user.LoginActivity;
-import com.example.uberapp_tim9.unregistered_user.SplashScreenActivity;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
@@ -59,7 +53,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     public void acceptRide(Context context){
-        Call<ResponseBody> call = RestApiManager.restApiInterface.acceptRide(RIDE_ID);
+        Call<ResponseBody> call = RestApiManager.restApiInterfaceDriver.acceptRide(RIDE_ID);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -67,12 +61,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     Toast.makeText(context, "Vožnja uspešno prihvaćena!", Toast.LENGTH_SHORT).show();
                     try {
                         RideCreatedDTO ride = new Gson().fromJson(response.body().string(), new TypeToken<RideCreatedDTO>(){}.getType());
-                            DriverMainFragment.sendOnLocationNotification(RIDE_ID);
                             MapInit init = new MapInit();
                             Marker car = MapFragment.driversMarkers.get(ride.getDriver().getId());
                             final LatLng[] departure = new LatLng[1];
                             final LatLng[] destination = new LatLng[1];
-                            Call<ResponseBody> getVehiclePosition = RestApiManager.restApiInterface.getDriverVehicle(Integer.toString(ride.getDriver().getId()));
+                            Call<ResponseBody> getVehiclePosition = RestApiManager.restApiInterfaceDriver.getDriverVehicle(Integer.toString(ride.getDriver().getId()));
                             getVehiclePosition.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -90,7 +83,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                             break;
                                         }
                                         //DriverMainFragment.updateUI(false);
-                                        init.simulateRoute(departure[0], destination[0],car,false,true,vehicle.getId());
+                                        init.simulateRoute(departure[0], destination[0],car,false,true,vehicle.getId(),200);
 
                                         new Handler().postDelayed(() -> {
                                             DriverMainFragment.cancelAfter5Minutes(RIDE_ID);
