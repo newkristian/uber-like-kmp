@@ -14,11 +14,21 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
+import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
+import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -30,6 +40,13 @@ public class PassengerMainActivity extends AppCompatActivity {
     public static final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
     public static final int passengerId = 1;
     public static final String CHANNEL_ID = "PN";
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+        @Override
+        public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return LocalDateTime.parse(json.getAsString());
+        }
+    }).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +68,44 @@ public class PassengerMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NotificationService.initContext(this);
         NotificationService.createNotificationChannel("Passenger","Passenger's notifications",CHANNEL_ID);
-        Disposable subscription = socketsConfiguration.stompClient.topic("/driver-at-location/notification").subscribe(message ->
+        Disposable driverAtLocation = socketsConfiguration.stompClient.topic("/driver-at-location/notification").subscribe(message ->
                 {
                     List<Integer> passengersId  = new Gson().fromJson(message.getPayload(), new TypeToken<List<Integer>>(){}.getType());
                     if(passengersId.contains(passengerId)) {
                         NotificationService.createOnLocationNotification(CHANNEL_ID,this);
+                    }
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        Disposable reservationNotification = socketsConfiguration.stompClient.topic("/ride-ordered/reservation-notification").subscribe(message ->
+                {
+                    RideCreationDTO reserved  = gson.fromJson(message.getPayload(), new TypeToken<RideCreationDTO>(){}.getType());
+                    for(PassengerIdEmailDTO passenger : reserved.getPassengers()){
+                        if(passenger.getId() == passengerId){
+                            String formattedScheduleTime = reserved.getScheduledTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+                            NotificationService.createRideReservationNotification(CHANNEL_ID,this,formattedScheduleTime);
+                            break;
+                        }
+
+                    }
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        Disposable rideCouldNotBeCreated = socketsConfiguration.stompClient.topic("/ride-ordered/not-found").subscribe(message ->
+                {
+                    RideCreationDTO reserved  = gson.fromJson(message.getPayload(), new TypeToken<RideCreationDTO>(){}.getType());
+                    for(PassengerIdEmailDTO passenger : reserved.getPassengers()){
+                        if(passenger.getId() == passengerId){
+                            String formattedScheduleTime;
+                            if(reserved.getScheduledTime() != null) {
+                                formattedScheduleTime = reserved.getScheduledTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+                            }
+                            else {
+                                formattedScheduleTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+                            }
+                            NotificationService.createCouldNotFindDriverNotification(CHANNEL_ID,this,formattedScheduleTime);
+                            break;
+                        }
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));

@@ -82,4 +82,27 @@ public class NotificationService {
                 .setAutoCancel(true);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+    public static void createRideReservationNotification(String channel_id, Context context, String time){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle("Podsetnik")
+                .setContentText("Imate zakazanu vožnju u " + time + ".")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setChannelId(channel_id)
+                .setAutoCancel(true);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    public static void createCouldNotFindDriverNotification(String channel_id, Context context, String time){
+        String message = "Vaša poručena vožnja u " + time + " se odbija. Sistem nije pronašao slobodnog vozača.";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle("Obaveštenje")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setChannelId(channel_id)
+                .setAutoCancel(true);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }
