@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -77,7 +76,6 @@ public class DriverMainFragment extends Fragment {
     }).create();
 
     public static TextView timer;
-    public static CardView timerCard;
     public static Button panicButton;
     public static Button endRideButton;
 
@@ -112,8 +110,7 @@ public class DriverMainFragment extends Fragment {
         fragmentTransaction.commit();
         fm.executePendingTransactions();
         startRide = v.findViewById(R.id.start_ride);
-        timer = v.findViewById(R.id.timer);
-        timerCard = v.findViewById(R.id.timerCard);
+        timer = v.findViewById(R.id.timerCard);
         panicButton = v.findViewById(R.id.panicButton);
         endRideButton = v.findViewById(R.id.endRideButton);
         context = getActivity();
@@ -135,7 +132,7 @@ public class DriverMainFragment extends Fragment {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.code() == 200){
-                        Toast.makeText(context, "Voznja je završena.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Vožnja je završena.", Toast.LENGTH_SHORT).show();
                         hideTimer();
                         hidePanicButton();
                         hideEndRideButton();
@@ -201,6 +198,7 @@ public class DriverMainFragment extends Fragment {
                                 false,
                                 false,
                                 currentVehicle.getId(),
+                                true,
                                 200,
                                 true,
                                 passengersToPing);
@@ -269,11 +267,11 @@ public class DriverMainFragment extends Fragment {
     }
 
     public static void displayTimer() {
-        timerCard.setVisibility(View.VISIBLE);
+        timer.setVisibility(View.VISIBLE);
     }
 
     public static void hideTimer() {
-        timerCard.setVisibility(View.INVISIBLE);
+        timer.setVisibility(View.INVISIBLE);
     }
 
     public static void displayPanicButton() {

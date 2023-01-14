@@ -118,6 +118,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                             false,
                                             true,
                                             vehicle.getId(),
+                                            true,
                                             200,
                                             true, passengersToPing);
                                 }

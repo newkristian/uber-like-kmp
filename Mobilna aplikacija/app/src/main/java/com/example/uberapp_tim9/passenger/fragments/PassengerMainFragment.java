@@ -130,7 +130,8 @@ public class PassengerMainFragment extends Fragment{
                                                  false,
                                                   false,
                                                   -1,
-                                            600,
+                                            false,
+                                            200,
                                             false,null);
                                 }
                                 catch (IOException e) {
