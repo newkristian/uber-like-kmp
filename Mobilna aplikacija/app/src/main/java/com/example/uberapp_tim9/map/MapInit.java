@@ -1,8 +1,6 @@
 package com.example.uberapp_tim9.map;
 
 
-import static android.content.ContentValues.TAG;
-
 import static com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver.RIDE_ID;
 import static com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver.currentVehicle;
 
@@ -14,8 +12,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
-import com.example.uberapp_tim9.driver.rest.RestApiManager;
-import com.example.uberapp_tim9.model.Driver;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
@@ -23,7 +19,6 @@ import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
@@ -41,7 +36,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -64,7 +58,9 @@ public class MapInit {
                              boolean hideMarker,
                              boolean showStart,
                              int vehicleId,
-                             long animationDelayMs, boolean pingServerLocation, List<Integer> whoToPing) {
+                             long animationDelayMs,
+                             boolean pingServerLocation,
+                             List<Integer> whoToPing) {
             this.marker = marker;
             this.hideMarker = hideMarker;
             this.showStart = showStart;
@@ -100,8 +96,6 @@ public class MapInit {
                 lineOptions.width(12);
                 lineOptions.color(0xff0000ff);
                 lineOptions.geodesic(true);
-
-                animateMarker(marker, waypoints, hideMarker, showStart, vehicleId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -178,12 +172,6 @@ public class MapInit {
             points = StringEscapeUtils.unescapeJava(points);
             List<LatLng> waypoints = parser.decodePoly(points);
             movements.addAll(waypoints);
-            try {
-                List<LatLng> waypoints = PolyUtil.decode(points);
-                movements.addAll(waypoints);
-            } catch (StringIndexOutOfBoundsException ex) {
-                continue;
-            }
         }
         return movements;
     }
@@ -203,7 +191,6 @@ public class MapInit {
         final boolean hideMarker1 = hideMarker;
         handler.post(new Runnable() {
             int i = 0;
-
             @Override
             public void run() {
                 long elapsed = SystemClock.uptimeMillis() - start;
@@ -220,36 +207,25 @@ public class MapInit {
                         TimeUntilOnDepartureDTO dto = new TimeUntilOnDepartureDTO(whoToPing,time);
                         DriverMainFragment.sendLocationUpdatesNotification(dto);
                     }
-                    MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16.0f));
-                    i++;
-                }
-                else {
-                    if(showStart){
-                        DriverMainFragment.updateUI(false);
-                        LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude,marker.getPosition().longitude);
-                        Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterfaceDriver.changeVehicleLocation(Integer.toString(vehicleId),locationDTO);
-                        changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if (response.code() == 204){
-                                    DriverMainFragment.sendOnLocationNotification(NotificationActionReceiver.RIDE_ID);
                     if (DriverMainFragment.rideHasStarted) {
                         DriverMainFragment.updateTimer((int) Math.ceil((durationInMs - elapsed) / 1000));
                     }
+                    i++;
                 } else {
                     LocationDTO locationDTO = new LocationDTO(marker.getPosition().latitude, marker.getPosition().longitude);
                     currentVehicle.setCurrentLocation(locationDTO);
-                    Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterface.changeVehicleLocation(Integer.toString(vehicleId), locationDTO);
+                    Call<ResponseBody> changeVehiclePosition = RestApiManager.restApiInterfaceDriver.changeVehicleLocation(Integer.toString(vehicleId), locationDTO);
                     changeVehiclePosition.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code() == 204) {
+                            if (response.code() == 204){
+                                DriverMainFragment.sendOnLocationNotification(NotificationActionReceiver.RIDE_ID);
                                 if (DriverMainFragment.rideHasStarted) {
                                     DriverMainFragment.hidePanicButton();
                                     DriverMainFragment.displayEndRideButton();
                                 } else {
                                     new Handler().postDelayed(() ->
-                                            DriverMainFragment.cancelAfter5Minutes(RIDE_ID),
+                                                    DriverMainFragment.cancelAfter5Minutes(RIDE_ID),
                                             5000);
                                 }
                                 handler.removeCallbacksAndMessages(null);
@@ -258,7 +234,7 @@ public class MapInit {
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                            Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
                         }
                     });
                     if (showStart) {
@@ -268,9 +244,6 @@ public class MapInit {
                 }
                 if (t < 1.0) {
                     handler.postDelayed(this, animationDelayMs);
-                }
-                else {
-                    handler.postDelayed(this, 100);
                 } else {
                     if (hideMarker1) {
                         marker.setVisible(false);
@@ -320,9 +293,6 @@ public class MapInit {
                               List<Integer> whoToPing) {
         String url = getDirectionsUrl(departure,destination);
         SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId,animationDelayMs, pingServerLocation, whoToPing);
-                              int vehicleId) {
-        String url = getDirectionsUrl(departure, destination);
-        SimulateRoute simulation = new SimulateRoute(marker, hideMarker, showStart, vehicleId);
         simulation.execute(url);
     }
 

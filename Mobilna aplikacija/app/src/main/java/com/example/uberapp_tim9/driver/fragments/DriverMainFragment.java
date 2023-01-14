@@ -23,22 +23,19 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
-import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
-import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
-import com.example.uberapp_tim9.driver.rest.RestApiManager;
 import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
 import com.example.uberapp_tim9.driver.ride_history.adapters.DriverInRidePassengersAdapter;
-import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidePassengersAdapter;
-import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidesAdapter;
-import com.example.uberapp_tim9.driver.sockets.SocketsConfiguration;
 import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
+import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
+import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
@@ -50,10 +47,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +130,7 @@ public class DriverMainFragment extends Fragment {
         });
 
         endRideButton.setOnClickListener(view -> {
-            Call<ResponseBody> call = RestApiManager.restApiInterface.endRide(acceptedRide.getId().toString());
+            Call<ResponseBody> call = RestApiManager.restApiInterfaceDriver.endRide(acceptedRide.getId().toString());
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -193,12 +189,25 @@ public class DriverMainFragment extends Fragment {
                             break;
                         }
 
+                        List<Integer> passengersToPing = new ArrayList<>();
+                        for (PassengerIdEmailDTO passenger : DriverMainFragment.acceptedRide.getPassengers()) {
+                            passengersToPing.add(passenger.getId());
+                        }
+
                         MapInit init = new MapInit();
-                        init.simulateRoute(departure[0], destination[0], driverMarker, false, false, currentVehicle.getId());
+                        init.simulateRoute(departure[0],
+                                destination[0],
+                                driverMarker,
+                                false,
+                                false,
+                                currentVehicle.getId(),
+                                200,
+                                true,
+                                passengersToPing);
                         displayTimer();
                         displayPanicButton();
 
-                        Call<ResponseBody> passengersCall = RestApiManager.restApiInterface.getPassengers(acceptedRide.getId().toString());
+                        Call<ResponseBody> passengersCall = RestApiManager.restApiInterfaceDriver.getPassengers(acceptedRide.getId().toString());
                         passengersCall.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> passengersCall, Response<ResponseBody> passengersResponse) {
