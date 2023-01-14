@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -52,6 +53,7 @@ public class MapFragment extends Fragment {
     public static GoogleMap map;
     private static Polyline currentRideRoute;
     private static List<Marker> currentRideMarkers = new ArrayList<>();
+    public static ArrayList<Polyline> polylines = new ArrayList<>();
 
     public MapFragment(boolean isDriver){
         this.isDriver = isDriver;

@@ -15,6 +15,13 @@
 
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/passengers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="75dp" />
+
     <Button
         android:id="@+id/start_ride"
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
@@ -25,6 +32,52 @@
         android:backgroundTint="@color/green"
         android:fontFamily="sans-serif-light"
         android:text="@string/start_ride"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        android:textSize="22dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_car"
+        app:iconPadding="0dp"
+        app:iconSize="30dp"
+        app:iconTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652" />
+
+    <Button
+        android:id="@+id/panicButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="230dp"
+        android:layout_height="65dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/bright_red"
+        android:fontFamily="sans-serif-light"
+        android:text="PANIC"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        android:textSize="22dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652" />
+
+    <Button
+        android:id="@+id/endRideButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="230dp"
+        android:layout_height="65dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/green"
+        android:fontFamily="sans-serif-light"
+        android:text="Završi vožnju"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         android:textSize="22dp"
@@ -55,5 +108,20 @@
         android:textColor="@color/black"
         android:textSize="22dp"
         android:visibility="invisible" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timerCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0s do destinacije"
+            android:textFontWeight="@integer/material_motion_duration_long_1"
+            android:textSize="24sp" />
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

@@ -43,6 +43,13 @@ public interface RestApiInterfaceDriver {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
+    @PUT(RestApiManager.BASE_URL + RIDE_API_PATH + "{ride_id}" + "/end")
+    Call<ResponseBody> endRide(@Path("ride_id") String rideId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "/{driver_id}" + "/vehicle")
     Call<ResponseBody> getDriverVehicle(@Path("driver_id") String driverId);
 
@@ -53,6 +60,12 @@ public interface RestApiInterfaceDriver {
     @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "?page=0&size=1000")
     Call<ResponseBody> getAllDrivers();
 
+    @Headers({
+        "User-Agent: Mobile-Android",
+        "Content-Type:application/json"
+    })
+    @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "{ride_id}" + "/passengers")
+    Call<ResponseBody> getPassengers(@Path("ride_id") String rideId);
 
     @Headers({
             "User-Agent: Mobile-Android",

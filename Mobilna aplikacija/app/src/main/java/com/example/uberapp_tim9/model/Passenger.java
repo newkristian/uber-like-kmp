@@ -21,4 +21,8 @@ public class Passenger extends User {
         super(mIme, mPrezime);
     }
 
+    public Passenger(String mIme, String mPrezime, String mPhoneNumber) {
+        super(mIme, mPrezime, mPhoneNumber);
+    }
+
 }

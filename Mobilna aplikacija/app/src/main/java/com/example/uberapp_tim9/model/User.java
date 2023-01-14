@@ -40,6 +40,12 @@ public class User {
         this.mSurname = mSurname;
     }
 
+    public User(String mIme, String mPrezime, String mPhoneNumber) {
+        this.mName = mIme;
+        this.mSurname = mPrezime;
+        this.mPhoneNumber = mPhoneNumber;
+    }
+
     public int getmID() {
         return mID;
     }

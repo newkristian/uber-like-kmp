@@ -14,6 +14,9 @@ import com.example.uberapp_tim9.driver.RideRejectionActivity;
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
+import com.example.uberapp_tim9.model.Driver;
+import com.example.uberapp_tim9.model.dtos.DriverPageDTO;
+import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
@@ -52,11 +55,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             return LocalDateTime.parse(json.getAsString());
         }
     }).create();
+    public static VehicleDTO currentVehicle;
+    public static RideCreatedDTO currentRide;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(intent.getAction().equals(IntentIdentifiers.ACCEPT_OR_DENY_RIDE)) {
+        if (intent.getAction().equals(IntentIdentifiers.ACCEPT_OR_DENY_RIDE)) {
 
             String action = intent.getStringExtra("action");
             notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
@@ -71,10 +76,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
     public void acceptRide(Context context){
         Call<ResponseBody> call = RestApiManager.restApiInterfaceDriver.acceptRide(RIDE_ID);
+    public void acceptRide(Context context) {
+        Call<ResponseBody> call = RestApiManager.restApiInterface.acceptRide(RIDE_ID);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     Toast.makeText(context, "Vožnja uspešno prihvaćena!", Toast.LENGTH_SHORT).show();
                     try {
                         RideCreatedDTO ride = gson.fromJson(response.body().string(), new TypeToken<RideCreatedDTO>(){}.getType());
@@ -93,6 +100,27 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
+                        RideCreatedDTO ride = new Gson().fromJson(response.body().string(), new TypeToken<RideCreatedDTO>() {
+                        }.getType());
+                        currentRide = ride;
+                        DriverMainFragment.sendOnLocationNotification(RIDE_ID);
+                        MapInit init = new MapInit();
+                        Marker car = MapFragment.driversMarkers.get(ride.getDriver().getId());
+                        final LatLng[] departure = new LatLng[1];
+                        final LatLng[] destination = new LatLng[1];
+                        Call<ResponseBody> getVehiclePosition = RestApiManager.restApiInterface.getDriverVehicle(Integer.toString(ride.getDriver().getId()));
+                        getVehiclePosition.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.code() == 200) {
+                                    VehicleDTO vehicle = null;
+                                    try {
+                                        vehicle = new Gson().fromJson(response.body().string(), new TypeToken<VehicleDTO>() {
+                                        }.getType());
+                                        currentVehicle = vehicle;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
                                         departure[0] = new LatLng(vehicle.getCurrentLocation().getLatitude(),vehicle.getCurrentLocation().getLongitude());
                                         for(RouteDTO route : ride.getLocations()){
@@ -119,38 +147,45 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                         }, 20000);
                                     }
                                 }
-
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                                    departure[0] = new LatLng(vehicle.getCurrentLocation().getLatitude(), vehicle.getCurrentLocation().getLongitude());
+                                    for (RouteDTO route : ride.getLocations()) {
+                                        destination[0] = new LatLng(route.getDeparture().getLatitude(), route.getDeparture().getLongitude());
+                                        break;
+                                    }
+                                    //DriverMainFragment.updateUI(false);
+                                    init.simulateRoute(departure[0], destination[0], car, false, true, vehicle.getId());
                                 }
-                            });
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                            }
+                        });
 
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                }
-                else if (response.code() == 400){
+                } else if (response.code() == 400) {
                     Toast.makeText(context, "Ne možete prihvatiti vožnju koja nema status 'Kreirana'!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(context, "Vožnja ne postoji!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
             }
         });
         notificationManager.cancel(notificationId);
         NotificationService.NOTIFICATION_ID += 1;
     }
 
-    public void denyRide(Context context){
+    public void denyRide(Context context) {
         Intent getDenyReason = new Intent(context, RideRejectionActivity.class);
-        getDenyReason.putExtra("ride_id",RIDE_ID);
+        getDenyReason.putExtra("ride_id", RIDE_ID);
         getDenyReason.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(getDenyReason);
     }
