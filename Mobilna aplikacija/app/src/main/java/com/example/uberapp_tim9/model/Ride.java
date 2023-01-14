@@ -23,6 +23,9 @@ public class Ride {
     private Driver mDriver;
     private Rejection mRejection;
 
+    public Ride(){
+    }
+
     public Ride(int mID, LocalDateTime mStartTime, LocalDateTime mEndTime, List<Passenger> mPassengers) {
         this.mID = mID;
         this.mStartTime = mStartTime;

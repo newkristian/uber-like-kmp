@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/passenger_nav_inbox"
-        android:name="com.example.uberapp_tim9.passenger.fragments.PassengerInboxFragment"
+        android:name="com.example.uberapp_tim9.passenger.inbox.PassengerInboxFragment"
         android:label="@string/menu_inbox"
         tools:layout="@layout/fragment_passenger_inbox" />
 
