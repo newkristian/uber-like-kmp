@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_inbox"
-        android:name="com.example.uberapp_tim9.driver.fragments.DriverInboxFragment"
+        android:name="com.example.uberapp_tim9.driver.inbox.DriverInboxFragment"
         android:label="@string/menu_inbox"
         tools:layout="@layout/fragment_driver_inbox" />
 
