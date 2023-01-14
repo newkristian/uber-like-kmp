@@ -60,8 +60,8 @@ public class DriverRideHistoryMockupData {
 
     public static List<Passenger> getPassengers() {
         ArrayList<Passenger> passengers = new ArrayList<Passenger>();
-        Passenger p1 = new Passenger("Marko", "Marković");
-        Passenger p2 = new Passenger("Mika", "Mikić");
+        Passenger p1 = new Passenger("Marko", "Marković", "0631234567");
+        Passenger p2 = new Passenger("Mika", "Mikić", "0631234568");
         passengers.add(p1);
         passengers.add(p2);
         return passengers;

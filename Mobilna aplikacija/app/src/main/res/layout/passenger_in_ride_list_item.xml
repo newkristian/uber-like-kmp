@@ -10,7 +10,7 @@
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/dark"
+        android:backgroundTint="@color/transparent_dark"
         app:cardCornerRadius="20dp"
         app:contentPadding="5dp"
         app:contentPaddingLeft="10dp"
@@ -26,6 +26,16 @@
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/callImageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:srcCompat="@android:drawable/stat_sys_phone_call" />
+
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/messageImageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -33,9 +43,7 @@
                 android:padding="2dp"
                 android:scaleType="fitCenter"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:srcCompat="@drawable/ic_profile"
-                app:strokeColor="@color/bright_orange"
-                app:strokeWidth="3dp" />
+                app:srcCompat="@drawable/ic_message" />
 
             <TextView
                 android:id="@+id/name_surname"

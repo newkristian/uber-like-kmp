@@ -15,6 +15,13 @@
 
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/passengers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="75dp" />
+
     <Button
         android:id="@+id/start_ride"
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"

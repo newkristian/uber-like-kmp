@@ -60,6 +60,12 @@ public interface RestApiInterface {
     @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "?page=0&size=1000")
     Call<ResponseBody> getAllDrivers();
 
+    @Headers({
+        "User-Agent: Mobile-Android",
+        "Content-Type:application/json"
+    })
+    @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "{ride_id}" + "/passengers")
+    Call<ResponseBody> getPassengers(@Path("ride_id") String rideId);
 
     @Headers({
             "User-Agent: Mobile-Android",

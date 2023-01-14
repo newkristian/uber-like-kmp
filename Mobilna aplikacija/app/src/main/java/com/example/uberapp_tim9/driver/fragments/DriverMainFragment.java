@@ -16,14 +16,21 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.driver.rest.RestApiManager;
+import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
+import com.example.uberapp_tim9.driver.ride_history.adapters.DriverInRidePassengersAdapter;
+import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidePassengersAdapter;
+import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidesAdapter;
 import com.example.uberapp_tim9.driver.sockets.SocketsConfiguration;
 import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
@@ -34,6 +41,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
@@ -93,6 +104,12 @@ public class DriverMainFragment extends Fragment {
         endRideButton = v.findViewById(R.id.endRideButton);
         context = getActivity();
 
+        DriverInRidePassengersAdapter adapter = new DriverInRidePassengersAdapter();
+        RecyclerView list = v.findViewById(R.id.passengers_list);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        list.setLayoutManager(llm);
+        list.setAdapter(adapter);
+
         panicButton.setOnClickListener(view -> {
             Toast.makeText(context, "Support služba je obaveštena.", Toast.LENGTH_SHORT).show();
             hidePanicButton();
@@ -115,6 +132,8 @@ public class DriverMainFragment extends Fragment {
                         NotificationActionReceiver.currentVehicle = null;
                         updateUI(true);
                         driverMarker.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
+                        DriverInRidePassengersData.passengers = new ArrayList<>();
+                        adapter.notifyDataSetChanged();
                         for (Polyline polyline : MapFragment.polylines) {
                             polyline.remove();
                         }
@@ -160,6 +179,27 @@ public class DriverMainFragment extends Fragment {
                         init.simulateRoute(departure[0], destination[0], driverMarker, false, false, currentVehicle.getId());
                         displayTimer();
                         displayPanicButton();
+
+                        Call<ResponseBody> passengersCall = RestApiManager.restApiInterface.getPassengers(acceptedRide.getId().toString());
+                        passengersCall.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> passengersCall, Response<ResponseBody> passengersResponse) {
+                                if (passengersResponse.code() == 200) {
+                                    try {
+                                        List<PassengerWithoutIdPasswordDTO> passengers = new Gson().fromJson(passengersResponse.body().string(), new TypeToken<List<PassengerWithoutIdPasswordDTO>>(){}.getType());
+                                        DriverInRidePassengersData.passengers = passengers;
+                                        adapter.notifyDataSetChanged();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> passengersCall, Throwable passengersT) {
+                                Log.d("REZ", passengersT.getMessage() != null?passengersT.getMessage():"error");
+                            }
+                        });
                     }
                     else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete prihvatiti vožnju koja nema status 'Prihvaćena'!", Toast.LENGTH_SHORT).show();
