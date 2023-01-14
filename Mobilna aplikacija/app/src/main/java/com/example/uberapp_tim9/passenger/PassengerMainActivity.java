@@ -16,6 +16,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
+import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -106,6 +107,15 @@ public class PassengerMainActivity extends AppCompatActivity {
                             NotificationService.createCouldNotFindDriverNotification(CHANNEL_ID,this,formattedScheduleTime);
                             break;
                         }
+                    }
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        Disposable locationPing = socketsConfiguration.stompClient.topic("/location-tracker/notification").subscribe(message ->
+                {
+                    TimeUntilOnDepartureDTO dto  = gson.fromJson(message.getPayload(), new TypeToken<TimeUntilOnDepartureDTO>(){}.getType());
+                    if(dto.getPassengersIds().contains(passengerId)) {
+                        NotificationService.createLocationPingNotification(CHANNEL_ID, this, dto.getTimeFormatted());
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));

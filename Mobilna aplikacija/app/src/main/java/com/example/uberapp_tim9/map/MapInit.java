@@ -10,6 +10,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
+import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,17 +45,21 @@ public class MapInit {
         private boolean showStart;
         private int vehicleId;
         private long animationDelayMs;
+        private boolean pingServerLocation;
+        private List<Integer> whoToPing;
 
         public SimulateRoute(Marker marker,
                              boolean hideMarker,
                              boolean showStart,
                              int vehicleId,
-                             long animationDelayMs) {
+                             long animationDelayMs, boolean pingServerLocation, List<Integer> whoToPing) {
             this.marker = marker;
             this.hideMarker = hideMarker;
             this.showStart = showStart;
             this.vehicleId = vehicleId;
             this.animationDelayMs = animationDelayMs;
+            this.pingServerLocation = pingServerLocation;
+            this.whoToPing = whoToPing;
         }
 
         @Override
@@ -75,7 +80,7 @@ public class MapInit {
             List<LatLng> waypoints = null;
             try {
                 waypoints = decodePoly(result);
-                animateMarker(marker,waypoints,hideMarker,showStart,vehicleId,animationDelayMs);
+                animateMarker(marker,waypoints,hideMarker,showStart,vehicleId,animationDelayMs,pingServerLocation,whoToPing);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -155,7 +160,9 @@ public class MapInit {
                                final boolean hideMarker,
                                final boolean showStart,
                                final int vehicleId,
-                               final long animationDelayMs) {
+                               final long animationDelayMs,
+                               final boolean pingServerLocation,
+                               final List<Integer> whoToPing) {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -171,6 +178,14 @@ public class MapInit {
                     marker.setPosition(directionPoint.get(i));
                     marker.setAnchor(0.5f, 0.5f);
                     MapFragment.map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
+                    if(pingServerLocation) {
+                        long milliseconds = (directionPoint.size() - i) * animationDelayMs;
+                        long minutes = (milliseconds / 1000) / 60;
+                        long seconds = (milliseconds / 1000) % 60;
+                        String time = String.format("%02d:%02d", (int)minutes, (int)seconds);
+                        TimeUntilOnDepartureDTO dto = new TimeUntilOnDepartureDTO(whoToPing,time);
+                        DriverMainFragment.sendLocationUpdatesNotification(dto);
+                    }
                     i++;
                 }
                 else {
@@ -241,9 +256,11 @@ public class MapInit {
                               boolean hideMarker,
                               boolean showStart,
                               int vehicleId,
-                              long animationDelayMs) {
+                              long animationDelayMs,
+                              boolean pingServerLocation,
+                              List<Integer> whoToPing) {
         String url = getDirectionsUrl(departure,destination);
-        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId,animationDelayMs);
+        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId,animationDelayMs, pingServerLocation, whoToPing);
         simulation.execute(url);
     }
 

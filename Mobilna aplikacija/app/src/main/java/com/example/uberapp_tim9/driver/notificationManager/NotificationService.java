@@ -105,4 +105,17 @@ public class NotificationService {
                 .setAutoCancel(true);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+
+    public static void createLocationPingNotification(String channel_id, Context context, String time){
+        String message = "Vozač će biti na odabranoj lokaciji u " + time + ".";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle("Obaveštenje")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setChannelId(channel_id)
+                .setAutoCancel(true);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }

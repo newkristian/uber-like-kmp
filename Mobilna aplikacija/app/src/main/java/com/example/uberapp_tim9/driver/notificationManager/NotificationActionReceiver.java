@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.uberapp_tim9.driver.RideRejectionActivity;
 import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
@@ -21,9 +22,18 @@ import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,6 +45,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private int notificationId;
     NotificationManager notificationManager;
     public static String RIDE_ID = "";
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+        @Override
+        public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return LocalDateTime.parse(json.getAsString());
+        }
+    }).create();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -60,7 +77,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 if (response.code() == 200){
                     Toast.makeText(context, "Vožnja uspešno prihvaćena!", Toast.LENGTH_SHORT).show();
                     try {
-                        RideCreatedDTO ride = new Gson().fromJson(response.body().string(), new TypeToken<RideCreatedDTO>(){}.getType());
+                        RideCreatedDTO ride = gson.fromJson(response.body().string(), new TypeToken<RideCreatedDTO>(){}.getType());
                             MapInit init = new MapInit();
                             Marker car = MapFragment.driversMarkers.get(ride.getDriver().getId());
                             final LatLng[] departure = new LatLng[1];
@@ -83,7 +100,19 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                             break;
                                         }
                                         //DriverMainFragment.updateUI(false);
-                                        init.simulateRoute(departure[0], destination[0],car,false,true,vehicle.getId(),200);
+                                        List<Integer> passengersToPing = new ArrayList<>();
+                                        for(PassengerIdEmailDTO passenger : DriverMainFragment.acceptedRide.getPassengers()) {
+                                            passengersToPing.add(passenger.getId());
+                                        }
+
+                                        init.simulateRoute(departure[0],
+                                                destination[0],
+                                                car,
+                                                false,
+                                                true,
+                                                vehicle.getId(),
+                                                200,
+                                                true, passengersToPing);
 
                                         new Handler().postDelayed(() -> {
                                             DriverMainFragment.cancelAfter5Minutes(RIDE_ID);

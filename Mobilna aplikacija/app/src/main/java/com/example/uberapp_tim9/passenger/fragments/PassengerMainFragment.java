@@ -130,7 +130,8 @@ public class PassengerMainFragment extends Fragment{
                                                  false,
                                                   false,
                                                   -1,
-                                            600);
+                                            600,
+                                            false,null);
                                 }
                                 catch (IOException e) {
                                     e.printStackTrace();

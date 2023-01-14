@@ -20,6 +20,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
+import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.example.uberapp_tim9.map.MapInit;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
@@ -29,7 +30,15 @@ import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
@@ -46,6 +55,13 @@ public class DriverMainFragment extends Fragment {
     public static RideCreatedDTO acceptedRide;
     public static boolean rideHasStarted = false;
     private static Context context;
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+        @Override
+        public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return LocalDateTime.parse(json.getAsString());
+        }
+    }).create();
 
     public DriverMainFragment() {}
 
@@ -56,7 +72,7 @@ public class DriverMainFragment extends Fragment {
         //Subscribe to events from websocket (ride is ordered)
         Disposable subscription = socketsConfiguration.stompClient.topic("/ride-ordered/get-ride").subscribe(message ->
         {
-            RideCreatedDTO retrieved = new Gson().fromJson(message.getPayload(), new TypeToken<RideCreatedDTO>(){}.getType());
+            RideCreatedDTO retrieved = gson.fromJson(message.getPayload(), new TypeToken<RideCreatedDTO>(){}.getType());
             NotificationActionReceiver.RIDE_ID = Integer.toString(retrieved.getId());
             acceptedRide = retrieved;
             NotificationService.createRideAcceptanceNotification(getActivity(),retrieved.getRideSummary(), DriverMainActivity.CHANNEL_ID);
@@ -109,6 +125,10 @@ public class DriverMainFragment extends Fragment {
 
     public static void sendOnLocationNotification(String rideId) {
         socketsConfiguration.stompClient.send("/topic/on-location",rideId).subscribe();
+    }
+
+    public static void sendLocationUpdatesNotification(TimeUntilOnDepartureDTO dto) {
+        socketsConfiguration.stompClient.send("/topic/location-tracker",new Gson().toJson(dto)).subscribe();
     }
 
     public static void updateUI(boolean hide) {
