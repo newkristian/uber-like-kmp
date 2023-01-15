@@ -73,4 +73,18 @@
     <string name="error_report">Prijavi grešku</string>
     <string name="reason_plain">Razlog</string>
     <string name="close">Zatvori</string>
+    <string name="start_location_placeholder">Početna lokacija</string>
+    <string name="end_location_placeholder">Krajnja lokacija</string>
+    <string name="tip_vozila1">Standard</string>
+    <string name="tip_vozila2">Luxury</string>
+    <string name="tip_vozila3">Van</string>
+    <string name="tip_vozila">Tip Vozila</string>
+    <string name="start_time">Početak vožnje</string>
+    <string name="poruci">Poruči</string>
+    <string name="prefferences">Izbor</string>
+    <string name="preferences">Izbor</string>
+    <string name="baby_transport">Prevoze se bebe</string>
+    <string name="pet_transport">Prevoze se ljubimci</string>
+    <string name="add_passenger">Dodaj putnika</string>
+    <string name="now_checkbox">Najskoriji Moguć</string>
 </resources>
