@@ -3,6 +3,7 @@ package com.example.uberapp_tim9.passenger;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.util.JsonWriter;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +26,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,13 +46,21 @@ public class PassengerMainActivity extends AppCompatActivity {
     public static final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
     public static final int passengerId = 1;
     public static final String CHANNEL_ID = "PN";
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+    static class LocalDateAdapter implements JsonSerializer<LocalDateTime> {
+
+        public JsonElement serialize(LocalDateTime date, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(date.toString());
+        }
+    }
+    public static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
         @Override
         public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             return LocalDateTime.parse(json.getAsString());
         }
-    }).create();
+    })
+            .registerTypeAdapter(LocalDateTime.class,new LocalDateAdapter())
+            .create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

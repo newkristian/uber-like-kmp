@@ -21,7 +21,7 @@ public class PassengerRidePassengersAdapter extends RecyclerView.Adapter<Passeng
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.name_surname);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.message_bubble);
         }
 
         public TextView getmNameSurnameTextView() {
@@ -40,7 +40,7 @@ public class PassengerRidePassengersAdapter extends RecyclerView.Adapter<Passeng
     @Override
     public void onBindViewHolder(@NonNull PassengerRidePassengersAdapter.ViewHolder holder, int position) {
         List<Passenger> passengers = PassengerRideHistoryMockupData.getPassengers();
-        holder.getmNameSurnameTextView().setText(passengers.get(position).getmName() + " " + passengers.get(position).getmSurname());
+        holder.getmNameSurnameTextView().setText(passengers.get(position).getName() + " " + passengers.get(position).getSurname());
     }
 
 

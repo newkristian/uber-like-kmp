@@ -29,7 +29,7 @@ public class RideRejectionActivity extends AppCompatActivity {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Button sendRejectionReason = findViewById(R.id.close_panic_overlay_button);
         sendRejectionReason.setOnClickListener(view ->{
-                        TextInputEditText reason = findViewById(R.id.panic_reason);
+                        TextInputEditText reason = findViewById(R.id.message);
                         String reasonText = reason.getText().toString().trim();
                         if(reasonText.length() == 0) {
                             reason.setError(getString(R.string.zeroLengthError));

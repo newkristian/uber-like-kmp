@@ -1,108 +1,163 @@
 package com.example.uberapp_tim9.model;
 
-public class User {
-    private int mID;
-    private String mName;
-    private String mSurname;
-    private String mProfilePicture;
-    private String mPhoneNumber;
-    private String mEmail;
-    private String mAddress;
-    private String mPassword;
-    private boolean mIsBlocked;
 
-    public User(int mID,
-                String mName,
-                String mSurname,
-                String mProfilePicture,
-                String mPhoneNumber,
-                String mEmail,
-                String mAddress,
-                String mPassword,
-                boolean mIsBlocked) {
-        this.mID = mID;
-        this.mName = mName;
-        this.mSurname = mSurname;
-        this.mProfilePicture = mProfilePicture;
-        this.mPhoneNumber = mPhoneNumber;
-        this.mEmail = mEmail;
-        this.mAddress = mAddress;
-        this.mPassword = mPassword;
-        this.mIsBlocked = mIsBlocked;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+
+public class User {
+
+    private Integer id;
+
+
+    private String name;
+
+    private String surname;
+
+    private String profilePicture;
+
+    private String telephoneNumber;
+
+    private String email;
+
+    private String address;
+
+    private String password;
+
+    private Boolean isActivated;
+
+    private Boolean isBlocked;
+
+    private String resetPasswordToken;
+
+
+    private LocalDateTime resetPasswordTokenExpiration;
+
+    public User(Integer id) {
+        this.id = id;
+    }
+
+    public User(Integer id, String name, String surname, String profilePicture, String telephoneNumber, String email, String address, String password, Boolean isActivated, Boolean isBlocked, String resetPasswordToken, LocalDateTime resetPasswordTokenExpiration) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.profilePicture = profilePicture;
+        this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.isActivated = isActivated;
+        this.isBlocked = isBlocked;
+        this.resetPasswordToken = resetPasswordToken;
+        this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
+    }
+
+    public User(int mID, String mName, String mSurname, String mProfilePicture, String mPhoneNumber, String mEmail, String mAddress, String mPassword, boolean mIsBlocked) {
     }
 
     public User() {
 
     }
 
-    public User(String mName, String mSurname) {
-        this.mName = mName;
-        this.mSurname = mSurname;
+    public User(String mIme, String mPrezime) {
     }
 
     public User(String mIme, String mPrezime, String mPhoneNumber) {
-        this.mName = mIme;
-        this.mSurname = mPrezime;
-        this.mPhoneNumber = mPhoneNumber;
     }
 
-    public int getmID() {
-        return mID;
+    public Integer getId() {
+        return id;
     }
 
-    public String getmName() {
-        return mName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getmSurname() {
-        return mSurname;
+    public String getName() {
+        return name;
     }
 
-    public String getmProfilePicture() {
-        return mProfilePicture;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getmPhoneNumber() {
-        return mPhoneNumber;
+    public String getSurname() {
+        return surname;
     }
 
-    public String getmEmail() {
-        return mEmail;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getmAddress() {
-        return mAddress;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public String getmPassword() {
-        return mPassword;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
-    public boolean ismIsBlocked() {
-        return mIsBlocked;
+    public String getTelephoneNumber() {
+        return telephoneNumber;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
-    public void setmSurname(String mSurname) {
-        this.mSurname = mSurname;
+    public String getEmail() {
+        return email;
     }
 
-    public void setmProfilePicture(String mProfilePicture) {
-        this.mProfilePicture = mProfilePicture;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setmPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
+    public String getAddress() {
+        return address;
     }
 
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setmAddress(String mAddress) {
-        this.mAddress = mAddress;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(Boolean activated) {
+        isActivated = activated;
+    }
+
+    public Boolean getBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public LocalDateTime getResetPasswordTokenExpiration() {
+        return resetPasswordTokenExpiration;
+    }
+
+    public void setResetPasswordTokenExpiration(LocalDateTime resetPasswordTokenExpiration) {
+        this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
     }
 }

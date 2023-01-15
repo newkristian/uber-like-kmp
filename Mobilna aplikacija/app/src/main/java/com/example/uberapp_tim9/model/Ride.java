@@ -58,6 +58,10 @@ public class Ride {
         this.mPaths = mPaths;
     }
 
+    public Ride(int mID) {
+        this.mID = mID;
+    }
+
 
     public double getmTotalPrice() {
         return mTotalPrice;

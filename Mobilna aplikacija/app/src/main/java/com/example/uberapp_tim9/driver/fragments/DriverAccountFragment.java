@@ -45,12 +45,12 @@ public class DriverAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Passenger passenger = new Passenger(0, "Ivana", "Ivanovicka", "", "0693339999", "emaill@mail.com", "Resavska 23", "123456789", false);
-        ((EditText)view.findViewById(R.id.name_edit_text)).setText(String.format("%s %s", passenger.getmName(), passenger.getmSurname()));
-        ((EditText)view.findViewById(R.id.phone_number_edit_text)).setText(passenger.getmPhoneNumber());
-        ((EditText)view.findViewById(R.id.email_edit_text)).setText(passenger.getmEmail());
-        ((EditText)view.findViewById(R.id.address_edit_text)).setText(passenger.getmAddress());
+        ((EditText)view.findViewById(R.id.name_edit_text)).setText(String.format("%s %s", passenger.getName(), passenger.getSurname()));
+        ((EditText)view.findViewById(R.id.phone_number_edit_text)).setText(passenger.getTelephoneNumber());
+        ((EditText)view.findViewById(R.id.email_edit_text)).setText(passenger.getEmail());
+        ((EditText)view.findViewById(R.id.address_edit_text)).setText(passenger.getAddress());
         ((ImageView)view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_simic);
-        ((CheckBox)view.findViewById(R.id.blocked_checkbox)).setChecked(passenger.ismIsBlocked());
+        ((CheckBox)view.findViewById(R.id.blocked_checkbox)).setChecked(passenger.getBlocked());
     }
 
     @NonNull

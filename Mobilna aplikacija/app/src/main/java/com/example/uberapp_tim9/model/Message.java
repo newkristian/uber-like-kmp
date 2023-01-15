@@ -3,55 +3,90 @@ package com.example.uberapp_tim9.model;
 import java.time.LocalDateTime;
 
 public class Message {
-    private int mID;
-    private String mMessage;
-    private LocalDateTime mTimeSent;
-    private User mSender;
-    private User mReciever;
-    private MessageType mMessageType;
-    private Ride mRide;
+    
+    private Integer id;
 
-    public Message(int mID,
-                   String mMessage,
-                   LocalDateTime mTimeSent,
-                   User mSender,
-                   User mReciever,
-                   MessageType mMessageType,
-                   Ride mRide) {
-        this.mID = mID;
-        this.mMessage = mMessage;
-        this.mTimeSent = mTimeSent;
-        this.mSender = mSender;
-        this.mReciever = mReciever;
-        this.mMessageType = mMessageType;
-        this.mRide = mRide;
+    private User sender;
+    
+    private User receiver;
+
+    private String message;
+
+    private LocalDateTime sentDateTime;
+
+    private MessageType messageType;
+    
+    private Ride ride;
+
+    public Message(Integer id,
+                   String message,
+                   LocalDateTime sentDateTime,
+                   User sender,
+                   User receiver,
+                   MessageType messageType,
+                   Ride ride) {
+        this.id = id;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.sentDateTime = sentDateTime;
+        this.messageType = messageType;
+        this.ride = ride;
     }
 
-    public int getmID() {
-        return mID;
+    public Integer getId() {
+        return id;
     }
 
-    public String getmMessage() {
-        return mMessage;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public LocalDateTime getmTimeSent() {
-        return mTimeSent;
+    public User getSender() {
+        return sender;
     }
 
-    public User getmSender() {
-        return mSender;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
-    public User getmReciever() {
-        return mReciever;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public MessageType getmMessageType() {
-        return mMessageType;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
-    public Ride getmRide() {
-        return mRide;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getSentDateTime() {
+        return sentDateTime;
+    }
+
+    public void setSentDateTime(LocalDateTime sentDateTime) {
+        this.sentDateTime = sentDateTime;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
+    public Ride getRide() {
+        return ride;
+    }
+
+    public void setRide(Ride ride) {
+        this.ride = ride;
     }
 }

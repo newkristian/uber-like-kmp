@@ -73,4 +73,5 @@
     <string name="error_report">Prijavi grešku</string>
     <string name="reason_plain">Razlog</string>
     <string name="close">Zatvori</string>
+    <string name="message">Poruka</string>
 </resources>

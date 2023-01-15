@@ -68,7 +68,9 @@
             android:name=".passenger.PassengerMainActivity"
             android:exported="false"
             android:label="@string/title_activity_passenger_main"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

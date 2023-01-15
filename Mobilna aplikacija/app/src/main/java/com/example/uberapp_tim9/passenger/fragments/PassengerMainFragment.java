@@ -19,18 +19,23 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
-import com.example.uberapp_tim9.driver.DriverMainActivity;
-import com.example.uberapp_tim9.driver.notificationManager.NotificationActionReceiver;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.Message;
+import com.example.uberapp_tim9.model.MessageType;
+import com.example.uberapp_tim9.model.Ride;
+import com.example.uberapp_tim9.model.User;
 import com.example.uberapp_tim9.model.dtos.DriverDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
+import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -69,6 +74,11 @@ public class PassengerMainFragment extends Fragment{
     private static FrameLayout panicOverlay;
     private static Button closeOverlay;
     private static Button panicSend;
+    private static Button closeMessageOverlay;
+    private static FrameLayout messageOverlay;
+    private static Button messageSend;
+    private static TextInputEditText msg;
+    private static int msg_id = 4;
     private static Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
@@ -180,11 +190,18 @@ public class PassengerMainFragment extends Fragment{
         fm.executePendingTransactions();
         panic = v.findViewById(R.id.panic_button);
         panic.setOnClickListener(view -> {updatePanicOverlay(false);});
-        panicSend = v.findViewById(R.id.panic_send_button);
+        panicSend = v.findViewById(R.id.panic_message_send_button);
         closeOverlay = v.findViewById(R.id.close_panic_overlay_button);
+        closeMessageOverlay = v.findViewById(R.id.close_message_overlay_button);
+        messageOverlay = v.findViewById(R.id.message_overlay);
+        msg = v.findViewById(R.id.message);
+        closeMessageOverlay.setOnClickListener(view -> {
+            updateMessagesOverlay(true);
+        });
+
         closeOverlay.setOnClickListener(view -> {updatePanicOverlay(true);});
         panicSend.setOnClickListener(view ->{
-            TextInputEditText reason = v.findViewById(R.id.panic_reason);
+            TextInputEditText reason = v.findViewById(R.id.message);
             String reasonText = reason.getText().toString().trim();
             if(reasonText.length() == 0) {
                 reason.setError(getString(R.string.zeroLengthError));
@@ -225,6 +242,39 @@ public class PassengerMainFragment extends Fragment{
         messageDriver = v.findViewById(R.id.message_button);
         timerLabel = v.findViewById(R.id.timer_label);
         panicOverlay = v.findViewById(R.id.panic_overlay);
+
+        MessagesListAdapter messagesListAdapter = new MessagesListAdapter();
+        RecyclerView messagesList = v.findViewById(R.id.messages_list);
+        LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
+        messagesList.setLayoutManager(messagesLlm);
+        messagesList.setAdapter(messagesListAdapter);
+        messageSend = v.findViewById(R.id.message_send_button);
+        Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
+                {
+                    Log.e(TAG,"received");
+                    Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());
+                    if(message_received.getSender().getId() == PassengerMainActivity.passengerId || message_received.getReceiver().getId() == PassengerMainActivity.passengerId) {
+                        messagesListAdapter.getmMessageList().add(message_received);
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText("Hello!"); }
+                        });
+                        messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
+                    }
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        messageSend.setOnClickListener(view -> {
+            Message message_new = new Message(msg_id,
+                    msg.getText().toString(),
+                    LocalDateTime.now(),
+                    new User(PassengerMainActivity.passengerId),
+                    new User(4),
+                    MessageType.VOZNJA,
+                    new Ride(1));
+            PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
+        });
         return v;
     }
 
@@ -249,9 +299,10 @@ public class PassengerMainFragment extends Fragment{
         });
         messageDriver.setVisibility(View.VISIBLE);
         messageDriver.setOnClickListener(view -> {
-            Intent messageIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + currentRideDriver.getTelephoneNumber()));
+            /*Intent messageIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + currentRideDriver.getTelephoneNumber()));
             messageIntent.putExtra("sms_body", "");
-            startActivity(messageIntent);
+            startActivity(messageIntent);*/
+            updateMessagesOverlay(false);
         });
         rideInfoLabel.setVisibility(View.VISIBLE);
         rideInfoLabel.setText("Procenjeno vreme (min): " +
@@ -272,6 +323,16 @@ public class PassengerMainFragment extends Fragment{
             return;
         }
         panicOverlay.setVisibility(View.VISIBLE);
+        updateAllButtons(true);
+    }
+
+    public static void updateMessagesOverlay(boolean hide) {
+        if(hide){
+            messageOverlay.setVisibility(View.INVISIBLE);
+            updateAllButtons(false);
+            return;
+        }
+        messageOverlay.setVisibility(View.VISIBLE);
         updateAllButtons(true);
     }
 

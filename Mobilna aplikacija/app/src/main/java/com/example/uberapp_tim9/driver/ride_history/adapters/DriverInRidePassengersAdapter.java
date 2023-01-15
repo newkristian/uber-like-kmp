@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
-import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class DriverInRidePassengersAdapter extends RecyclerView.Adapter<DriverIn
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.name_surname);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.message_bubble);
             mCallImageView = (ImageView) itemView.findViewById(R.id.callImageView);
             mMessageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
         }

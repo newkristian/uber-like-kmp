@@ -187,7 +187,7 @@
                 app:layout_constraintVertical_bias="0.083" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/panic_reason_input"
+                android:id="@+id/panic_message_input"
                 android:layout_width="355dp"
                 android:layout_height="320dp"
                 android:gravity="top|left"
@@ -210,7 +210,7 @@
                 app:passwordToggleContentDescription="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/panic_reason"
+                    android:id="@+id/panic_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoSizeTextType="uniform"
@@ -249,10 +249,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.07"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/panic_reason_input" />
+                app:layout_constraintTop_toBottomOf="@+id/panic_message_input" />
 
             <Button
-                android:id="@+id/panic_send_button"
+                android:id="@+id/panic_message_send_button"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="170dp"
                 android:layout_height="65dp"
@@ -271,9 +271,116 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.93"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/panic_reason_input" />
+                app:layout_constraintTop_toBottomOf="@+id/panic_message_input" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/message_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay_black"
+        android:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="377dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_corners_card_white"
+            android:fitsSystemWindows="true"
+            android:paddingLeft="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/messages_list"
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/message_input"
+                android:layout_width="270dp"
+                android:layout_height="60dp"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeColor="@color/sky_blue"
+                app:helperTextTextColor="@color/black"
+                app:hintTextColor="@color/sky_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/messages_list">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="true"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="@string/message"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/black"
+                    android:textColorLink="@color/black"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/message_send_button"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/sky_blue"
+                android:fontFamily="sans-serif-light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:icon="@drawable/ic_send"
+                app:iconPadding="0dp"
+                app:iconSize="30dp"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/message_input"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/close_message_overlay_button"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="140dp"
+            android:layout_height="65dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/sky_blue"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/close"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/white"
+            android:textSize="22dp"
+            app:icon="@drawable/ic_close"
+            app:iconPadding="0dp"
+            app:iconSize="30dp"
+            app:iconTint="@android:color/white" />
+
     </FrameLayout>
 
 </FrameLayout>
