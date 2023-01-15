@@ -86,6 +86,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 {
                     List<Integer> passengersId  = new Gson().fromJson(message.getPayload(), new TypeToken<List<Integer>>(){}.getType());
                     if(passengersId.contains(passengerId)) {
+
                         NotificationService.createOnLocationNotification(CHANNEL_ID,this);
                     }
                 },

@@ -215,8 +215,8 @@ public class DriverMainFragment extends Fragment {
                                 currentVehicle.getId(),
                                 true,
                                 1000,
-                                true,
-                                passengersToPing);
+                                false,
+                                null);
                         displayTimer();
                         displayPanicButton();
 

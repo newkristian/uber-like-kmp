@@ -159,7 +159,7 @@ public class PassengerMainFragment extends Fragment{
                                     DriverDTO rideDriver = new Gson().fromJson(response.body().string(), new TypeToken<DriverDTO>(){}.getType());
                                     currentRideDriver = rideDriver;
                                     updateUI(false);
-                                    stepp1.setVisibility(View.INVISIBLE);
+                                    toggleReservationFormVisibility(true);
                                     LatLng departure = null,destination = null;
                                     for(RouteDTO route : currentRide.getLocations()) {
                                         departure = new LatLng(route.getDeparture().getLatitude(),route.getDeparture().getLongitude());
@@ -200,7 +200,7 @@ public class PassengerMainFragment extends Fragment{
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                stepp1.setVisibility(View.VISIBLE);
+                                toggleReservationFormVisibility(false);
                                 MapFragment.clearCurrentRoute();
                                 Marker currentRideVehicle = MapFragment.driversMarkers.get(currentRide.getDriver().getId());
                                 currentRideVehicle.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
@@ -239,7 +239,7 @@ public class PassengerMainFragment extends Fragment{
 
         closeOverlay.setOnClickListener(view -> {updatePanicOverlay(true);});
         panicSend.setOnClickListener(view ->{
-            TextInputEditText reason = v.findViewById(R.id.message);
+            TextInputEditText reason = v.findViewById(R.id.panic_message);
             String reasonText = reason.getText().toString().trim();
             if(reasonText.length() == 0) {
                 reason.setError(getString(R.string.zeroLengthError));
@@ -502,6 +502,22 @@ public class PassengerMainFragment extends Fragment{
         TransitionManager.beginDelayedTransition(passenger_main_container, transition);
         old.setVisibility(View.INVISIBLE);
         newl.setVisibility(View.VISIBLE);
+    }
+
+    public static void toggleReservationFormVisibility(boolean hide) {
+        if(hide) {
+            stepp1.setVisibility(View.INVISIBLE);
+            stepp2.setVisibility(View.INVISIBLE);
+            stepp3.setVisibility(View.INVISIBLE);
+            stepp4.setVisibility(View.INVISIBLE);
+            stepp_add.setVisibility(View.INVISIBLE);
+            return;
+        }
+        stepp1.setVisibility(View.VISIBLE);
+        stepp2.setVisibility(View.VISIBLE);
+        stepp3.setVisibility(View.VISIBLE);
+        stepp4.setVisibility(View.VISIBLE);
+        stepp_add.setVisibility(View.VISIBLE);
     }
 
 }
