@@ -105,11 +105,11 @@ public class PassengerAccountFragment extends Fragment {
         confirmButton.setOnClickListener(view1 -> {
             changeFormEnabled(view, false);
             resetButtons(changeButton, confirmButton, cancelButton);
-            passenger.setmName(String.valueOf(((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).getText()));
-            passenger.setmSurname(String.valueOf(((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).getText()));
-            passenger.setmPhoneNumber(String.valueOf(((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).getText()));
-            passenger.setmAddress(String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText()));
-            passenger.setmEmail(String.valueOf(((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).getText()));
+            passenger.setName(String.valueOf(((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).getText()));
+            passenger.setSurname(String.valueOf(((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).getText()));
+            passenger.setTelephoneNumber(String.valueOf(((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).getText()));
+            passenger.setAddress(String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText()));
+            passenger.setEmail(String.valueOf(((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).getText()));
         });
 
         favoriteRidesButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerFavoriteRidesActivity.class)));
@@ -138,11 +138,11 @@ public class PassengerAccountFragment extends Fragment {
     }
 
     private void loadCurrentValues(@NonNull View view) {
-        ((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).setText(passenger.getmName());
-        ((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).setText(passenger.getmSurname());
-        ((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).setText(passenger.getmPhoneNumber());
-        ((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).setText(passenger.getmEmail());
-        ((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).setText(passenger.getmAddress());
+        ((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).setText(passenger.getName());
+        ((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).setText(passenger.getSurname());
+        ((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).setText(passenger.getTelephoneNumber());
+        ((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).setText(passenger.getEmail());
+        ((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).setText(passenger.getAddress());
         ((ShapeableImageView) view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_branislav);
     }
 

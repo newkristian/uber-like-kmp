@@ -4,11 +4,14 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,10 @@ import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
 import com.example.uberapp_tim9.driver.ride_history.adapters.DriverInRidePassengersAdapter;
 import com.example.uberapp_tim9.map.MapInit;
+import com.example.uberapp_tim9.model.Message;
+import com.example.uberapp_tim9.model.MessageType;
+import com.example.uberapp_tim9.model.Ride;
+import com.example.uberapp_tim9.model.User;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
@@ -32,12 +39,15 @@ import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
+import com.example.uberapp_tim9.passenger.PassengerMainActivity;
+import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -67,6 +77,11 @@ public class DriverMainFragment extends Fragment {
     public static RideCreatedDTO acceptedRide;
     public static boolean rideHasStarted = false;
     private static Context context;
+    private static Button messageSend;
+    private static FrameLayout messageOverlay;
+    private static Button closeMessageOverlay;
+    private static TextInputEditText msg;
+    private static int msg_id = 4;
     private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
         @Override
         public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -241,6 +256,46 @@ public class DriverMainFragment extends Fragment {
             });
         });
         routeLabel = v.findViewById(R.id.route_label);
+        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(4);
+        RecyclerView messagesList = v.findViewById(R.id.messages_list);
+        LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
+        messagesList.setLayoutManager(messagesLlm);
+        messagesList.setAdapter(messagesListAdapter);
+        messageSend = v.findViewById(R.id.message_send_button);
+        messageOverlay = v.findViewById(R.id.message_overlay);
+        closeMessageOverlay = v.findViewById(R.id.close_message_overlay_button);
+        closeMessageOverlay.setOnClickListener(view -> {
+            updateMessagesOverlay(true);
+        });
+        msg = v.findViewById(R.id.message);
+        Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
+                {
+                    Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());
+                    if(message_received.getSender().getId() == 4 || message_received.getReceiver().getId() == 4) {
+                        messagesListAdapter.getmMessageList().add(message_received);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(message_received.getSender().getId() == 4) {
+                                    msg.setText("");
+                                }
+                                messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
+                            }
+                        });
+                    }
+                },
+                throwable -> Log.e(TAG, throwable.getMessage()));
+
+        messageSend.setOnClickListener(view -> {
+            Message message_new = new Message(msg_id,
+                    msg.getText().toString(),
+                    LocalDateTime.now(),
+                    new User(4),
+                    new User(PassengerMainActivity.passengerId),
+                    MessageType.VOZNJA,
+                    new Ride(1));
+            PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
+        });
         return v;
     }
 
@@ -317,5 +372,13 @@ public class DriverMainFragment extends Fragment {
                 }
             });
         }
+    }
+
+    public static void updateMessagesOverlay(boolean hide) {
+        if(hide){
+            messageOverlay.setVisibility(View.INVISIBLE);
+            return;
+        }
+        messageOverlay.setVisibility(View.VISIBLE);
     }
 }

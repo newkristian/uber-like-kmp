@@ -10,10 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Driver;
-import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryMockupData;
-
-import java.util.List;
 
 public class PassengerRideDriverAdapter extends RecyclerView.Adapter<PassengerRideDriverAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -22,7 +19,7 @@ public class PassengerRideDriverAdapter extends RecyclerView.Adapter<PassengerRi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.name_surname);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.message_bubble);
         }
 
         public TextView getmNameSurnameTextView() {
@@ -41,7 +38,7 @@ public class PassengerRideDriverAdapter extends RecyclerView.Adapter<PassengerRi
     @Override
     public void onBindViewHolder(@NonNull PassengerRideDriverAdapter.ViewHolder holder, int position) {
         Driver driver = PassengerRideHistoryMockupData.getDriver();
-        holder.getmNameSurnameTextView().setText(String.format("%s %s", driver.getmName(), driver.getmSurname()));
+        holder.getmNameSurnameTextView().setText(String.format("%s %s", driver.getName(), driver.getSurname()));
     }
 
     @Override

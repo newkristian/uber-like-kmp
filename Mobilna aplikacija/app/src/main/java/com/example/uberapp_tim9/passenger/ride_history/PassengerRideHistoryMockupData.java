@@ -20,7 +20,7 @@ public class PassengerRideHistoryMockupData {
                 LocalDateTime.of(2022, Month.AUGUST, 30, 16, 59),
                 430,
                 Arrays.asList(new Path[]{new Path(0.96)}),
-                Arrays.asList(new Passenger[]{new Passenger()}));
+                Arrays.asList(new Passenger[]{new Passenger("Marko","Marković")}));
 
         Ride r2 = new Ride(2, LocalDateTime.of(2022, Month.AUGUST, 29, 20, 14),
                 LocalDateTime.of(2022, Month.AUGUST, 29, 20, 51),
