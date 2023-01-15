@@ -61,6 +61,7 @@ public class DriverInRidePassengersAdapter extends RecyclerView.Adapter<DriverIn
 
         holder.getmMessageImageView().setOnClickListener(v -> {
             DriverMainFragment.updateMessagesOverlay(false);
+            DriverMainFragment.panicButton.setClickable(false);
         });
 
         holder.getmCallImageView().setOnClickListener(v -> {

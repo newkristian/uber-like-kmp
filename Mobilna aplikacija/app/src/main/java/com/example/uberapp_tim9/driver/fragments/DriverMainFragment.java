@@ -214,7 +214,7 @@ public class DriverMainFragment extends Fragment {
                                 false,
                                 currentVehicle.getId(),
                                 true,
-                                200,
+                                1000,
                                 true,
                                 passengersToPing);
                         displayTimer();
@@ -266,6 +266,7 @@ public class DriverMainFragment extends Fragment {
         closeMessageOverlay = v.findViewById(R.id.close_message_overlay_button);
         closeMessageOverlay.setOnClickListener(view -> {
             updateMessagesOverlay(true);
+            panicButton.setClickable(true);
         });
         msg = v.findViewById(R.id.message);
         Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->

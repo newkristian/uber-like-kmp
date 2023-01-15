@@ -159,6 +159,7 @@ public class PassengerMainFragment extends Fragment{
                                     DriverDTO rideDriver = new Gson().fromJson(response.body().string(), new TypeToken<DriverDTO>(){}.getType());
                                     currentRideDriver = rideDriver;
                                     updateUI(false);
+                                    stepp1.setVisibility(View.INVISIBLE);
                                     LatLng departure = null,destination = null;
                                     for(RouteDTO route : currentRide.getLocations()) {
                                         departure = new LatLng(route.getDeparture().getLatitude(),route.getDeparture().getLongitude());
@@ -174,7 +175,7 @@ public class PassengerMainFragment extends Fragment{
                                                   false,
                                                   -1,
                                             false,
-                                            200,
+                                            1000,
                                             false,null);
                                 }
                                 catch (IOException e) {
@@ -199,6 +200,7 @@ public class PassengerMainFragment extends Fragment{
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
+                                stepp1.setVisibility(View.VISIBLE);
                                 MapFragment.clearCurrentRoute();
                                 Marker currentRideVehicle = MapFragment.driversMarkers.get(currentRide.getDriver().getId());
                                 currentRideVehicle.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
@@ -383,7 +385,7 @@ public class PassengerMainFragment extends Fragment{
         LocationDTO start = new LocationDTO(45.25550453856233, 19.851038637778036);
         start.setAddress("Dunavska 4 Novi Sad");
         LocationDTO end = new LocationDTO(45.25701883039242, 19.845306955498636);
-        start.setAddress("Laze Telečkog 16 Novi Sad");
+        end.setAddress("Laze Telečkog 16 Novi Sad");
         RouteDTO rute = new RouteDTO();
         rute.setDeparture(start);
         rute.setDestination(end);

@@ -14,31 +14,31 @@ public class DriverInboxMessagesMockupData {
     public static List<Message> getMessages() {
         ArrayList<Message> messages = new ArrayList<Message>();
         User u1 = new User();
-        u1.setmName("Support");
+        u1.setName("Support");
         Message m1 = new Message(1, "Da li Vam je potrebna pomoc?",
                 LocalDateTime.of(2022, Month.DECEMBER, 21, 16, 30),
                 u1, new User(), MessageType.SUPPORT, new Ride());
 
         User u2 = new User();
-        u2.setmName("Mika");
+        u2.setName("Mika");
         Message m2 = new Message(2, "Stizem za 5 minuta!",
                 LocalDateTime.of(2022, Month.DECEMBER, 15, 10, 0),
-                u2, new User(), MessageType.RIDE, new Ride());
+                u2, new User(), MessageType.VOZNJA, new Ride());
 
         User u3 = new User();
-        u3.setmName("Branislav");
+        u3.setName("Branislav");
         Message m3 = new Message(3, "UPOMOOOOOOOOOC!!!!!",
                 LocalDateTime.of(2022, Month.DECEMBER, 21, 16, 30),
                 u3, new User(), MessageType.PANIC, new Ride());
 
         User u4 = new User();
-        u4.setmName("Natalija");
+        u4.setName("Natalija");
         Message m4 = new Message(4, "Gospodine, ne radimo dostavu",
                 LocalDateTime.of(2022, Month.DECEMBER, 21, 16, 30),
-                u4, new User(), MessageType.RIDE, new Ride());
+                u4, new User(), MessageType.VOZNJA, new Ride());
 
         User u5 = new User();
-        u5.setmName("Petar");
+        u5.setName("Petar");
         Message m5 = new Message(5, "Uspesno otkazano!",
                 LocalDateTime.of(2022, Month.DECEMBER, 21, 16, 30),
                 u5, new User(), MessageType.PANIC, new Ride());

@@ -74,15 +74,15 @@ public class DriverInboxAdapter extends RecyclerView.Adapter<DriverInboxAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         List<Message> messages = DriverInboxMessagesMockupData.getMessages();
-        if(messages.get(position).getmMessageType() == MessageType.PANIC){
+        if(messages.get(position).getMessageType() == MessageType.PANIC){
             holder.getmInfoButton().setBackgroundTintList(context.getResources().getColorStateList(R.color.bright_red));
         }
-        if(messages.get(position).getmMessageType() == MessageType.SUPPORT){
+        if(messages.get(position).getMessageType() == MessageType.SUPPORT){
             holder.getmInfoButton().setBackgroundTintList(context.getResources().getColorStateList(R.color.green));
         }
-        holder.getmFromTextView().setText(messages.get(position).getmSender().getmName());
-        holder.getmTimeTextView().setText(messages.get(position).getmTimeSent().toString());
-        holder.getmMessageTextView().setText(messages.get(position).getmMessage());
+        holder.getmFromTextView().setText(messages.get(position).getSender().getName());
+        holder.getmTimeTextView().setText(messages.get(position).getSentDateTime().toString());
+        holder.getmMessageTextView().setText(messages.get(position).getMessage());
     }
 
     @Override
