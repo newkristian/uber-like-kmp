@@ -243,7 +243,7 @@ public class PassengerMainFragment extends Fragment{
         timerLabel = v.findViewById(R.id.timer_label);
         panicOverlay = v.findViewById(R.id.panic_overlay);
 
-        MessagesListAdapter messagesListAdapter = new MessagesListAdapter();
+        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(PassengerMainActivity.passengerId);
         RecyclerView messagesList = v.findViewById(R.id.messages_list);
         LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
         messagesList.setLayoutManager(messagesLlm);
@@ -251,16 +251,18 @@ public class PassengerMainFragment extends Fragment{
         messageSend = v.findViewById(R.id.message_send_button);
         Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
                 {
-                    Log.e(TAG,"received");
                     Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());
                     if(message_received.getSender().getId() == PassengerMainActivity.passengerId || message_received.getReceiver().getId() == PassengerMainActivity.passengerId) {
                         messagesListAdapter.getmMessageList().add(message_received);
-                        textView.post(new Runnable() {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                textView.setText("Hello!"); }
+                                if(message_received.getSender().getId() == PassengerMainActivity.passengerId) {
+                                    msg.setText("");
+                                }
+                                messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
+                            }
                         });
-                        messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));
@@ -273,6 +275,7 @@ public class PassengerMainFragment extends Fragment{
                     new User(4),
                     MessageType.VOZNJA,
                     new Ride(1));
+            msg_id++;
             PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
         });
         return v;
@@ -299,9 +302,6 @@ public class PassengerMainFragment extends Fragment{
         });
         messageDriver.setVisibility(View.VISIBLE);
         messageDriver.setOnClickListener(view -> {
-            /*Intent messageIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + currentRideDriver.getTelephoneNumber()));
-            messageIntent.putExtra("sms_body", "");
-            startActivity(messageIntent);*/
             updateMessagesOverlay(false);
         });
         rideInfoLabel.setVisibility(View.VISIBLE);

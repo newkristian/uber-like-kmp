@@ -16,6 +16,12 @@ import java.util.List;
 
 public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapter.ViewHolder> {
 
+    private final int currentUser;
+
+    public MessagesListAdapter(int currentUser) {
+        this.currentUser = currentUser;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -58,7 +64,7 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);
 
-        if (message.getSender().getId() == 1) {
+        if (message.getSender().getId() == currentUser) {
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
             return VIEW_TYPE_MESSAGE_RECEIVED;

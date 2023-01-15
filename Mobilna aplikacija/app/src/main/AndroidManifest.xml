@@ -59,7 +59,8 @@
             android:name=".driver.DriverMainActivity"
             android:exported="false"
             android:label="@string/title_activity_driver_main"
-            android:theme="@style/Theme.UberApp_Tim9.NoActionBar">
+            android:theme="@style/Theme.UberApp_Tim9.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

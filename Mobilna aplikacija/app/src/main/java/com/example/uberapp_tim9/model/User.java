@@ -52,17 +52,37 @@ public class User {
         this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
     }
 
-    public User(int mID, String mName, String mSurname, String mProfilePicture, String mPhoneNumber, String mEmail, String mAddress, String mPassword, boolean mIsBlocked) {
+    public User(int mID,
+                String mName,
+                String mSurname,
+                String mProfilePicture,
+                String mPhoneNumber,
+                String mEmail,
+                String mAddress,
+                String mPassword, boolean mIsBlocked) {
+        this.id = mID;
+        this.name = mName;
+        this.surname = mSurname;
+        this.profilePicture = mProfilePicture;
+        this.telephoneNumber = mPhoneNumber;
+        this.email = mEmail;
+        this.address = mAddress;
+        this.password = mPassword;
+        this.isBlocked = mIsBlocked;
     }
 
     public User() {
-
     }
 
     public User(String mIme, String mPrezime) {
+        this.name = mIme;
+        this.surname = mPrezime;
     }
 
     public User(String mIme, String mPrezime, String mPhoneNumber) {
+        this.name = mIme;
+        this.surname = mPrezime;
+        this.telephoneNumber = mPhoneNumber;
     }
 
     public Integer getId() {

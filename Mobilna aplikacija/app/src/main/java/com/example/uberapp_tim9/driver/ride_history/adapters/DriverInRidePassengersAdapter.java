@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 
@@ -59,9 +60,7 @@ public class DriverInRidePassengersAdapter extends RecyclerView.Adapter<DriverIn
         holder.getmNameSurnameTextView().setText(passengers.get(position).name + " " + passengers.get(position).surname);
 
         holder.getmMessageImageView().setOnClickListener(v -> {
-            Intent messageIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + passengers.get(holder.getAdapterPosition()).telephoneNumber));
-            messageIntent.putExtra("sms_body", "");
-            v.getContext().startActivity(messageIntent);
+            DriverMainFragment.updateMessagesOverlay(false);
         });
 
         holder.getmCallImageView().setOnClickListener(v -> {

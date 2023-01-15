@@ -127,7 +127,7 @@
                 <Button
                     android:id="@+id/orderAgainButton"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"
@@ -150,7 +150,7 @@
                 <Button
                     android:id="@+id/reserveButton"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -173,7 +173,7 @@
                 <Button
                     android:id="@+id/favoriteButton"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -333,7 +333,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:visibility="gone" >
+                    android:visibility="visible">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
