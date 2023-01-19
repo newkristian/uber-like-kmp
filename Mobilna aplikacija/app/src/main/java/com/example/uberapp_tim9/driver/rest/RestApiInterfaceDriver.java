@@ -15,8 +15,8 @@ import retrofit2.http.Path;
 public interface RestApiInterfaceDriver {
 
     String RIDE_API_PATH = "ride/";
-    String DRIVER_API_PATH="driver";
-    String VEHICLE_API_PATH="vehicle/";
+    String DRIVER_API_PATH = "driver";
+    String VEHICLE_API_PATH = "vehicle/";
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -61,8 +61,8 @@ public interface RestApiInterfaceDriver {
     Call<ResponseBody> getAllDrivers();
 
     @Headers({
-        "User-Agent: Mobile-Android",
-        "Content-Type:application/json"
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
     })
     @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "{ride_id}" + "/passengers")
     Call<ResponseBody> getPassengers(@Path("ride_id") String rideId);
@@ -78,7 +78,7 @@ public interface RestApiInterfaceDriver {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT(RestApiManager.BASE_URL + VEHICLE_API_PATH  + "{vehicle_id}/location")
+    @PUT(RestApiManager.BASE_URL + VEHICLE_API_PATH + "{vehicle_id}/location")
     Call<ResponseBody> changeVehicleLocation(@Path("vehicle_id") String vehicleId, @Body LocationDTO location);
 
 }

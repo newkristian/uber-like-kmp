@@ -16,7 +16,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RestApiInterfacePassenger {
-
+    String PASSENGER_API_PATH = "passenger";
     String DRIVER_API_PATH="driver";
     String RIDE_API_PATH = "ride/";
 
@@ -27,6 +27,12 @@ public interface RestApiInterfacePassenger {
     @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "/{driver_id}")
     Call<ResponseBody> getDriverDetails(@Path("driver_id") String driverId);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}")
+    Call<ResponseBody> getPassenger(@Path("passenger_id") Integer passengerId);
 
     @Headers({
             "User-Agent: Mobile-Android",

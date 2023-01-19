@@ -1,5 +1,7 @@
 package com.example.uberapp_tim9.model;
 
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
+
 public class Passenger extends User {
     public Passenger(int mID,
                      String mName,
@@ -25,4 +27,7 @@ public class Passenger extends User {
         super(mIme, mPrezime, mPhoneNumber);
     }
 
+    public Passenger(PassengerWithoutIdPasswordDTO passwordDTO) {
+        super(-1, passwordDTO.getName(), passwordDTO.getSurname(), passwordDTO.getProfilePicture(), passwordDTO.getTelephoneNumber(), passwordDTO.getEmail(), passwordDTO.getAddress(), "", false);
+    }
 }

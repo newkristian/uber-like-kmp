@@ -2,12 +2,16 @@ package com.example.uberapp_tim9.passenger.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 import android.view.LayoutInflater;
@@ -17,10 +21,22 @@ import android.widget.Button;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Passenger;
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.passenger.PassengerReportActivity;
 import com.example.uberapp_tim9.passenger.favorite_rides.PassengerFavoriteRidesActivity;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
+import com.google.android.gms.common.util.Strings;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,7 +98,27 @@ public class PassengerAccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadCurrentValues(view);
+
+        Call<ResponseBody> call = RestApiManager.restApiInterfacePassenger.getPassenger(1);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    try {
+                        PassengerWithoutIdPasswordDTO passwordDTO = new Gson().fromJson(response.body().string(), new TypeToken<PassengerWithoutIdPasswordDTO>(){}.getType());
+                        passenger = new Passenger(passwordDTO);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    loadCurrentValues(view);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+            }
+        });
 
         Button changeButton = view.findViewById(R.id.changeButton);
         Button confirmButton = view.findViewById(R.id.confirmButton);
@@ -143,7 +179,13 @@ public class PassengerAccountFragment extends Fragment {
         ((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).setText(passenger.getTelephoneNumber());
         ((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).setText(passenger.getEmail());
         ((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).setText(passenger.getAddress());
-        ((ShapeableImageView) view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_branislav);
+        if (Strings.isEmptyOrWhitespace(passenger.getProfilePicture())) {
+            ((ShapeableImageView) view.findViewById(R.id.profile_picture_image_view)).setImageResource(R.drawable.ic_profile);
+        } else {
+            byte[] decodedProfilePicture = Base64.decode(passenger.getProfilePicture(), Base64.DEFAULT);
+            Bitmap profilePicture = BitmapFactory.decodeByteArray(decodedProfilePicture, 0, decodedProfilePicture.length);
+            ((ShapeableImageView) view.findViewById(R.id.profile_picture_image_view)).setImageBitmap(profilePicture);
+        }
     }
 
     @NonNull
