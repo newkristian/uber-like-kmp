@@ -1,17 +1,14 @@
 package com.example.uberapp_tim9.passenger.fragments;
 
-import static android.Manifest.permission_group.CAMERA;
 import static android.app.Activity.RESULT_OK;
 
-import static androidx.core.content.PermissionChecker.checkSelfPermission;
-
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,7 +40,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -57,7 +53,8 @@ import retrofit2.Response;
  */
 public class PassengerAccountFragment extends Fragment {
     private final Integer PASSENGER_ID = 1;
-    private final int GALLERY_REQ_CODE = 1000;
+    private final int PHOTOS_REQ_CODE = 1000;
+    private final int CAMERA_REQ_CODE = 1;
 
     private static Passenger passenger = new Passenger(0, "Ivan", "Ivanovic", "", "0623339998", "email@mail.com", "Resavska 23", "123456789", false);
 
@@ -126,9 +123,25 @@ public class PassengerAccountFragment extends Fragment {
             buttonsEditMode(changeButton, confirmButton, cancelButton);
 
             view.findViewById(R.id.profile_picture_image_view).setOnClickListener(view12 -> {
-                Intent iGallery = new Intent(Intent.ACTION_PICK);
-                iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(iGallery, GALLERY_REQ_CODE);
+                Intent iPhotos = new Intent(Intent.ACTION_PICK);
+                iPhotos.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                Intent iCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                iCamera.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.CustomAlertDialog);
+                builder.setTitle("Odaberite izvor fotografije");
+                builder.setItems(new CharSequence[]{"Photos", "Camera"}, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            startActivityForResult(iPhotos, PHOTOS_REQ_CODE);
+                            break;
+                        case 1:
+                            startActivityForResult(iCamera, CAMERA_REQ_CODE);
+                            break;
+                    }
+                });
+                builder.create().show();
             });
         });
 
@@ -206,7 +219,7 @@ public class PassengerAccountFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_REQ_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PHOTOS_REQ_CODE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             if (selectedImage != null) {
                 try {
@@ -242,6 +255,22 @@ public class PassengerAccountFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+        } else if (requestCode == CAMERA_REQ_CODE && resultCode == RESULT_OK && data != null) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+            if (bitmap.getAllocationByteCount() / 10 > 5 * 1024 * 1024) {
+                Toast.makeText(getContext(), "Slika je prevelika.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+
+            passenger.setProfilePicture(encoded);
+            ((ShapeableImageView) getView().findViewById(R.id.profile_picture_image_view)).setImageBitmap(bitmap);
         }
     }
 
