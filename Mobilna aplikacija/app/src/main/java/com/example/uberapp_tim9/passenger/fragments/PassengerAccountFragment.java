@@ -1,15 +1,24 @@
 package com.example.uberapp_tim9.passenger.fragments;
 
+import static android.Manifest.permission_group.CAMERA;
+import static android.app.Activity.RESULT_OK;
+
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -34,6 +43,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -46,19 +56,10 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class PassengerAccountFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private final Integer PASSENGER_ID = 1;
+    private final int GALLERY_REQ_CODE = 1000;
 
     private static Passenger passenger = new Passenger(0, "Ivan", "Ivanovic", "", "0623339998", "email@mail.com", "Resavska 23", "123456789", false);
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public PassengerAccountFragment() {
         // Required empty public constructor
@@ -74,28 +75,17 @@ public class PassengerAccountFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static PassengerAccountFragment newInstance(String param1, String param2) {
-        PassengerAccountFragment fragment = new PassengerAccountFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new PassengerAccountFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passenger_account, container, false);
     }
 
@@ -134,11 +124,18 @@ public class PassengerAccountFragment extends Fragment {
         changeButton.setOnClickListener(view1 -> {
             changeFormEnabled(view, true);
             buttonsEditMode(changeButton, confirmButton, cancelButton);
+
+            view.findViewById(R.id.profile_picture_image_view).setOnClickListener(view12 -> {
+                Intent iGallery = new Intent(Intent.ACTION_PICK);
+                iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(iGallery, GALLERY_REQ_CODE);
+            });
         });
 
         cancelButton.setOnClickListener(view1 -> {
             changeFormEnabled(view, false);
             resetButtons(changeButton, confirmButton, cancelButton);
+            view.findViewById(R.id.profile_picture_image_view).setOnClickListener(null);
 
             loadCurrentValues(view);
         });
@@ -153,13 +150,6 @@ public class PassengerAccountFragment extends Fragment {
                     String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText())
             );
 
-            if (passenger.equals(passengerDTO)) {
-                Toast.makeText(getContext(), "Niste napravili nikakve izmene.", Toast.LENGTH_SHORT).show();
-                changeFormEnabled(view, false);
-                resetButtons(changeButton, confirmButton, cancelButton);
-                return;
-            }
-
             Call<ResponseBody> updatePassengerCall = RestApiManager.restApiInterfacePassenger.updatePassenger(PASSENGER_ID, passengerDTO);
             updatePassengerCall.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -169,6 +159,7 @@ public class PassengerAccountFragment extends Fragment {
                         passenger = new Passenger(passengerDTO);
                         changeFormEnabled(view, false);
                         resetButtons(changeButton, confirmButton, cancelButton);
+                        view.findViewById(R.id.profile_picture_image_view).setOnClickListener(null);
                     } else {
                         if (response.errorBody() == null) {
                             Toast.makeText(getContext(), "Došlo je do greške.", Toast.LENGTH_LONG).show();
@@ -189,6 +180,8 @@ public class PassengerAccountFragment extends Fragment {
                                 Toast.makeText(getContext(), "Broj telefona mora biti validan.", Toast.LENGTH_LONG).show();
                             } else if (error.contains("address")) {
                                 Toast.makeText(getContext(), "Adresa je obavezno polje i ne sme biti duža od 100 slova.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("changes")) {
+                                Toast.makeText(getContext(), "Niste napravili nikakve izmene.", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getContext(), "Došlo je do sledeće greške: " + error, Toast.LENGTH_LONG).show();
                             }
@@ -208,6 +201,48 @@ public class PassengerAccountFragment extends Fragment {
         favoriteRidesButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerFavoriteRidesActivity.class)));
 
         reportButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerReportActivity.class)));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_REQ_CODE && resultCode == RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            if (selectedImage != null) {
+                try {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(selectedImage), null, options);
+                    int imageHeight = options.outHeight;
+                    int imageWidth = options.outWidth;
+                    String imageType = options.outMimeType;
+                    int uncompressedBitmapSizeInBytes = 4 * imageHeight * imageWidth;
+
+                    if (uncompressedBitmapSizeInBytes / 10 > 5 * 1024 * 1024) {
+                        Toast.makeText(getContext(), "Slika je prevelika.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
+
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+                    if (imageType.contains("jpeg")) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    } else {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    }
+
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                    String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                    passenger.setProfilePicture(encoded);
+                    ((ShapeableImageView) getView().findViewById(R.id.profile_picture_image_view)).setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void buttonsEditMode(Button changeButton, Button confirmButton, Button cancelButton) {
