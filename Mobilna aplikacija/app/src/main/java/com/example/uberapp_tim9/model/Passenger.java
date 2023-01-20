@@ -1,5 +1,7 @@
 package com.example.uberapp_tim9.model;
 
+import androidx.annotation.Nullable;
+
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 
 public class Passenger extends User {
@@ -29,5 +31,19 @@ public class Passenger extends User {
 
     public Passenger(PassengerWithoutIdPasswordDTO passwordDTO) {
         super(-1, passwordDTO.getName(), passwordDTO.getSurname(), passwordDTO.getProfilePicture(), passwordDTO.getTelephoneNumber(), passwordDTO.getEmail(), passwordDTO.getAddress(), "", false);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof PassengerWithoutIdPasswordDTO) {
+            PassengerWithoutIdPasswordDTO passenger = (PassengerWithoutIdPasswordDTO) obj;
+            return passenger.getName().equals(this.getName()) &&
+                    passenger.getSurname().equals(this.getSurname()) &&
+                    passenger.getProfilePicture().equals(this.getProfilePicture()) &&
+                    passenger.getTelephoneNumber().equals(this.getTelephoneNumber()) &&
+                    passenger.getEmail().equals(this.getEmail()) &&
+                    passenger.getAddress().equals(this.getAddress());
+        }
+        return super.equals(obj);
     }
 }

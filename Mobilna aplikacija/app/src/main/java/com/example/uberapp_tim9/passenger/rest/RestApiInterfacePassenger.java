@@ -1,6 +1,7 @@
 package com.example.uberapp_tim9.passenger.rest;
 
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationNowDTO;
@@ -33,6 +34,13 @@ public interface RestApiInterfacePassenger {
     })
     @GET(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}")
     Call<ResponseBody> getPassenger(@Path("passenger_id") Integer passengerId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}")
+    Call<ResponseBody> updatePassenger(@Path("passenger_id") Integer passengerId, @Body PassengerWithoutIdPasswordDTO passenger);
 
     @Headers({
             "User-Agent: Mobile-Android",

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Passenger;
@@ -31,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -49,6 +51,8 @@ public class PassengerAccountFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private final Integer PASSENGER_ID = 1;
 
     private static Passenger passenger = new Passenger(0, "Ivan", "Ivanovic", "", "0623339998", "email@mail.com", "Resavska 23", "123456789", false);
 
@@ -99,13 +103,14 @@ public class PassengerAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Call<ResponseBody> call = RestApiManager.restApiInterfacePassenger.getPassenger(1);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> getPassengerCall = RestApiManager.restApiInterfacePassenger.getPassenger(PASSENGER_ID);
+        getPassengerCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     try {
-                        PassengerWithoutIdPasswordDTO passwordDTO = new Gson().fromJson(response.body().string(), new TypeToken<PassengerWithoutIdPasswordDTO>(){}.getType());
+                        PassengerWithoutIdPasswordDTO passwordDTO = new Gson().fromJson(response.body().string(), new TypeToken<PassengerWithoutIdPasswordDTO>() {
+                        }.getType());
                         passenger = new Passenger(passwordDTO);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -139,13 +144,65 @@ public class PassengerAccountFragment extends Fragment {
         });
 
         confirmButton.setOnClickListener(view1 -> {
-            changeFormEnabled(view, false);
-            resetButtons(changeButton, confirmButton, cancelButton);
-            passenger.setName(String.valueOf(((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).getText()));
-            passenger.setSurname(String.valueOf(((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).getText()));
-            passenger.setTelephoneNumber(String.valueOf(((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).getText()));
-            passenger.setAddress(String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText()));
-            passenger.setEmail(String.valueOf(((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).getText()));
+            PassengerWithoutIdPasswordDTO passengerDTO = new PassengerWithoutIdPasswordDTO(
+                    String.valueOf(((TextInputEditText) view.findViewById(R.id.first_name_text_input_edit_text)).getText()),
+                    String.valueOf(((TextInputEditText) view.findViewById(R.id.last_name_text_input_edit_text)).getText()),
+                    passenger.getProfilePicture(),
+                    String.valueOf(((TextInputEditText) view.findViewById(R.id.phone_number_text_input_edit_text)).getText()),
+                    String.valueOf(((TextInputEditText) view.findViewById(R.id.email_text_input_edit_text)).getText()),
+                    String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText())
+            );
+
+            if (passenger.equals(passengerDTO)) {
+                Toast.makeText(getContext(), "Niste napravili nikakve izmene.", Toast.LENGTH_SHORT).show();
+                changeFormEnabled(view, false);
+                resetButtons(changeButton, confirmButton, cancelButton);
+                return;
+            }
+
+            Call<ResponseBody> updatePassengerCall = RestApiManager.restApiInterfacePassenger.updatePassenger(PASSENGER_ID, passengerDTO);
+            updatePassengerCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Uspešno izmenjeni podaci.", Toast.LENGTH_SHORT).show();
+                        passenger = new Passenger(passengerDTO);
+                        changeFormEnabled(view, false);
+                        resetButtons(changeButton, confirmButton, cancelButton);
+                    } else {
+                        if (response.errorBody() == null) {
+                            Toast.makeText(getContext(), "Došlo je do greške.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        String error;
+                        try {
+                            error = response.errorBody().string().toLowerCase();
+                            if (error.contains("email")) {
+                                Toast.makeText(getContext(), "Email adresa je zauzeta ili nevalidna.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("file")) {
+                                Toast.makeText(getContext(), "Morate odabrati validnu sliku manju od 5MB.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("surname")) {
+                                Toast.makeText(getContext(), "Prezime je obavezno polje i ne sme biti duže od 100 slova.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("name")) {
+                                Toast.makeText(getContext(), "Ime je obavezno polje i ne sme biti duže od 100 slova.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("phone")) {
+                                Toast.makeText(getContext(), "Broj telefona mora biti validan.", Toast.LENGTH_LONG).show();
+                            } else if (error.contains("address")) {
+                                Toast.makeText(getContext(), "Adresa je obavezno polje i ne sme biti duža od 100 slova.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getContext(), "Došlo je do sledeće greške: " + error, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                }
+            });
         });
 
         favoriteRidesButton.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), PassengerFavoriteRidesActivity.class)));
