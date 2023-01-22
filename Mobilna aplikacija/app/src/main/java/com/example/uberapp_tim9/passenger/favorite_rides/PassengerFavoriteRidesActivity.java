@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.uberapp_tim9.R;
+import com.example.uberapp_tim9.shared.directions.TaskLoadedCallBack;
+
+import java.util.Arrays;
 
 public class PassengerFavoriteRidesActivity extends AppCompatActivity {
 
@@ -24,7 +27,7 @@ public class PassengerFavoriteRidesActivity extends AppCompatActivity {
         toolbar.setDisplayHomeAsUpEnabled(true);
         toolbar.setDisplayShowTitleEnabled(false);
 
-        PassengerFavoriteRidesAdapter adapter = new PassengerFavoriteRidesAdapter();
+        PassengerFavoriteRidesAdapter adapter = new PassengerFavoriteRidesAdapter(this);
         RecyclerView list = findViewById(R.id.rides_list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         list.setLayoutManager(llm);

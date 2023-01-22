@@ -1,10 +1,10 @@
 package com.example.uberapp_tim9.passenger.favorite_rides;
 
-import android.content.Intent;
+import static com.example.uberapp_tim9.shared.directions.FetchURL.getUrl;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,17 +13,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
-import com.example.uberapp_tim9.model.Path;
-import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
-import com.example.uberapp_tim9.passenger.ride_history.PassengerRideDetailsActivity;
-import com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryMockupData;
-import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidesAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.uberapp_tim9.shared.directions.FetchURL;
+import com.example.uberapp_tim9.shared.directions.TaskLoadedCallBack;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
 
-public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<PassengerFavoriteRidesAdapter.ViewHolder>{
+public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<PassengerFavoriteRidesAdapter.ViewHolder>
+implements TaskLoadedCallBack {
+    AppCompatActivity activity;
+    private GoogleMap[] googleMaps = null;
+    private Polyline[] currentPolylines = null;
+
+    public PassengerFavoriteRidesAdapter(AppCompatActivity activity) {
+        this.activity = activity;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mFavoriteName;
         private final TextView mStartLocationTextView;
@@ -33,7 +47,7 @@ public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<Passenge
         private final LinearLayout mPetTransportLinearLayout;
         private final TextView mBabyTransportTextView;
         private final TextView mPetTransportTextView;
-        private final ImageView mMapImageView;
+        private final MapView mMapView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -46,7 +60,7 @@ public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<Passenge
             mPetTransportLinearLayout = itemView.findViewById(R.id.petTransportLinearLayout);
             mBabyTransportTextView = itemView.findViewById(R.id.babyTransportTextView);
             mPetTransportTextView = itemView.findViewById(R.id.petTransportTextView);
-            mMapImageView = itemView.findViewById(R.id.map);
+            mMapView = itemView.findViewById(R.id.map);
         }
 
         public TextView getmStartLocationTextView() {
@@ -57,9 +71,6 @@ public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<Passenge
             return mEndLocationTextView;
         }
 
-        public ImageView getmMapImageView() {
-            return mMapImageView;
-        }
     }
 
     @NonNull
@@ -71,7 +82,21 @@ public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<Passenge
     }
 
     @Override
+    public void onTaskDone(int position, Object... values) {
+        if (currentPolylines[position] != null)
+            currentPolylines[position].remove();
+        currentPolylines[position] = googleMaps[position].addPolyline((PolylineOptions) values[0]);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull PassengerFavoriteRidesAdapter.ViewHolder holder, int position) {
+        if (googleMaps == null) {
+            googleMaps = new GoogleMap[getItemCount()];
+        }
+        if (currentPolylines == null) {
+            currentPolylines = new Polyline[getItemCount()];
+        }
+
         List<FavoritePathDTO> routes = PassengerFavoriteRoutesMockupData.getPaths();
 
         FavoritePathDTO route = routes.get(position);
@@ -85,7 +110,29 @@ public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<Passenge
         if (route.isPetTransport()) {
             holder.mPetTransportLinearLayout.setVisibility(View.VISIBLE);
         }
-        holder.getmMapImageView().setImageResource(R.drawable.maps);
+
+        holder.mMapView.onCreate(null);
+        holder.mMapView.getMapAsync(googleMap -> {
+            googleMaps[position] = googleMap;
+
+            LatLng departure = new LatLng(route.getLocations().get("departure").getmLatitude(), route.getLocations().get("departure").getmLongtitude());
+            LatLng destination = new LatLng(route.getLocations().get("destination").getmLatitude(), route.getLocations().get("destination").getmLongtitude());
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(departure);
+            builder.include(destination);
+
+            LatLngBounds bounds = builder.build();
+            int padding = 100;
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            googleMap.animateCamera(cu);
+
+            googleMap.addMarker(new MarkerOptions().position(departure).title("Od"));
+            googleMap.addMarker(new MarkerOptions().position(destination).title("Do"));
+
+            new FetchURL(this, position).execute(getUrl(departure, destination, "driving"), "driving");
+        });
     }
 
     @Override
