@@ -11,6 +11,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -49,6 +50,13 @@ public interface RestApiInterfacePassenger {
     })
     @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "favorites/passenger/{passenger_id}")
     Call<ResponseBody> getFavoriteRidesForPassengerId(@Path("passenger_id") Integer passengerId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE(RestApiManager.BASE_URL + RIDE_API_PATH + "favorites/{id}")
+    Call<ResponseBody> deleteFavoriteRide(@Path("id") Integer id);
 
     @Headers({
             "User-Agent: Mobile-Android",

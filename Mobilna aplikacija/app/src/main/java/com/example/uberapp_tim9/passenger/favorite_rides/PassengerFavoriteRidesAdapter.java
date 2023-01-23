@@ -2,11 +2,14 @@ package com.example.uberapp_tim9.passenger.favorite_rides;
 
 import static com.example.uberapp_tim9.shared.directions.FetchURL.getUrl;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
 import com.example.uberapp_tim9.shared.directions.FetchURL;
 import com.example.uberapp_tim9.shared.directions.TaskLoadedCallBack;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +31,11 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PassengerFavoriteRidesAdapter extends RecyclerView.Adapter<PassengerFavoriteRidesAdapter.ViewHolder>
 implements TaskLoadedCallBack {
@@ -55,6 +64,7 @@ implements TaskLoadedCallBack {
         private final TextView mBabyTransportTextView;
         private final TextView mPetTransportTextView;
         private final MapView mMapView;
+        private final Button mDeleteButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +78,7 @@ implements TaskLoadedCallBack {
             mBabyTransportTextView = itemView.findViewById(R.id.babyTransportTextView);
             mPetTransportTextView = itemView.findViewById(R.id.petTransportTextView);
             mMapView = itemView.findViewById(R.id.map);
+            mDeleteButton = itemView.findViewById(R.id.deleteButton);
         }
 
         public TextView getmStartLocationTextView() {
@@ -149,6 +160,28 @@ implements TaskLoadedCallBack {
             googleMap.addMarker(new MarkerOptions().position(destination).title("Do"));
 
             new FetchURL(this, position).execute(getUrl(departure, destination, "driving"), "driving");
+        });
+
+        holder.mDeleteButton.setOnClickListener(view -> {
+            Call<ResponseBody> deleteRide = RestApiManager.restApiInterfacePassenger.deleteFavoriteRide(route.getId());
+            deleteRide.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        favoriteRides.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, favoriteRides.size());
+                        Toast.makeText(activity, "Uspešno obrisana ruta.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "Greška prilikom brisanja rute.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                }
+            });
         });
     }
 
