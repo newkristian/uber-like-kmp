@@ -21,7 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -33,8 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.map.MapInit;
-import com.example.uberapp_tim9.model.Location;
-import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.model.Message;
 import com.example.uberapp_tim9.model.MessageType;
 import com.example.uberapp_tim9.model.Ride;
@@ -44,7 +41,6 @@ import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
-import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationNowDTO;
 import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
@@ -64,9 +60,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +105,16 @@ public class PassengerMainFragment extends Fragment{
     private static FrameLayout messageOverlay;
     private static Button messageSend;
     private static TextInputEditText msg;
+
+    private static TextInputEditText startLocationInput;
+    private static TextInputEditText endLocationInput;
+    private static CheckBox babyCheckBox;
+    private static CheckBox petCheckBox;
+    private static RadioButton standardVehicleRadioButton;
+    private static RadioButton luxuryVehicleRadioButton;
+    private static RadioButton vanVehicleRadioButton;
+    private static CheckBox timeCheckBox;
+
     private static int msg_id = 4;
     private static Runnable timerRunnable = new Runnable() {
         @Override
@@ -136,6 +140,7 @@ public class PassengerMainFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         MapInit mapUtils = new MapInit();
 
         //Subscribe to events from websocket (ride has started)
@@ -281,6 +286,15 @@ public class PassengerMainFragment extends Fragment{
         timerLabel = v.findViewById(R.id.timer_label);
         panicOverlay = v.findViewById(R.id.panic_overlay);
 
+        startLocationInput = v.findViewById(R.id.start_location_input);
+        endLocationInput = v.findViewById(R.id.end_location_input);
+        babyCheckBox = v.findViewById(R.id.baby_checkbox);
+        petCheckBox = v.findViewById(R.id.pet_checkbox);
+        standardVehicleRadioButton = v.findViewById(R.id.standard_vehicle_radio_button);
+        luxuryVehicleRadioButton = v.findViewById(R.id.luxury_vehicle_radio_button);
+        vanVehicleRadioButton = v.findViewById(R.id.van_vehicle_radio_button);
+        timeCheckBox = v.findViewById(R.id.time_checkbox);
+
         MessagesListAdapter messagesListAdapter = new MessagesListAdapter(PassengerMainActivity.passengerId);
         RecyclerView messagesList = v.findViewById(R.id.messages_list);
         LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
@@ -316,6 +330,45 @@ public class PassengerMainFragment extends Fragment{
             msg_id++;
             PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
         });
+
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            Bundle extras = getActivity().getIntent().getExtras();
+            if (extras != null) {
+                Boolean orderNow = (Boolean) extras.get("orderNow");
+                timeCheckBox.setChecked(orderNow);
+
+                String departure = (String) extras.get("departure");
+                startLocationInput.setText(departure);
+                String destination = (String) extras.get("destination");
+                endLocationInput.setText(destination);
+
+                String vehicleType = (String) extras.get("vehicleType");
+                if (vehicleType != null) {
+                    switch (vehicleType) {
+                        case "STANDARD":
+                            standardVehicleRadioButton.setChecked(true);
+                            luxuryVehicleRadioButton.setChecked(false);
+                            vanVehicleRadioButton.setChecked(false);
+                            break;
+                        case "LUXURY":
+                            luxuryVehicleRadioButton.setChecked(true);
+                            standardVehicleRadioButton.setChecked(false);
+                            vanVehicleRadioButton.setChecked(false);
+                            break;
+                        case "VAN":
+                            vanVehicleRadioButton.setChecked(true);
+                            standardVehicleRadioButton.setChecked(false);
+                            luxuryVehicleRadioButton.setChecked(false);
+                            break;
+                    }
+                }
+
+                Boolean babyTransport = (Boolean) extras.get("babyTransport");
+                babyCheckBox.setChecked(babyTransport);
+                Boolean petTransport = (Boolean) extras.get("petTransport");
+                petCheckBox.setChecked(petTransport);
+            }
+        }
         return v;
     }
 
@@ -392,13 +445,13 @@ public class PassengerMainFragment extends Fragment{
         routeDTOS.add(rute);
         rideCreationDTO.setLocations(routeDTOS);
 
-        if(((RadioButton)v.findViewById(R.id.radio_button_1)).isChecked()){
+        if(((RadioButton)v.findViewById(R.id.standard_vehicle_radio_button)).isChecked()){
             rideCreationDTO.setVehicleType("STANDARD");
         }
-        else if(((RadioButton)v.findViewById(R.id.radio_button_2)).isChecked()){
+        else if(((RadioButton)v.findViewById(R.id.luxury_vehicle_radio_button)).isChecked()){
             rideCreationDTO.setVehicleType("LUXURY");
         }
-        else if(((RadioButton)v.findViewById(R.id.radio_button_3)).isChecked()){
+        else if(((RadioButton)v.findViewById(R.id.van_vehicle_radio_button)).isChecked()){
             rideCreationDTO.setVehicleType("VAN");
         }
 

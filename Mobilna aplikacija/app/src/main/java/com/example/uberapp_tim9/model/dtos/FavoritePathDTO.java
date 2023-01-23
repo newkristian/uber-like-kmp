@@ -1,9 +1,6 @@
 package com.example.uberapp_tim9.model.dtos;
 
-import com.example.uberapp_tim9.model.Location;
-
 import java.util.List;
-import java.util.Map;
 
 public class FavoritePathDTO {
     private int id;

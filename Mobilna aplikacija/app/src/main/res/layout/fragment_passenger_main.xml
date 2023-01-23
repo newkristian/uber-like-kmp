@@ -436,11 +436,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:checkedButton="@+id/radio_button_1"
+            android:checkedButton="@+id/standard_vehicle_radio_button"
             android:paddingLeft="10dp">
 
             <RadioButton
-                android:id="@+id/radio_button_1"
+                android:id="@+id/standard_vehicle_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-thin"
@@ -449,7 +449,7 @@
                 android:textSize="20sp" />
 
             <RadioButton
-                android:id="@+id/radio_button_2"
+                android:id="@+id/luxury_vehicle_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-thin"
@@ -458,7 +458,7 @@
                 android:textSize="20sp" />
 
             <RadioButton
-                android:id="@+id/radio_button_3"
+                android:id="@+id/van_vehicle_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-thin"

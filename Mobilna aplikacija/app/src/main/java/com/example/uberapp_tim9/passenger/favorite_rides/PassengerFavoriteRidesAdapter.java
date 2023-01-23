@@ -2,6 +2,8 @@ package com.example.uberapp_tim9.passenger.favorite_rides;
 
 import static com.example.uberapp_tim9.shared.directions.FetchURL.getUrl;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
+import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.shared.directions.FetchURL;
 import com.example.uberapp_tim9.shared.directions.TaskLoadedCallBack;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
@@ -65,6 +68,8 @@ implements TaskLoadedCallBack {
         private final TextView mPetTransportTextView;
         private final MapView mMapView;
         private final Button mDeleteButton;
+        private final Button mOrderAgainButton;
+        private final Button mReserveButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +84,8 @@ implements TaskLoadedCallBack {
             mPetTransportTextView = itemView.findViewById(R.id.petTransportTextView);
             mMapView = itemView.findViewById(R.id.map);
             mDeleteButton = itemView.findViewById(R.id.deleteButton);
+            mOrderAgainButton = itemView.findViewById(R.id.orderAgainButton);
+            mReserveButton = itemView.findViewById(R.id.reserveButton);
         }
 
         public TextView getmStartLocationTextView() {
@@ -182,6 +189,32 @@ implements TaskLoadedCallBack {
                     Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
                 }
             });
+        });
+
+        holder.mOrderAgainButton.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, PassengerMainActivity.class);
+            intent.putExtra("departure", route.getLocations().get(0).getDeparture().getAddress());
+            intent.putExtra("destination", route.getLocations().get(0).getDestination().getAddress());
+            intent.putExtra("vehicleType", route.getVehicleType());
+            intent.putExtra("babyTransport", route.isBabyTransport());
+            intent.putExtra("petTransport", route.isPetTransport());
+
+            intent.putExtra("orderNow", true);
+            activity.startActivity(intent);
+            Toast.makeText(activity, "Inicijalni podaci su uneti.", Toast.LENGTH_SHORT).show();
+        });
+
+        holder.mReserveButton.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, PassengerMainActivity.class);
+            intent.putExtra("departure", route.getLocations().get(0).getDeparture().getAddress());
+            intent.putExtra("destination", route.getLocations().get(0).getDestination().getAddress());
+            intent.putExtra("vehicleType", route.getVehicleType());
+            intent.putExtra("babyTransport", route.isBabyTransport());
+            intent.putExtra("petTransport", route.isPetTransport());
+
+            intent.putExtra("orderNow", false);
+            activity.startActivity(intent);
+            Toast.makeText(activity, "Inicijalni podaci su uneti.", Toast.LENGTH_SHORT).show();
         });
     }
 
