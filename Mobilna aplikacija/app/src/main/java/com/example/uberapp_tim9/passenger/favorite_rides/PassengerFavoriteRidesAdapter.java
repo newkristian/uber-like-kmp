@@ -33,9 +33,16 @@ implements TaskLoadedCallBack {
     AppCompatActivity activity;
     private GoogleMap[] googleMaps = null;
     private Polyline[] currentPolylines = null;
+    List<FavoritePathDTO> favoriteRides;
 
-    public PassengerFavoriteRidesAdapter(AppCompatActivity activity) {
+    public PassengerFavoriteRidesAdapter(AppCompatActivity activity,
+                                         List<FavoritePathDTO> favoriteRides) {
         this.activity = activity;
+        this.favoriteRides = favoriteRides;
+    }
+
+    public void setFavoriteRides(List<FavoritePathDTO> favoriteRides) {
+        this.favoriteRides = favoriteRides;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,13 +104,23 @@ implements TaskLoadedCallBack {
             currentPolylines = new Polyline[getItemCount()];
         }
 
-        List<FavoritePathDTO> routes = PassengerFavoriteRoutesMockupData.getPaths();
+        List<FavoritePathDTO> routes = favoriteRides;
 
         FavoritePathDTO route = routes.get(position);
         holder.mFavoriteName.setText(String.format("Naziv: %s", route.getFavoriteName()));
-        holder.getmStartLocationTextView().setText(String.format("Od: %s", route.getLocations().get("departure").getmAddress()));
-        holder.getmEndLocationTextView().setText(String.format("Do: %s", route.getLocations().get("destination").getmAddress()));
-        holder.mVehicleTypeTextView.setText(String.format("Tip vozila: %s", route.getVehicleType()));
+        holder.getmStartLocationTextView().setText(String.format("Od: %s", route.getLocations().get(0).getDeparture().getAddress()));
+        holder.getmEndLocationTextView().setText(String.format("Do: %s", route.getLocations().get(0).getDestination().getAddress()));
+
+        String vehicleType = route.getVehicleType();
+        if (vehicleType.equalsIgnoreCase("standard")) {
+            vehicleType = "Standardno";
+        } else if (vehicleType.equalsIgnoreCase("van")) {
+            vehicleType = "Kombi";
+        } else if (vehicleType.equalsIgnoreCase("luxury")) {
+            vehicleType = "Luksuzno";
+        }
+
+        holder.mVehicleTypeTextView.setText(String.format("Tip vozila: %s", vehicleType));
         if (route.isBabyTransport()) {
             holder.mBabyTransportLinearLayout.setVisibility(View.VISIBLE);
         }
@@ -115,8 +132,8 @@ implements TaskLoadedCallBack {
         holder.mMapView.getMapAsync(googleMap -> {
             googleMaps[position] = googleMap;
 
-            LatLng departure = new LatLng(route.getLocations().get("departure").getmLatitude(), route.getLocations().get("departure").getmLongtitude());
-            LatLng destination = new LatLng(route.getLocations().get("destination").getmLatitude(), route.getLocations().get("destination").getmLongtitude());
+            LatLng departure = new LatLng(route.getLocations().get(0).getDeparture().getLatitude(), route.getLocations().get(0).getDeparture().getLongitude());
+            LatLng destination = new LatLng(route.getLocations().get(0).getDestination().getLatitude(), route.getLocations().get(0).getDestination().getLongitude());
 
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             builder.include(departure);
@@ -137,6 +154,6 @@ implements TaskLoadedCallBack {
 
     @Override
     public int getItemCount() {
-        return PassengerFavoriteRoutesMockupData.getPaths().size();
+        return favoriteRides.size();
     }
 }

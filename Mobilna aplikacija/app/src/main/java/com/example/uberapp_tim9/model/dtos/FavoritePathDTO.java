@@ -2,12 +2,13 @@ package com.example.uberapp_tim9.model.dtos;
 
 import com.example.uberapp_tim9.model.Location;
 
+import java.util.List;
 import java.util.Map;
 
 public class FavoritePathDTO {
     private int id;
     private String favoriteName;
-    private Map<String, Location> locations;
+    private List<RouteDTO> locations;
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
@@ -16,7 +17,7 @@ public class FavoritePathDTO {
 
     }
 
-    public FavoritePathDTO(int id, String favoriteName, Map<String, Location> locations, String vehicleType, boolean babyTransport, boolean petTransport) {
+    public FavoritePathDTO(int id, String favoriteName, List<RouteDTO> locations, String vehicleType, boolean babyTransport, boolean petTransport) {
         this.id = id;
         this.favoriteName = favoriteName;
         this.locations = locations;
@@ -33,7 +34,7 @@ public class FavoritePathDTO {
         return favoriteName;
     }
 
-    public Map<String, Location> getLocations() {
+    public List<RouteDTO> getLocations() {
         return locations;
     }
 

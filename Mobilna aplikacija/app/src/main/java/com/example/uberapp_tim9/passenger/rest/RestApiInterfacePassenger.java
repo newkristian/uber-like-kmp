@@ -7,6 +7,7 @@ import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationNowDTO;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -41,6 +42,13 @@ public interface RestApiInterfacePassenger {
     })
     @PUT(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}")
     Call<ResponseBody> updatePassenger(@Path("passenger_id") Integer passengerId, @Body PassengerWithoutIdPasswordDTO passenger);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "favorites/passenger/{passenger_id}")
+    Call<ResponseBody> getFavoriteRidesForPassengerId(@Path("passenger_id") Integer passengerId);
 
     @Headers({
             "User-Agent: Mobile-Android",
