@@ -7,6 +7,9 @@ import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationNowDTO;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,6 +20,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RestApiInterfacePassenger {
     String PASSENGER_API_PATH = "passenger";
@@ -50,6 +54,15 @@ public interface RestApiInterfacePassenger {
     })
     @GET(RestApiManager.BASE_URL + RIDE_API_PATH + "favorites/passenger/{passenger_id}")
     Call<ResponseBody> getFavoriteRidesForPassengerId(@Path("passenger_id") Integer passengerId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @GET(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}/report")
+    Call<ResponseBody> getReportForPassenger(@Path("passenger_id") Integer passengerId,
+                                             @Query("from") LocalDateTime from,
+                                             @Query("to") LocalDateTime to);
 
     @Headers({
             "User-Agent: Mobile-Android",
