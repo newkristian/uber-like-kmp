@@ -2,9 +2,15 @@ package com.example.uberapp_tim9.passenger;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.JsonWriter;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -18,7 +24,9 @@ import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -68,10 +76,15 @@ public class PassengerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passenger_main);
         setSupportActionBar(findViewById(R.id.passenger_toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         DrawerLayout drawerLayout = findViewById(R.id.passenger_drawer_layout);
         NavigationView navigationView = findViewById(R.id.passenger_nav_view);
-
+        View header = navigationView.getHeaderView(0);
+        ShapeableImageView sidenavPicture = header.findViewById(R.id.passenger_profile_picture);
+        TextView sidenavName = header.findViewById(R.id.passenger_name_surname);
+        byte[] decodedString = Base64.decode(LoggedUserInfo.profilePicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        sidenavPicture.setImageBitmap(decodedByte);
+        sidenavName.setText(LoggedUserInfo.name + " " + LoggedUserInfo.surname);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.passenger_nav_home, R.id.passenger_nav_account, R.id.passenger_nav_inbox, R.id.passenger_nav_ride_history)
                 .setOpenableLayout(drawerLayout)
@@ -80,6 +93,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         NotificationService.initContext(this);
         NotificationService.createNotificationChannel("Passenger","Passenger's notifications",CHANNEL_ID);
         Disposable driverAtLocation = socketsConfiguration.stompClient.topic("/driver-at-location/notification").subscribe(message ->
@@ -138,7 +152,8 @@ public class PassengerMainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_passenger_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+        boolean status = NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+        return status;
     }
 
     @Override

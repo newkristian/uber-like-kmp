@@ -27,9 +27,9 @@ public class RideRejectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_rejection);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Button sendRejectionReason = findViewById(R.id.close_panic_overlay_button);
+        Button sendRejectionReason = findViewById(R.id.login_button);
         sendRejectionReason.setOnClickListener(view ->{
-                        TextInputEditText reason = findViewById(R.id.message);
+                        TextInputEditText reason = findViewById(R.id.email_input);
                         String reasonText = reason.getText().toString().trim();
                         if(reasonText.length() == 0) {
                             reason.setError(getString(R.string.zeroLengthError));

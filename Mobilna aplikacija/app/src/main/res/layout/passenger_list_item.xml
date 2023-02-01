@@ -38,7 +38,7 @@
                 app:strokeWidth="3dp" />
 
             <TextView
-                android:id="@+id/message_bubble"
+                android:id="@+id/sidenav_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

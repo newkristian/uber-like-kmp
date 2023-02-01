@@ -234,10 +234,10 @@ public class PassengerMainFragment extends Fragment{
         panic = v.findViewById(R.id.panic_button);
         panic.setOnClickListener(view -> {updatePanicOverlay(false);});
         panicSend = v.findViewById(R.id.panic_message_send_button);
-        closeOverlay = v.findViewById(R.id.close_panic_overlay_button);
+        closeOverlay = v.findViewById(R.id.login_button);
         closeMessageOverlay = v.findViewById(R.id.close_message_overlay_button);
         messageOverlay = v.findViewById(R.id.message_overlay);
-        msg = v.findViewById(R.id.message);
+        msg = v.findViewById(R.id.email_input);
         closeMessageOverlay.setOnClickListener(view -> {
             updateMessagesOverlay(true);
         });

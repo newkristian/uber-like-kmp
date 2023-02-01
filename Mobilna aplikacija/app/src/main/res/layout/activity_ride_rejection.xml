@@ -41,7 +41,7 @@
             app:layout_constraintVertical_bias="0.083" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/message_input"
+            android:id="@+id/login_email_input_container"
             android:layout_width="355dp"
             android:layout_height="320dp"
             android:gravity="top|left"
@@ -64,7 +64,7 @@
             app:passwordToggleContentDescription="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/message"
+                android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
@@ -84,7 +84,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/close_panic_overlay_button"
+            android:id="@+id/login_button"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="170dp"
             android:layout_height="65dp"
@@ -103,7 +103,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/message_input" />
+            app:layout_constraintTop_toBottomOf="@+id/login_email_input_container" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,7 @@ public class DriverInRidePassengersAdapter extends RecyclerView.Adapter<DriverIn
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.message_bubble);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.sidenav_full_name);
             mCallImageView = (ImageView) itemView.findViewById(R.id.callImageView);
             mMessageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
         }

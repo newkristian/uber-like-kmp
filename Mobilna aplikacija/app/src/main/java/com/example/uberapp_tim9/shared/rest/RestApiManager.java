@@ -20,6 +20,7 @@ public class RestApiManager {
                     .build();
     public static RestApiInterfaceDriver restApiInterfaceDriver = retrofit.create(RestApiInterfaceDriver.class);
     public static RestApiInterfacePassenger restApiInterfacePassenger = retrofit.create(RestApiInterfacePassenger.class);
+    public static RestApiInterfaceShared restApiInterfaceShared = retrofit.create(RestApiInterfaceShared.class);
 
 
     public static OkHttpClient test(){

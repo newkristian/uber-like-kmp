@@ -47,7 +47,7 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             timeSent = itemView.findViewById(R.id.time_sent);
-            message = itemView.findViewById(R.id.message_bubble);
+            message = itemView.findViewById(R.id.sidenav_full_name);
         }
     }
 

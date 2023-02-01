@@ -268,7 +268,7 @@ public class DriverMainFragment extends Fragment {
             updateMessagesOverlay(true);
             panicButton.setClickable(true);
         });
-        msg = v.findViewById(R.id.message);
+        msg = v.findViewById(R.id.email_input);
         Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
                 {
                     Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());

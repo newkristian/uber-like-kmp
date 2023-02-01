@@ -21,7 +21,7 @@ public class PassengerRidePassengersAdapter extends RecyclerView.Adapter<Passeng
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.message_bubble);
+            mNameSurnameTextView = (TextView) itemView.findViewById(R.id.sidenav_full_name);
         }
 
         public TextView getmNameSurnameTextView() {
