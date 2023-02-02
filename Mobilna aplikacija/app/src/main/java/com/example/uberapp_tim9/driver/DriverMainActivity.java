@@ -1,10 +1,12 @@
 package com.example.uberapp_tim9.driver;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,8 @@ import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
+import com.example.uberapp_tim9.unregistered_user.LoginActivity;
+import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,6 +33,7 @@ public class DriverMainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     public static final String CHANNEL_ID = "DN";
     public static final int driver_id = LoggedUserInfo.id;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,10 @@ public class DriverMainActivity extends AppCompatActivity {
                 if(activeSwitch.isChecked()) Toast.makeText(getApplicationContext(),"Aktivan!",Toast.LENGTH_SHORT).show();
                 else Toast.makeText(getApplicationContext(),"Neaktivan!",Toast.LENGTH_SHORT).show();
 
+        });
+        logout = findViewById(R.id.logoutButton);
+        logout.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
         });
         NotificationService.initContext(this);
         //Driver related notification channel

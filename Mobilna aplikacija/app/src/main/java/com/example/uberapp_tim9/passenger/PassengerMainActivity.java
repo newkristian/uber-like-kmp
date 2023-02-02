@@ -2,6 +2,7 @@ package com.example.uberapp_tim9.passenger;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Base64;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +28,7 @@ import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
+import com.example.uberapp_tim9.unregistered_user.LoginActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -54,6 +57,7 @@ public class PassengerMainActivity extends AppCompatActivity {
     public static final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
     public static final int passengerId = LoggedUserInfo.id;
     public static final String CHANNEL_ID = "PN";
+    private Button logout;
     static class LocalDateAdapter implements JsonSerializer<LocalDateTime> {
 
         public JsonElement serialize(LocalDateTime date, Type typeOfSrc, JsonSerializationContext context) {
@@ -147,6 +151,11 @@ public class PassengerMainActivity extends AppCompatActivity {
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));
+
+        logout = findViewById(R.id.passengerLogoutButton);
+        logout.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+        });
     }
 
     @Override

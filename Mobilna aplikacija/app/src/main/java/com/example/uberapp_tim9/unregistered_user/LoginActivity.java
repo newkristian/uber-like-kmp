@@ -91,6 +91,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.code() == 200){
                     try {
                         LoggedUserCredentials user = gson.fromJson(response.body().string(), new TypeToken<LoggedUserCredentials>(){}.getType());
+                        if(user == null) {
+                            Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         LoggedUserInfo.cloneUserCredentials(user);
                         if(user.getRole().equals("ROLE_PASSENGER")) {
                             startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
@@ -102,8 +106,12 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Aplikaciju mogu koristiti samo vozač i putnik.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
