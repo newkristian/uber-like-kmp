@@ -17,6 +17,8 @@ public interface RestApiInterfaceDriver {
     String RIDE_API_PATH = "ride/";
     String DRIVER_API_PATH = "driver";
     String VEHICLE_API_PATH = "vehicle/";
+    String REVIEW_API_PATH = "review/";
+    String USER_API_PATH = "user/";
 
     @Headers({
             "User-Agent: Mobile-Android",
@@ -81,4 +83,12 @@ public interface RestApiInterfaceDriver {
     @PUT(RestApiManager.BASE_URL + VEHICLE_API_PATH + "{vehicle_id}/location")
     Call<ResponseBody> changeVehicleLocation(@Path("vehicle_id") String vehicleId, @Body LocationDTO location);
 
+    @GET(RestApiManager.BASE_URL + DRIVER_API_PATH  + "/{driver_id}/ride?page=0&size=1000")
+    Call<ResponseBody> getDriversRides(@Path("driver_id") String driverId);
+
+    @GET(RestApiManager.BASE_URL + REVIEW_API_PATH  + "{ride_id}?page=0&size=1000")
+    Call<ResponseBody> getRideReviews(@Path("ride_id") String rideId);
+
+    @GET(RestApiManager.BASE_URL + USER_API_PATH  + "{user_id}/message?page=0&size=1000")
+    Call<ResponseBody> getUserMessages(@Path("user_id") String userId);
 }

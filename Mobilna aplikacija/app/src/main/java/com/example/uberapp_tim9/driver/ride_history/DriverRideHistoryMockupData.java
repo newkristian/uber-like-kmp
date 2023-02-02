@@ -1,53 +1,42 @@
 package com.example.uberapp_tim9.driver.ride_history;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
+import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.model.Path;
 import com.example.uberapp_tim9.model.Review;
 import com.example.uberapp_tim9.model.Ride;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.model.dtos.RidePageDTO;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverRideHistoryMockupData {
-
-    public static List<Ride> getRides() {
-        ArrayList<Ride> rides = new ArrayList<Ride>();
-        Ride r1 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 20, 15, 13),
-                LocalDateTime.of(2022, Month.AUGUST, 20, 15, 45),
-                850,
-                Arrays.asList(new Path[]{new Path(0.4), new Path(0.3)}),
-                Arrays.asList(new Passenger[]{new Passenger(), new Passenger()}));
-
-        Ride r2 = new Ride(2, LocalDateTime.of(2022, Month.AUGUST, 25, 18, 04),
-                LocalDateTime.of(2022, Month.AUGUST, 25, 18, 15),
-                1150,
-                Arrays.asList(new Path[]{new Path(2.4)}),
-                Arrays.asList(new Passenger[]{new Passenger()}));
-
-        Ride r3 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 29, 20, 14),
-                LocalDateTime.of(2022, Month.AUGUST, 29, 20, 51),
-                350,
-                Arrays.asList(new Path[]{new Path(1), new Path(0.2), new Path(0.5)}),
-                Arrays.asList(new Passenger[]{new Passenger(), new Passenger(),new Passenger()}));
-
-        Ride r4 = new Ride(1, LocalDateTime.of(2022, Month.AUGUST, 30, 16, 48),
-                LocalDateTime.of(2022, Month.AUGUST, 30, 15, 59),
-                430,
-                Arrays.asList(new Path[]{new Path(0.96)}),
-                Arrays.asList(new Passenger[]{new Passenger()}));
-
-        rides.add(r1);
-        rides.add(r2);
-        rides.add(r3);
-        rides.add(r4);
-
-        return rides;
-    }
-
 
     public static List<Review> getRideReviews() {
         ArrayList<Review> reviews = new ArrayList<Review>();

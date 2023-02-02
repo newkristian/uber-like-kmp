@@ -38,6 +38,7 @@ import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.model.User;
 import com.example.uberapp_tim9.model.dtos.DriverDTO;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
+import com.example.uberapp_tim9.model.dtos.MessageSimpleDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
@@ -46,6 +47,7 @@ import com.example.uberapp_tim9.model.dtos.RouteDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
 import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -172,7 +174,7 @@ public class PassengerMainFragment extends Fragment{
                                     }
                                     Marker currentRideVehicle = MapFragment.driversMarkers.get(currentRide.getDriver().getId());
                                     currentRideVehicle.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.redcar));
-                                    mapUtils.DrawRoute(departure,destination);
+                                    mapUtils.DrawRoute(departure,destination,MapFragment.map);
                                     mapUtils.simulateRoute(departure,
                                                            destination,
                                                            MapFragment.driversMarkers.get(currentRide.getDriver().getId()),
@@ -212,7 +214,7 @@ public class PassengerMainFragment extends Fragment{
                             }
                         });
 
-                        startActivity(new Intent(getActivity(), PassengerReviewRideActivity.class));
+                        startActivity(new Intent(getActivity(), PassengerReviewRideActivity.class).putExtra("rideId",currentRide.getId()));
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));
@@ -303,13 +305,13 @@ public class PassengerMainFragment extends Fragment{
         messageSend = v.findViewById(R.id.message_send_button);
         Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
                 {
-                    Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());
-                    if(message_received.getSender().getId() == PassengerMainActivity.passengerId || message_received.getReceiver().getId() == PassengerMainActivity.passengerId) {
+                    MessageSimpleDTO message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<MessageSimpleDTO>(){}.getType());
+                    if(message_received.getSender() == LoggedUserInfo.id || message_received.getReceiver() == LoggedUserInfo.id) {
                         messagesListAdapter.getmMessageList().add(message_received);
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                if(message_received.getSender().getId() == PassengerMainActivity.passengerId) {
+                                if(message_received.getSender() == LoggedUserInfo.id) {
                                     msg.setText("");
                                 }
                                 messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
@@ -320,13 +322,13 @@ public class PassengerMainFragment extends Fragment{
                 throwable -> Log.e(TAG, throwable.getMessage()));
 
         messageSend.setOnClickListener(view -> {
-            Message message_new = new Message(msg_id,
+            MessageSimpleDTO message_new = new MessageSimpleDTO(msg_id,
+                    LoggedUserInfo.id,
+                    4,
                     msg.getText().toString(),
                     LocalDateTime.now(),
-                    new User(PassengerMainActivity.passengerId),
-                    new User(4),
                     MessageType.VOZNJA,
-                    new Ride(1));
+                    currentRide.getId());
             msg_id++;
             PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
         });

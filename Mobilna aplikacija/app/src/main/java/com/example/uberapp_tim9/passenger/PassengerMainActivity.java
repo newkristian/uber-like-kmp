@@ -52,7 +52,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
-    public static final int passengerId = 1;
+    public static final int passengerId = LoggedUserInfo.id;
     public static final String CHANNEL_ID = "PN";
     static class LocalDateAdapter implements JsonSerializer<LocalDateTime> {
 

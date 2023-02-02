@@ -32,6 +32,8 @@ import com.example.uberapp_tim9.model.Message;
 import com.example.uberapp_tim9.model.MessageType;
 import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.model.User;
+import com.example.uberapp_tim9.model.dtos.MessageDTO;
+import com.example.uberapp_tim9.model.dtos.MessageSimpleDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
@@ -42,6 +44,7 @@ import com.example.uberapp_tim9.model.dtos.VehicleDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.gms.maps.model.LatLng;
@@ -256,7 +259,7 @@ public class DriverMainFragment extends Fragment {
             });
         });
         routeLabel = v.findViewById(R.id.route_label);
-        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(4);
+        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(LoggedUserInfo.id);
         RecyclerView messagesList = v.findViewById(R.id.messages_list);
         LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
         messagesList.setLayoutManager(messagesLlm);
@@ -271,13 +274,13 @@ public class DriverMainFragment extends Fragment {
         msg = v.findViewById(R.id.email_input);
         Disposable message = PassengerMainActivity.socketsConfiguration.stompClient.topic("/message/notification").subscribe(payload ->
                 {
-                    Message message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<Message>(){}.getType());
-                    if(message_received.getSender().getId() == 4 || message_received.getReceiver().getId() == 4) {
+                    MessageSimpleDTO message_received = PassengerMainActivity.gson.fromJson(payload.getPayload(), new TypeToken<MessageSimpleDTO>(){}.getType());
+                    if(message_received.getSender() == LoggedUserInfo.id || message_received.getReceiver() == LoggedUserInfo.id) {
                         messagesListAdapter.getmMessageList().add(message_received);
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                if(message_received.getSender().getId() == 4) {
+                                if(message_received.getSender() == LoggedUserInfo.id) {
                                     msg.setText("");
                                 }
                                 messagesListAdapter.notifyItemInserted(messagesListAdapter.getmMessageList().size() - 1);
@@ -288,13 +291,13 @@ public class DriverMainFragment extends Fragment {
                 throwable -> Log.e(TAG, throwable.getMessage()));
 
         messageSend.setOnClickListener(view -> {
-            Message message_new = new Message(msg_id,
+            MessageSimpleDTO message_new = new MessageSimpleDTO(msg_id,
+                    LoggedUserInfo.id,
+                    1,
                     msg.getText().toString(),
                     LocalDateTime.now(),
-                    new User(4),
-                    new User(PassengerMainActivity.passengerId),
                     MessageType.VOZNJA,
-                    new Ride(1));
+                    acceptedRide.getId());
             PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
         });
         return v;

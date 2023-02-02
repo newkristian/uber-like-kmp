@@ -6,6 +6,14 @@ public class PassengerIdEmailDTO {
     private Integer id;
     private String email;
 
+    public PassengerIdEmailDTO(Integer id, String email) {
+        this.id = id;
+        this.email = email;
+    }
+
+    public PassengerIdEmailDTO() {
+    }
+
     public Integer getId() {
         return id;
     }

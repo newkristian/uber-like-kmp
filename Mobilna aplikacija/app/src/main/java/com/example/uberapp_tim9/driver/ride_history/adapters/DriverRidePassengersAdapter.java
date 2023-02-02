@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.driver.ride_history.DriverRideHistoryMockupData;
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DriverRidePassengersAdapter extends RecyclerView.Adapter<DriverRidePassengersAdapter.ViewHolder> {
 
+    private List<PassengerWithoutIdPasswordDTO> passengers;
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mNameSurnameTextView;
@@ -31,6 +35,10 @@ public class DriverRidePassengersAdapter extends RecyclerView.Adapter<DriverRide
         }
     }
 
+    public DriverRidePassengersAdapter(List<PassengerWithoutIdPasswordDTO> returnedPassengers) {
+        passengers = returnedPassengers;
+    }
+
     @NonNull
     @Override
     public DriverRidePassengersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,14 +49,13 @@ public class DriverRidePassengersAdapter extends RecyclerView.Adapter<DriverRide
 
     @Override
     public void onBindViewHolder(@NonNull DriverRidePassengersAdapter.ViewHolder holder, int position) {
-        List<Passenger> passengers = DriverRideHistoryMockupData.getPassengers();
         holder.getmNameSurnameTextView().setText(passengers.get(position).getName() + " " + passengers.get(position).getSurname());
     }
 
 
     @Override
     public int getItemCount() {
-        return DriverRideHistoryMockupData.getPassengers().size();
+        return passengers.size();
     }
 
 

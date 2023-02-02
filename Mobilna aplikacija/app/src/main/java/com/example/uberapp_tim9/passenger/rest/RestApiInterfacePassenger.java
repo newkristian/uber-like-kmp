@@ -1,10 +1,12 @@
 package com.example.uberapp_tim9.passenger.rest;
 
+import com.example.uberapp_tim9.model.dtos.DriverReviewDTO;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreationNowDTO;
+import com.example.uberapp_tim9.model.dtos.VehicleReviewDTO;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 
 import java.time.LocalDateTime;
@@ -80,4 +82,10 @@ public interface RestApiInterfacePassenger {
 
     @POST(RestApiManager.BASE_URL + "ride")
     Call<ResponseBody> createRide(@Body RideCreationNowDTO rideCreationDTO);
+
+    @POST(RestApiManager.BASE_URL + "review/{ride_id}/vehicle")
+    Call<ResponseBody> addVehicleReview(@Body VehicleReviewDTO vehicleReviewDTO,@Path("ride_id") Integer rideId);
+
+    @POST(RestApiManager.BASE_URL + "review/{ride_id}/driver")
+    Call<ResponseBody> addDriverReview(@Body DriverReviewDTO driverReviewDTO, @Path("ride_id") Integer rideId);
 }

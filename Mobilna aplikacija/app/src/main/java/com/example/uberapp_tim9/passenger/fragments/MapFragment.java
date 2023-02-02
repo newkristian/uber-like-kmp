@@ -180,7 +180,7 @@ public class MapFragment extends Fragment {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    public static void drawRoute(List<LatLng> waypoints) {
+    public static void drawRoute(List<LatLng> waypoints,GoogleMap map) {
         Marker marker = map.addMarker(new MarkerOptions().position(waypoints.get(0)));
         currentRideMarkers.add(marker);
         marker = map.addMarker(new MarkerOptions().position(waypoints.get(waypoints.size() - 1)));

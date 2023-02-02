@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.ride_history.DriverRideHistoryMockupData;
-import com.example.uberapp_tim9.model.Review;
+import com.example.uberapp_tim9.model.dtos.Review;
+import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
+import com.example.uberapp_tim9.model.dtos.ReviewRideDTO;
 
 import java.util.List;
 
 public class DriverRideReviewAdapter extends RecyclerView.Adapter<DriverRideReviewAdapter.ViewHolder> {
-
+    private List<Review> reviews;
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mMarkTextView;
@@ -36,6 +38,10 @@ public class DriverRideReviewAdapter extends RecyclerView.Adapter<DriverRideRevi
         }
     }
 
+    public DriverRideReviewAdapter(List<Review> returnedReviews) {
+        reviews = returnedReviews;
+    }
+
     @NonNull
     @Override
     public DriverRideReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,15 +52,14 @@ public class DriverRideReviewAdapter extends RecyclerView.Adapter<DriverRideRevi
 
     @Override
     public void onBindViewHolder(@NonNull DriverRideReviewAdapter.ViewHolder holder, int position) {
-        List<Review> reviews = DriverRideHistoryMockupData.getRideReviews();
-        holder.getmMarkTextView().setText(Integer.toString(reviews.get(position).getmRating()));
-        holder.getmCommentTextView().setText(reviews.get(position).getmComment());
+        holder.getmMarkTextView().setText(Integer.toString(reviews.get(position).getRating()));
+        holder.getmCommentTextView().setText(reviews.get(position).getComment());
     }
 
 
     @Override
     public int getItemCount() {
-        return DriverRideHistoryMockupData.getRideReviews().size();
+        return reviews.size();
     }
 
 

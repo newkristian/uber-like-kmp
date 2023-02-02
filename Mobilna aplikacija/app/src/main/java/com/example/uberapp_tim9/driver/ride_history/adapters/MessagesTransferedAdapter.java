@@ -1,4 +1,4 @@
-package com.example.uberapp_tim9.passenger.adapters;
+package com.example.uberapp_tim9.driver.ride_history.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Message;
-import com.example.uberapp_tim9.model.dtos.MessageSimpleDTO;
+import com.example.uberapp_tim9.model.dtos.MessageDTO;
+import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
+import com.example.uberapp_tim9.passenger.adapters.MessagesMockupData;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapter.ViewHolder> {
+public class MessagesTransferedAdapter extends RecyclerView.Adapter<MessagesTransferedAdapter.ViewHolder> {
 
     private final int currentUser;
+    private  List<MessageDTO> messages;
 
-    public MessagesListAdapter(int currentUser) {
+    public MessagesTransferedAdapter(int currentUser,List<MessageDTO> messages) {
         this.currentUser = currentUser;
+        this.messages = messages;
     }
 
 
@@ -56,17 +59,17 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
-    public List<MessageSimpleDTO> getmMessageList() {
+    public List<Message> getmMessageList() {
         return mMessageList;
     }
 
-    private List<MessageSimpleDTO> mMessageList = new ArrayList<>();
+    private List<Message> mMessageList = MessagesMockupData.messages;
 
     @Override
     public int getItemViewType(int position) {
-        MessageSimpleDTO message = mMessageList.get(position);
+        Message message = mMessageList.get(position);
 
-        if (message.getSender() == currentUser) {
+        if (message.getSender().getId() == currentUser) {
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
             return VIEW_TYPE_MESSAGE_RECEIVED;
@@ -75,7 +78,7 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MessagesTransferedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
         if(viewType == VIEW_TYPE_MESSAGE_SENT) {
             view = LayoutInflater.from(parent.getContext())
@@ -85,19 +88,17 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.message_list_item_other, parent, false);
         }
-        return new ViewHolder(view);
+        return new MessagesTransferedAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getMessage().setText(mMessageList.get(position).getMessage());
-        holder.getTimeSent().setText(mMessageList.get(position).getSentDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+    public void onBindViewHolder(@NonNull MessagesTransferedAdapter.ViewHolder holder, int position) {
+        holder.getMessage().setText(messages.get(position).getMessage());
+        holder.getTimeSent().setText(messages.get(position).getSentDateTime().format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     @Override
     public int getItemCount() {
-        return mMessageList.size();
+        return messages.size();
     }
-
 }
-

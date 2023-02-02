@@ -3,11 +3,11 @@ package com.example.uberapp_tim9.model;
 public class Location {
     private String mAddress;
     private double mLatitude;
-    private double mLongtitude;
+    private double mLongitude;
 
     public Location(double mLatitude, double mLongtitude, String mAddress) {
         this.mLatitude = mLatitude;
-        this.mLongtitude = mLongtitude;
+        this.mLongitude = mLongtitude;
         this.mAddress = mAddress;
     }
 
@@ -19,8 +19,8 @@ public class Location {
         return mLatitude;
     }
 
-    public double getmLongtitude() {
-        return mLongtitude;
+    public double getmLongitude() {
+        return mLongitude;
     }
 
     public String getmAddress() {

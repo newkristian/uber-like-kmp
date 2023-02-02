@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         if(password_input.length() == 0) {
             password.setError(getString(R.string.zeroLengthError));
+            return;
         }
         UserLoginDTO loginDTO = new UserLoginDTO(email_input,password_input);
         Call<ResponseBody> login = RestApiManager.restApiInterfaceShared.login(loginDTO);

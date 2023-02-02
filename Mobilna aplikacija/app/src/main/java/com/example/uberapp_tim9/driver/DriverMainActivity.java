@@ -28,6 +28,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static final String CHANNEL_ID = "DN";
+    public static final int driver_id = LoggedUserInfo.id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

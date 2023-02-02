@@ -98,4 +98,120 @@ public class Ride {
     {
         return mPassengers.size();
     }
+
+    public int getmID() {
+        return mID;
+    }
+
+    public void setmID(int mID) {
+        this.mID = mID;
+    }
+
+    public void setmStartTime(LocalDateTime mStartTime) {
+        this.mStartTime = mStartTime;
+    }
+
+    public void setmEndTime(LocalDateTime mEndTime) {
+        this.mEndTime = mEndTime;
+    }
+
+    public void setmTotalPrice(double mTotalPrice) {
+        this.mTotalPrice = mTotalPrice;
+    }
+
+    public void setmEstimatedTime(LocalTime mEstimatedTime) {
+        this.mEstimatedTime = mEstimatedTime;
+    }
+
+    public RideStatus getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(RideStatus mStatus) {
+        this.mStatus = mStatus;
+    }
+
+    public boolean ismIsPanicPressed() {
+        return mIsPanicPressed;
+    }
+
+    public void setmIsPanicPressed(boolean mIsPanicPressed) {
+        this.mIsPanicPressed = mIsPanicPressed;
+    }
+
+    public boolean ismHasBaby() {
+        return mHasBaby;
+    }
+
+    public void setmHasBaby(boolean mHasBaby) {
+        this.mHasBaby = mHasBaby;
+    }
+
+    public boolean ismHasPets() {
+        return mHasPets;
+    }
+
+    public void setmHasPets(boolean mHasPets) {
+        this.mHasPets = mHasPets;
+    }
+
+    public boolean ismIsSplitFare() {
+        return mIsSplitFare;
+    }
+
+    public void setmIsSplitFare(boolean mIsSplitFare) {
+        this.mIsSplitFare = mIsSplitFare;
+    }
+
+    public List<Payment> getmPayments() {
+        return mPayments;
+    }
+
+    public void setmPayments(List<Payment> mPayments) {
+        this.mPayments = mPayments;
+    }
+
+    public List<Path> getmPaths() {
+        return mPaths;
+    }
+
+    public void setmPaths(List<Path> mPaths) {
+        this.mPaths = mPaths;
+    }
+
+    public void setmPassengers(List<Passenger> mPassengers) {
+        this.mPassengers = mPassengers;
+    }
+
+    public List<Review> getmReviews() {
+        return mReviews;
+    }
+
+    public void setmReviews(List<Review> mReviews) {
+        this.mReviews = mReviews;
+    }
+
+    public VehicleType getmVehicleType() {
+        return mVehicleType;
+    }
+
+    public void setmVehicleType(VehicleType mVehicleType) {
+        this.mVehicleType = mVehicleType;
+    }
+
+    public Driver getmDriver() {
+        return mDriver;
+    }
+
+    public void setmDriver(Driver mDriver) {
+        this.mDriver = mDriver;
+    }
+
+    public Rejection getmRejection() {
+        return mRejection;
+    }
+
+    public void setmRejection(Rejection mRejection) {
+        this.mRejection = mRejection;
+    }
 }

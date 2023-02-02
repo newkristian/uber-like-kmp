@@ -18,6 +18,7 @@ import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
@@ -115,10 +116,12 @@ public class MapInit {
 
         private LatLng departure;
         private LatLng destination;
+        private GoogleMap map;
 
-        public DrawRoute(LatLng departure, LatLng destination) {
+        public DrawRoute(LatLng departure, LatLng destination, GoogleMap map) {
             this.departure = departure;
             this.destination = destination;
+            this.map = map;
         }
 
         @Override
@@ -139,7 +142,7 @@ public class MapInit {
             List<LatLng> waypoints = null;
             try {
                 waypoints = decodePoly(result);
-                MapFragment.drawRoute(waypoints);
+                MapFragment.drawRoute(waypoints,map);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -304,9 +307,9 @@ public class MapInit {
         simulation.execute(url);
     }
 
-    public void DrawRoute(LatLng departure, LatLng destination) {
+    public void DrawRoute(LatLng departure, LatLng destination,GoogleMap map) {
         String url = getDirectionsUrl(departure,destination);
-        DrawRoute drawRoute = new DrawRoute(departure,destination);
+        DrawRoute drawRoute = new DrawRoute(departure,destination,map);
         drawRoute.execute(url);
     }
 }
