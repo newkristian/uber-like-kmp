@@ -31,6 +31,7 @@ import com.example.uberapp_tim9.model.Passenger;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.passenger.PassengerReportActivity;
 import com.example.uberapp_tim9.passenger.favorite_rides.PassengerFavoriteRidesActivity;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.common.util.Strings;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -52,7 +53,6 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class PassengerAccountFragment extends Fragment {
-    private final Integer PASSENGER_ID = 1;
     private final int PHOTOS_REQ_CODE = 1000;
     private final int CAMERA_REQ_CODE = 1;
 
@@ -90,7 +90,7 @@ public class PassengerAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Call<ResponseBody> getPassengerCall = RestApiManager.restApiInterfacePassenger.getPassenger(PASSENGER_ID);
+        Call<ResponseBody> getPassengerCall = RestApiManager.restApiInterfacePassenger.getPassenger(LoggedUserInfo.id);
         getPassengerCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -163,7 +163,7 @@ public class PassengerAccountFragment extends Fragment {
                     String.valueOf(((TextInputEditText) view.findViewById(R.id.address_text_input_edit_text)).getText())
             );
 
-            Call<ResponseBody> updatePassengerCall = RestApiManager.restApiInterfacePassenger.updatePassenger(PASSENGER_ID, passengerDTO);
+            Call<ResponseBody> updatePassengerCall = RestApiManager.restApiInterfacePassenger.updatePassenger(LoggedUserInfo.id, passengerDTO);
             updatePassengerCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

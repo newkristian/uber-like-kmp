@@ -15,6 +15,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.ride_history.DriverInRidePassengersData;
 import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.directions.TaskLoadedCallBack;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.gson.Gson;
@@ -30,8 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PassengerFavoriteRidesActivity extends AppCompatActivity {
-    private static final int PASSENGER_ID = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +44,7 @@ public class PassengerFavoriteRidesActivity extends AppCompatActivity {
         final List<FavoritePathDTO>[] favoriteRides = new List[]{PassengerFavoriteRoutesMockupData.getPaths()};
         PassengerFavoriteRidesAdapter adapter = new PassengerFavoriteRidesAdapter(this, favoriteRides[0]);
 
-        Call<ResponseBody> getAllFavoriteRides = RestApiManager.restApiInterfacePassenger.getFavoriteRidesForPassengerId(PASSENGER_ID);
+        Call<ResponseBody> getAllFavoriteRides = RestApiManager.restApiInterfacePassenger.getFavoriteRidesForPassengerId(LoggedUserInfo.id);
         getAllFavoriteRides.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
