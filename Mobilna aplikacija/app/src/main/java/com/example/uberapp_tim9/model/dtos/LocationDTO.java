@@ -14,6 +14,7 @@ public class LocationDTO {
     }
 
     public LocationDTO(Location location) {
+        this.address = location.getmAddress();
         this.latitude = location.getmLatitude();
         this.longitude = location.getmLongitude();
     }

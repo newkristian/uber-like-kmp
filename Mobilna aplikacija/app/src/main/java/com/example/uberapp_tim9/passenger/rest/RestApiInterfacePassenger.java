@@ -1,6 +1,7 @@
 package com.example.uberapp_tim9.passenger.rest;
 
 import com.example.uberapp_tim9.model.dtos.DriverReviewDTO;
+import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
@@ -85,6 +86,9 @@ public interface RestApiInterfacePassenger {
 
     @POST(RestApiManager.BASE_URL + "ride")
     Call<ResponseBody> createRide(@Body RideCreationNowDTO rideCreationDTO);
+
+    @POST(RestApiManager.BASE_URL + RIDE_API_PATH + "favorites")
+    Call<ResponseBody> addFavoriteRide(@Body FavoritePathDTO favoritePathDTO);
 
     @POST(RestApiManager.BASE_URL + "review/{ride_id}/vehicle")
     Call<ResponseBody> addVehicleReview(@Body VehicleReviewDTO vehicleReviewDTO,@Path("ride_id") Integer rideId);

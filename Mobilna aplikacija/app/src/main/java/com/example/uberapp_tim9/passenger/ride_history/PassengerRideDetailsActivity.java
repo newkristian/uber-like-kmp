@@ -16,14 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Ride;
+import com.example.uberapp_tim9.model.dtos.FavoritePathDTO;
 import com.example.uberapp_tim9.model.dtos.Review;
 import com.example.uberapp_tim9.model.dtos.ReviewRideDTO;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
+import com.example.uberapp_tim9.passenger.favorite_rides.PassengerFavoriteRoutesMockupData;
 import com.example.uberapp_tim9.passenger.inbox.PassengerInboxFragment;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideAdapter;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRideDriverAdapter;
@@ -46,6 +49,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +70,9 @@ implements TaskLoadedCallBack {
     private Button closeMessagesButton;
     private Button leaveReviewButton;
     private RecyclerView reviewList;
+    private Button orderAgainButton;
+    private Button reserveButton;
+    private Button favoriteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,10 @@ implements TaskLoadedCallBack {
         toolbar.setDisplayShowTitleEnabled(false);
 
         messageOverlay = findViewById(R.id.message_overlay);
+
+        orderAgainButton = findViewById(R.id.orderAgainButton);
+        reserveButton = findViewById(R.id.reserveButton);
+        favoriteButton = findViewById(R.id.favoriteButton);
 
         ride = PassengerMainActivity.gson.fromJson(getIntent().getStringExtra("ride"),
                 new TypeToken<Ride>() {}.getType());
@@ -127,6 +139,10 @@ implements TaskLoadedCallBack {
 
         leaveReviewButton = findViewById(R.id.leaveReviewButton);
 
+        if (ride.getmEndTime().plusDays(3).isBefore(LocalDateTime.now())) {
+            leaveReviewButton.setVisibility(Button.GONE);
+        }
+
         leaveReviewButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), PassengerReviewRideActivity.class)
                     .putExtra("rideId", ride.getmID());
@@ -149,6 +165,82 @@ implements TaskLoadedCallBack {
         closeMessagesButton = findViewById(R.id.close_message_overlay_button);
         closeMessagesButton.setOnClickListener(v -> {
             updateMessagesOverlay(true);
+        });
+
+        Call<ResponseBody> getAllFavoriteRides = RestApiManager.restApiInterfacePassenger.getFavoriteRidesForPassengerId(LoggedUserInfo.id);
+        getAllFavoriteRides.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try{
+                        String json = response.body().string();
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<FavoritePathDTO>>(){}.getType();
+                        List<FavoritePathDTO> favoriteRides = gson.fromJson(json, listType);
+                        for (FavoritePathDTO dto : favoriteRides) {
+                            if (dto.getRideId().equals(ride.getmID())) {
+                                favoriteButton.setVisibility(View.GONE);
+                                break;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Log.e("FAVORITERIDES", ex.getMessage());
+                    }
+                } else {
+                    Log.d("FavoriteRides", "Error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+            }
+        });
+
+        orderAgainButton.setOnClickListener(view -> {
+            Intent intent = new Intent(this, PassengerMainActivity.class);
+            intent.putExtra("departure", ride.getmPaths().get(0).getmStartPoint().getmAddress());
+            intent.putExtra("destination", ride.getmPaths().get(0).getmEndPoint().getmAddress());
+            intent.putExtra("vehicleType", ride.getmVehicleType());
+            intent.putExtra("babyTransport", ride.ismHasBaby());
+            intent.putExtra("petTransport", ride.ismHasPets());
+
+            intent.putExtra("orderNow", true);
+            startActivity(intent);
+            Toast.makeText(this, "Inicijalni podaci su uneti.", Toast.LENGTH_SHORT).show();
+        });
+
+        reserveButton.setOnClickListener(view -> {
+            Intent intent = new Intent(this, PassengerMainActivity.class);
+            intent.putExtra("departure", ride.getmPaths().get(0).getmStartPoint().getmAddress());
+            intent.putExtra("destination", ride.getmPaths().get(0).getmEndPoint().getmAddress());
+            intent.putExtra("vehicleType", ride.getmVehicleType());
+            intent.putExtra("babyTransport", ride.ismHasBaby());
+            intent.putExtra("petTransport", ride.ismHasPets());
+
+            intent.putExtra("orderNow", false);
+            startActivity(intent);
+            Toast.makeText(this, "Inicijalni podaci su uneti.", Toast.LENGTH_SHORT).show();
+        });
+
+        favoriteButton.setOnClickListener(view -> {
+            Call<ResponseBody> addFavoriteRide = RestApiManager.restApiInterfacePassenger.addFavoriteRide(new FavoritePathDTO(ride));
+            addFavoriteRide.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(PassengerRideDetailsActivity.this, "Uspešno ste dodali vožnju u omiljene.", Toast.LENGTH_SHORT).show();
+                        favoriteButton.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Došlo je do greške.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("RIDE", "Error: " + t.getMessage());
+                }
+            });
         });
     }
 

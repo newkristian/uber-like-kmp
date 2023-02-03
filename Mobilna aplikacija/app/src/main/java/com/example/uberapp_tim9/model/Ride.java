@@ -26,7 +26,7 @@ public class Ride {
     private List<Path> mPaths;
     private List<Passenger> mPassengers;
     private List<Review> mReviews;
-    private VehicleType mVehicleType;
+    private String mVehicleType;
     private Driver mDriver;
     private Rejection mRejection;
 
@@ -86,6 +86,9 @@ public class Ride {
             this.mPassengers.add(new Passenger(passenger));
         }
         this.mDriver = new Driver(dto.getDriver());
+        this.mHasPets = dto.getPetTransport();
+        this.mHasBaby = dto.getBabyTransport();
+        this.mVehicleType = dto.getVehicleType();
     }
 
 
@@ -218,11 +221,11 @@ public class Ride {
         this.mReviews = mReviews;
     }
 
-    public VehicleType getmVehicleType() {
+    public String getmVehicleType() {
         return mVehicleType;
     }
 
-    public void setmVehicleType(VehicleType mVehicleType) {
+    public void setmVehicleType(String mVehicleType) {
         this.mVehicleType = mVehicleType;
     }
 

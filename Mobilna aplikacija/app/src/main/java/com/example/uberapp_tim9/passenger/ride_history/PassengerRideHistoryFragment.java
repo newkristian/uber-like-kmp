@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -69,6 +70,8 @@ public class PassengerRideHistoryFragment extends Fragment {
                     for (RideCreatedDTO ride : val.getResults()) {
                         rides[0].add(new Ride(ride));
                     }
+
+                    rides[0].sort(Comparator.comparing(Ride::getmStartTime));
 
                     PassengerRidesAdapter adapter = new PassengerRidesAdapter(rides[0]);
                     list.setAdapter(adapter);

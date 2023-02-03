@@ -55,6 +55,9 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         ArrayList<LatLng> points;
         PolylineOptions lineOptions = null;
         // Traversing through all the routes
+        if (result == null) {
+            return;
+        }
         for (int i = 0; i < result.size(); i++) {
             points = new ArrayList<>();
             lineOptions = new PolylineOptions();
