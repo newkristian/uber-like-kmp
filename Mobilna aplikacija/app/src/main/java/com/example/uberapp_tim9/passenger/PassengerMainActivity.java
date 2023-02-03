@@ -152,6 +152,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         logout = findViewById(R.id.passengerLogoutButton);
         logout.setOnClickListener(v -> {
+
             startActivity(new Intent(this, LoginActivity.class));
         });
     }

@@ -10,6 +10,7 @@ public class LoggedUserInfo {
     public static String email;
     public static String profilePicture;
     public static String role;
+    public static int shiftId = -1;
 
     public static void cloneUserCredentials(LoggedUserCredentials credentials) {
        LoggedUserInfo.id = credentials.getId();

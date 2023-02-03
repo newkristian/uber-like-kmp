@@ -2,6 +2,8 @@ package com.example.uberapp_tim9.driver.rest;
 
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.RejectionReasonDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursEndDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursStartDTO;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 
 import okhttp3.ResponseBody;
@@ -9,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -94,4 +97,18 @@ public interface RestApiInterfaceDriver {
 
     @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "/{driver_id}")
     Call<ResponseBody> getDriver(@Path("driver_id") Integer driverId);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST(RestApiManager.BASE_URL + DRIVER_API_PATH + "/{id}/working-hour")
+    Call<ResponseBody> startShift(@Path("id") Integer id, @Body WorkingHoursStartDTO dto);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT(RestApiManager.BASE_URL + DRIVER_API_PATH + "/working-hour/{id}")
+    Call<ResponseBody> endShift(@Path("id") Integer id, @Body WorkingHoursEndDTO dto);
 }

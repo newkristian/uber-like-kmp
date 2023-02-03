@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,11 +23,24 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.notificationManager.NotificationService;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursEndDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursStartDTO;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
+import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.example.uberapp_tim9.unregistered_user.LoginActivity;
 import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverMainActivity extends AppCompatActivity {
 
@@ -65,12 +79,68 @@ public class DriverMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SwitchCompat activeSwitch = findViewById(R.id.activeSwitch);
         activeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(activeSwitch.isChecked()) Toast.makeText(getApplicationContext(),"Aktivan!",Toast.LENGTH_SHORT).show();
-                else Toast.makeText(getApplicationContext(),"Neaktivan!",Toast.LENGTH_SHORT).show();
+                if (activeSwitch.isChecked()) {
+                    Call<ResponseBody> startShift = RestApiManager.restApiInterfaceDriver.startShift(LoggedUserInfo.id, new WorkingHoursStartDTO());
+                    startShift.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                try {
+                                    WorkingHoursDTO dto = new Gson().fromJson(response.body().string(),
+                                            new TypeToken<WorkingHoursDTO>(){}.getType());
+                                    LoggedUserInfo.shiftId = dto.getId();
+                                    activeSwitch.setText("Aktivan");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Log.d("SHIFT", "Failed to start shift " + response);
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("ERROR", t.getMessage());
+                        }
+                    });
+                } else {
+                    Call<ResponseBody> endShift = RestApiManager.restApiInterfaceDriver.endShift(LoggedUserInfo.shiftId, new WorkingHoursEndDTO());
+                    endShift.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                activeSwitch.setText("Neaktivan");
+                            } else {
+                                Log.d("SHIFT", "Failed to start shift " + response);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.d("ERROR", t.getMessage());
+                        }
+                    });
+                }
         });
         logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(v -> {
+            Call<ResponseBody> endShift = RestApiManager.restApiInterfaceDriver.endShift(LoggedUserInfo.shiftId, new WorkingHoursEndDTO());
+            endShift.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("SHIFT", "SUCCESS");
+                    } else {
+                        Log.d("SHIFT", "Failed to start shift " + response);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("ERROR", t.getMessage());
+                }
+            });
+
             startActivity(new Intent(this, LoginActivity.class));
         });
         NotificationService.initContext(this);

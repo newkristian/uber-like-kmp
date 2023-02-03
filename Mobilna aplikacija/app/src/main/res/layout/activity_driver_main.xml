@@ -44,6 +44,7 @@
             android:textColor="@color/white"
             android:textColorHighlight="@color/sky_blue"
             android:textSize="20sp"
+            android:checked="true"
             app:thumbTint="@color/teal" />
 
         <Button

@@ -19,6 +19,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.dtos.DriverDTO;
 import com.example.uberapp_tim9.model.dtos.DriverPageDTO;
 import com.example.uberapp_tim9.model.dtos.VehicleDTO;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -111,7 +112,7 @@ public class MapFragment extends Fragment {
                                                                     .icon(BitmapFromVector(getActivity(), R.drawable.greencar)));
                                                             driversMarkers.put(driver.getId(),marker);
                                                         }
-                                                        if(driver.getId() == 4 && isDriver) {
+                                                        if(driver.getId() == LoggedUserInfo.id && isDriver) {
                                                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),16.0f));
                                                         }
                                                     }

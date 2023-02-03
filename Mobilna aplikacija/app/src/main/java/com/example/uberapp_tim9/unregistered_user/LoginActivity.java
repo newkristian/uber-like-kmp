@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.model.dtos.UserLoginDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursDTO;
+import com.example.uberapp_tim9.model.dtos.WorkingHoursStartDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.model.LoggedUserCredentials;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
@@ -91,15 +93,36 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.code() == 200){
                     try {
                         LoggedUserCredentials user = gson.fromJson(response.body().string(), new TypeToken<LoggedUserCredentials>(){}.getType());
-                        if(user == null) {
+                        if(user == null || user.getRole() == null) {
                             Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         LoggedUserInfo.cloneUserCredentials(user);
                         if(user.getRole().equals("ROLE_PASSENGER")) {
                             startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
-                        }
-                        else if(user.getRole().equals("ROLE_DRIVER")) {
+                        } else if(user.getRole().equals("ROLE_DRIVER")) {
+                            Call<ResponseBody> startShift = RestApiManager.restApiInterfaceDriver.startShift(LoggedUserInfo.id, new WorkingHoursStartDTO());
+                            startShift.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    if (response.isSuccessful()) {
+                                        try {
+                                            WorkingHoursDTO dto = new Gson().fromJson(response.body().string(),
+                                                    new TypeToken<WorkingHoursDTO>(){}.getType());
+                                            LoggedUserInfo.shiftId = dto.getId();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        Log.d("SHIFT", "Failed to start shift " + response);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    Log.e("ERROR", t.getMessage());
+                                }
+                            });
                             startActivity(new Intent(getApplicationContext(), DriverMainActivity.class));
                         }
                         else {
