@@ -15,6 +15,7 @@ import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidesAdapter;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RidePageDTO;
+import com.example.uberapp_tim9.model.enumerations.RideStatus;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.gson.Gson;
@@ -67,7 +68,11 @@ public class DriverRideHistoryFragment extends Fragment {
                         }
                     }).create();
                     RidePageDTO val = gson.fromJson(response.body().string(), new TypeToken<RidePageDTO>() {}.getType());
-                    rides[0].addAll(val.getResults());
+                    for (RideCreatedDTO dto : val.getResults()) {
+                        if (!dto.getStatus().equals(RideStatus.FINISHED))
+                            continue;
+                        rides[0].add(dto);
+                    }
                     DriverRidesAdapter adapter = new DriverRidesAdapter(rides[0]);
                     list.setAdapter(adapter);
 

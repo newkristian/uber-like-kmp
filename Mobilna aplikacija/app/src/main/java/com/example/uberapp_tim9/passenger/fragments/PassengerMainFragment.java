@@ -250,8 +250,7 @@ public class PassengerMainFragment extends Fragment{
             String reasonText = reason.getText().toString().trim();
             if(reasonText.length() == 0) {
                 reason.setError(getString(R.string.zeroLengthError));
-            }
-            else {
+            } else {
                 String rideId = Integer.toString(currentRide.getId());
                 RejectionReasonDTO reasonDTO = new RejectionReasonDTO(reasonText);
                 Call<ResponseBody> call = RestApiManager.restApiInterfacePassenger.panic(rideId,reasonDTO);

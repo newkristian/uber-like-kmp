@@ -99,6 +99,10 @@ public class DriverMainFragment extends Fragment {
 
     private Marker driverMarker;
 
+    private static FrameLayout panicOverlay;
+    private static Button closeOverlay;
+    private static Button panicSend;
+
     public DriverMainFragment() {}
 
     @Override
@@ -133,6 +137,10 @@ public class DriverMainFragment extends Fragment {
         endRideButton = v.findViewById(R.id.endRideButton);
         context = getActivity();
 
+        panicOverlay = v.findViewById(R.id.panic_overlay);
+        closeOverlay = v.findViewById(R.id.close_button);
+        panicSend = v.findViewById(R.id.panic_message_send_button);
+
         DriverInRidePassengersAdapter adapter = new DriverInRidePassengersAdapter();
         RecyclerView list = v.findViewById(R.id.passengers_list);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -140,8 +148,39 @@ public class DriverMainFragment extends Fragment {
         list.setAdapter(adapter);
 
         panicButton.setOnClickListener(view -> {
-            Toast.makeText(context, "Support služba je obaveštena.", Toast.LENGTH_SHORT).show();
-            hidePanicButton();
+            updatePanicOverlay(false);
+//            Toast.makeText(context, "Support služba je obaveštena.", Toast.LENGTH_SHORT).show();
+//            hidePanicButton();
+        });
+
+        panicSend.setOnClickListener(view -> {
+            TextInputEditText reason = v.findViewById(R.id.panic_message);
+            String reasonText = reason.getText().toString().trim();
+            if(reasonText.length() == 0) {
+                reason.setError(getString(R.string.zeroLengthError));
+            } else {
+                String rideId = Integer.toString(acceptedRide.getId());
+                RejectionReasonDTO reasonDTO = new RejectionReasonDTO(reasonText);
+                Call<ResponseBody> call = RestApiManager.restApiInterfacePassenger.panic(rideId, reasonDTO);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.code() == 200){
+                            Toast.makeText(getActivity(), "Panic uspešno poslat!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Vožnja ne postoji!", Toast.LENGTH_SHORT).show();
+                        }
+                        updatePanicOverlay(true);
+                        panicButton.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                    }
+                });
+            }
         });
 
         endRideButton.setOnClickListener(view -> {
@@ -301,6 +340,14 @@ public class DriverMainFragment extends Fragment {
             PassengerMainActivity.socketsConfiguration.stompClient.send("/topic/message",PassengerMainActivity.gson.toJson(message_new)).subscribe();
         });
         return v;
+    }
+
+    private void updatePanicOverlay(boolean hide) {
+        if (hide) {
+            panicOverlay.setVisibility(View.GONE);
+            return;
+        }
+        panicOverlay.setVisibility(View.VISIBLE);
     }
 
     public static void sendOnLocationNotification(String rideId) {

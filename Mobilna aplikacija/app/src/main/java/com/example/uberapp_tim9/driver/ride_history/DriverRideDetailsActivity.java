@@ -97,9 +97,12 @@ public class DriverRideDetailsActivity extends AppCompatActivity {
                     Log.e(TAG,"HEEEEEEEEEEEEERE:" + responseMessages.body().string());
                     MessagePageDTO returned = PassengerMainActivity.gson.fromJson(responseMessages.body().string(),new TypeToken<MessagePageDTO>() {}.getType());
                     List<MessageDTO> rideMessages = new ArrayList<>();
-                    for(MessageDTO message : returned.getResults()) {
-                        if(message.getRide() != null && message.getRide().getmID() == ride.getId()){
-                            rideMessages.add(message);
+                    
+                    if (returned != null) {
+                        for(MessageDTO message : returned.getResults()) {
+                            if(message.getRide() != null && message.getRide().getmID() == ride.getId()){
+                                rideMessages.add(message);
+                            }
                         }
                     }
 

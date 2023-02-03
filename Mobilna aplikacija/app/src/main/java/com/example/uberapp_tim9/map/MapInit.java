@@ -235,7 +235,7 @@ public class MapInit {
                                     } else {
                                         new Handler().postDelayed(() ->
                                                         DriverMainFragment.cancelAfter5Minutes(RIDE_ID),
-                                                5000);
+                                                15000);
                                     }
                                     handler.removeCallbacksAndMessages(null);
                                 }

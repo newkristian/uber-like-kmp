@@ -14,6 +14,7 @@ import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Ride;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RidePageDTO;
+import com.example.uberapp_tim9.model.enumerations.RideStatus;
 import com.example.uberapp_tim9.passenger.ride_history.adapters.PassengerRidesAdapter;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
@@ -68,7 +69,9 @@ public class PassengerRideHistoryFragment extends Fragment {
 
                     RidePageDTO val = gson.fromJson(response.body().string(), new TypeToken<RidePageDTO>() {}.getType());
                     for (RideCreatedDTO ride : val.getResults()) {
-                        rides[0].add(new Ride(ride));
+                        if (ride.getStatus().equals(RideStatus.FINISHED)) {
+                            rides[0].add(new Ride(ride));
+                        }
                     }
 
                     rides[0].sort(Comparator.comparing(Ride::getmStartTime));

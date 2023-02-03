@@ -16,6 +16,7 @@ import com.example.uberapp_tim9.passenger.ride_history.PassengerRideDetailsActiv
 import com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryMockupData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,11 +85,12 @@ public class PassengerRideAdapter extends RecyclerView.Adapter<PassengerRideAdap
 
     @Override
     public void onBindViewHolder(@NonNull PassengerRideAdapter.ViewHolder holder, int position) {
-        holder.getmStartTimeTextView().setText(ride.getmStartTime().toString());
-        holder.getmEndTimeTextView().setText(ride.getmEndTime().toString());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        holder.getmStartTimeTextView().setText(ride.getmStartTime().format(dtf));
+        holder.getmEndTimeTextView().setText(ride.getmEndTime().format(dtf));
         holder.getmDistanceTextView().setText(String.format(Locale.getDefault(), "%.2f km", ride.getTotalKilometers()));
         holder.getmPassengersTotalTextView().setText(Integer.toString(ride.getTotalPassengers()));
-        holder.getmPriceTotalTextView().setText(ride.getmTotalPrice() + " din");
+        holder.getmPriceTotalTextView().setText(String.format("%.2f din", ride.getmTotalPrice()));
     }
 
     @Override
