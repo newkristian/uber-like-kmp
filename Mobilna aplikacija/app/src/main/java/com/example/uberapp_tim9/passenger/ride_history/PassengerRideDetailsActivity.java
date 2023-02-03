@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Ride;
@@ -59,6 +61,10 @@ implements TaskLoadedCallBack {
     private MapView mapView;
     private GoogleMap googleMaps = null;
     private Polyline currentPolylines = null;
+    private FrameLayout messageOverlay;
+    private Button closeMessagesButton;
+    private Button leaveReviewButton;
+    private RecyclerView reviewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,8 @@ implements TaskLoadedCallBack {
         ActionBar toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         toolbar.setDisplayShowTitleEnabled(false);
+
+        messageOverlay = findViewById(R.id.message_overlay);
 
         ride = PassengerMainActivity.gson.fromJson(getIntent().getStringExtra("ride"),
                 new TypeToken<Ride>() {}.getType());
@@ -117,11 +125,34 @@ implements TaskLoadedCallBack {
         driverList.setLayoutManager(driversLlm);
         driverList.setAdapter(driverAdapter);
 
-        RecyclerView reviewList = findViewById(R.id.reviewList);
+        leaveReviewButton = findViewById(R.id.leaveReviewButton);
+
+        leaveReviewButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PassengerReviewRideActivity.class)
+                    .putExtra("rideId", ride.getmID());
+            startActivity(intent);
+            onResume();
+            Log.d("RIDE", "Ride id: " + ride.getmID());
+        });
+
+        reviewList = findViewById(R.id.reviewList);
         LinearLayoutManager reviewsLlm = new LinearLayoutManager(getApplicationContext());
         reviewList.setLayoutManager(reviewsLlm);
 
+        refreshReviews();
 
+        Button messageButton = findViewById(R.id.messagesButton);
+        messageButton.setOnClickListener(v -> {
+            updateMessagesOverlay(false);
+        });
+
+        closeMessagesButton = findViewById(R.id.close_message_overlay_button);
+        closeMessagesButton.setOnClickListener(v -> {
+            updateMessagesOverlay(true);
+        });
+    }
+
+    private void refreshReviews() {
         Call<ResponseBody> reviewsCall = RestApiManager.restApiInterfaceDriver.getRideReviews(Integer.toString(ride.getmID()));
         reviewsCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -147,6 +178,10 @@ implements TaskLoadedCallBack {
 
                     PassengerRideReviewAdapter reviewAdapter = new PassengerRideReviewAdapter(allReviews);
                     reviewList.setAdapter(reviewAdapter);
+
+                    if (allReviews.size() >= 2) {
+                        leaveReviewButton.setVisibility(Button.GONE);
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -157,23 +192,14 @@ implements TaskLoadedCallBack {
                 Log.d("RideDetails", "Failed to get reviews");
             }
         });
+    }
 
-        Button leaveReviewButton = findViewById(R.id.leaveReviewButton);
-
-        leaveReviewButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), PassengerReviewRideActivity.class);
-            startActivity(intent);
-
-            leaveReviewButton.setVisibility(Button.GONE);
-            reviewList.setVisibility(RecyclerView.VISIBLE);
-        });
-
-        Button messageButton = findViewById(R.id.messagesButton);
-        messageButton.setOnClickListener(v -> {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content, new PassengerInboxFragment());
-            ft.commit();
-        });
+    public void updateMessagesOverlay(boolean hide) {
+        if(hide){
+            messageOverlay.setVisibility(View.INVISIBLE);
+            return;
+        }
+        messageOverlay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -188,5 +214,12 @@ implements TaskLoadedCallBack {
         if (currentPolylines != null)
             currentPolylines.remove();
         currentPolylines = googleMaps.addPolyline((PolylineOptions) values[0]);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+        refreshReviews();
     }
 }

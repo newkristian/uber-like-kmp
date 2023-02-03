@@ -45,7 +45,7 @@ public class PassengerReviewRideActivity extends AppCompatActivity {
         driverMark = findViewById(R.id.driver_grade_text_input_edit_text);
         vehicleMark = findViewById(R.id.vehicle_grade_text_input_edit_text);
         driverComment = findViewById(R.id.driver_comment_text_input_edit_text);
-        vehicleComment = findViewById(R.id.vehicle_grade_text_input_edit_text);
+        vehicleComment = findViewById(R.id.vehicle_comment_text_input_edit_text);
 
         Button reviewButton = findViewById(R.id.reviewButton);
         reviewButton.setOnClickListener(v -> {
