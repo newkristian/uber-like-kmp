@@ -1,5 +1,7 @@
 package com.example.uberapp_tim9.model;
 
+import com.example.uberapp_tim9.model.dtos.RouteDTO;
+
 import java.time.LocalTime;
 
 public class Path {
@@ -27,6 +29,11 @@ public class Path {
     public Path(Location mStartPoint, Location mEndPoint) {
         this.mStartPoint = mStartPoint;
         this.mEndPoint = mEndPoint;
+    }
+
+    public Path(RouteDTO route) {
+        this.mStartPoint = new Location(route.getDeparture());
+        this.mEndPoint = new Location(route.getDestination());
     }
 
     public int getmID() {

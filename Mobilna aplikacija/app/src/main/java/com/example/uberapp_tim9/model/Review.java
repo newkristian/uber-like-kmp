@@ -27,6 +27,14 @@ public class Review {
         this.driverReview = driverReview;
     }
 
+    public Review(com.example.uberapp_tim9.model.dtos.Review review, boolean driverReview) {
+        this.mID = review.getId();
+        this.mRating = review.getRating();
+        this.mComment = review.getComment();
+        this.passenger = new Passenger(review.getReviewer());
+        this.driverReview = driverReview;
+    }
+
     public int getmID() {
         return mID;
     }

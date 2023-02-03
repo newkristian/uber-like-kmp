@@ -17,8 +17,11 @@ import com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryMocku
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PassengerRideAdapter extends RecyclerView.Adapter<PassengerRideAdapter.ViewHolder> {
+    Ride ride;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
@@ -67,6 +70,9 @@ public class PassengerRideAdapter extends RecyclerView.Adapter<PassengerRideAdap
         }
     }
 
+    public PassengerRideAdapter(Ride ride) {
+        this.ride = ride;
+    }
 
     @NonNull
     @Override
@@ -78,12 +84,11 @@ public class PassengerRideAdapter extends RecyclerView.Adapter<PassengerRideAdap
 
     @Override
     public void onBindViewHolder(@NonNull PassengerRideAdapter.ViewHolder holder, int position) {
-        List<Ride> rides = PassengerRideHistoryMockupData.getRides().subList(3, 4);
-        holder.getmStartTimeTextView().setText(rides.get(position).getmStartTime().toString());
-        holder.getmEndTimeTextView().setText(rides.get(position).getmEndTime().toString());
-        holder.getmDistanceTextView().setText(Double.toString(rides.get(position).getTotalKilometers()) + " km");
-        holder.getmPassengersTotalTextView().setText(Integer.toString(rides.get(position).getTotalPassengers()));
-        holder.getmPriceTotalTextView().setText(Double.toString(rides.get(position).getmTotalPrice()) + " din");
+        holder.getmStartTimeTextView().setText(ride.getmStartTime().toString());
+        holder.getmEndTimeTextView().setText(ride.getmEndTime().toString());
+        holder.getmDistanceTextView().setText(String.format(Locale.getDefault(), "%.2f km", ride.getTotalKilometers()));
+        holder.getmPassengersTotalTextView().setText(Integer.toString(ride.getTotalPassengers()));
+        holder.getmPriceTotalTextView().setText(ride.getmTotalPrice() + " din");
     }
 
     @Override

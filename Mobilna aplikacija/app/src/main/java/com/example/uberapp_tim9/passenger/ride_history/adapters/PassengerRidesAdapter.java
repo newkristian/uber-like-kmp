@@ -12,13 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.model.Ride;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.ride_history.PassengerRideDetailsActivity;
 import com.example.uberapp_tim9.passenger.ride_history.PassengerRideHistoryMockupData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PassengerRidesAdapter extends RecyclerView.Adapter<PassengerRidesAdapter.ViewHolder> {
+    private final List<Ride> rides;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
@@ -71,6 +76,9 @@ public class PassengerRidesAdapter extends RecyclerView.Adapter<PassengerRidesAd
         public FloatingActionButton getmInfoButton() { return mInfoButton; }
     }
 
+    public PassengerRidesAdapter(List<Ride> rides) {
+        this.rides = rides;
+    }
 
     @NonNull
     @Override
@@ -82,21 +90,21 @@ public class PassengerRidesAdapter extends RecyclerView.Adapter<PassengerRidesAd
 
     @Override
     public void onBindViewHolder(@NonNull PassengerRidesAdapter.ViewHolder holder, int position) {
-        List<Ride> rides = PassengerRideHistoryMockupData.getRides();
         holder.getmStartTimeTextView().setText(rides.get(position).getmStartTime().toString());
         holder.getmEndTimeTextView().setText(rides.get(position).getmEndTime().toString());
-        holder.getmDistanceTextView().setText(Double.toString(rides.get(position).getTotalKilometers()) + " km");
+        holder.getmDistanceTextView().setText(String.format(Locale.getDefault(), "%.2f km", rides.get(position).getTotalKilometers()));
         holder.getmPassengersTotalTextView().setText(Integer.toString(rides.get(position).getTotalPassengers()));
-        holder.getmPriceTotalTextView().setText(Double.toString(rides.get(position).getmTotalPrice()) + " din");
+        holder.getmPriceTotalTextView().setText(rides.get(position).getmTotalPrice() + " din");
 
         holder.itemView.setOnClickListener(v -> {
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.startActivity(new Intent(activity.getBaseContext(), PassengerRideDetailsActivity.class));
+            activity.startActivity(new Intent(activity.getBaseContext(), PassengerRideDetailsActivity.class)
+                    .putExtra("ride", PassengerMainActivity.gson.toJson(rides.get(position))));
         });
     }
 
     @Override
     public int getItemCount() {
-        return PassengerRideHistoryMockupData.getRides().size();
+        return rides.size();
     }
 }

@@ -66,6 +66,9 @@ public interface RestApiInterfacePassenger {
                                              @Query("from") LocalDateTime from,
                                              @Query("to") LocalDateTime to);
 
+    @GET(RestApiManager.BASE_URL + PASSENGER_API_PATH + "/{passenger_id}/ride")
+    Call<ResponseBody> getPassengersRides(@Path("passenger_id") Integer passengerId);
+
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"

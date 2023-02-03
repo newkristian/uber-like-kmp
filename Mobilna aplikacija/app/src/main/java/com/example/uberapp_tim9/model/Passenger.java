@@ -2,6 +2,7 @@ package com.example.uberapp_tim9.model;
 
 import androidx.annotation.Nullable;
 
+import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
 import com.example.uberapp_tim9.model.dtos.PassengerWithoutIdPasswordDTO;
 
 public class Passenger extends User {
@@ -31,6 +32,10 @@ public class Passenger extends User {
 
     public Passenger(PassengerWithoutIdPasswordDTO passwordDTO) {
         super(-1, passwordDTO.getName(), passwordDTO.getSurname(), passwordDTO.getProfilePicture(), passwordDTO.getTelephoneNumber(), passwordDTO.getEmail(), passwordDTO.getAddress(), "", false);
+    }
+
+    public Passenger(PassengerIdEmailDTO passenger) {
+        super(passenger.getId(), "Jovo", "Jović", null, null, passenger.getEmail(), null, null, false);
     }
 
     @Override

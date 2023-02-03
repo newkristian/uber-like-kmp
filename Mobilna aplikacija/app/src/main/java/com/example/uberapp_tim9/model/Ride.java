@@ -1,7 +1,14 @@
 package com.example.uberapp_tim9.model;
 
+import com.example.uberapp_tim9.model.dtos.LocationDTO;
+import com.example.uberapp_tim9.model.dtos.PassengerIdEmailDTO;
+import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
+import com.example.uberapp_tim9.model.dtos.RouteDTO;
+import com.example.uberapp_tim9.passenger.EstimatesService;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ride {
@@ -65,6 +72,22 @@ public class Ride {
         this.mID = mID;
     }
 
+    public Ride(RideCreatedDTO dto) {
+        this.mID = dto.getId();
+        this.mStartTime = dto.getStartTime();
+        this.mEndTime = dto.getEndTime();
+        this.mTotalPrice = dto.getTotalCost();
+        this.mPaths = new ArrayList<>();
+        for (RouteDTO route : dto.getLocations()) {
+            this.mPaths.add(new Path(route));
+        }
+        this.mPassengers = new ArrayList<>();
+        for (PassengerIdEmailDTO passenger : dto.getPassengers()) {
+            this.mPassengers.add(new Passenger(passenger));
+        }
+        this.mDriver = new Driver(dto.getDriver());
+    }
+
 
     public double getmTotalPrice() {
         return mTotalPrice;
@@ -85,7 +108,11 @@ public class Ride {
     public double getTotalKilometers() {
         double total = 0;
         for (Path path : mPaths) {
-            total += path.getmKilometers();
+            if (path.getmStartPoint() != null && path.getmEndPoint() != null) {
+                total += EstimatesService.calculateDistance(
+                        new LocationDTO(path.getmStartPoint()),
+                        new LocationDTO(path.getmEndPoint()));
+            }
         }
         return total;
     }

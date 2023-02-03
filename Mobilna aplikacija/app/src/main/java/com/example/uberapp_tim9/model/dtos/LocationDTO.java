@@ -1,5 +1,7 @@
 package com.example.uberapp_tim9.model.dtos;
 
+import com.example.uberapp_tim9.model.Location;
+
 public class LocationDTO {
 
     private String address;
@@ -9,6 +11,11 @@ public class LocationDTO {
     public LocationDTO(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public LocationDTO(Location location) {
+        this.latitude = location.getmLatitude();
+        this.longitude = location.getmLongitude();
     }
 
     public String getAddress() {

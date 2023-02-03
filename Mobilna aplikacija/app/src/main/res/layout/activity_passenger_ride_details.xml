@@ -113,16 +113,21 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/map"
-                    android:layout_width="366dp"
-                    android:layout_height="249dp"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="380dp"
+                    android:layout_height="250dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:shapeAppearanceOverlay="@style/cornerRadiusRegular"
-                    app:srcCompat="@drawable/maps" />
+                    app:cardCornerRadius="20dp">
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/map"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cameraZoom="15"
+                        app:liteMode="true"
+                        app:mapType="normal" />
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:id="@+id/orderAgainButton"

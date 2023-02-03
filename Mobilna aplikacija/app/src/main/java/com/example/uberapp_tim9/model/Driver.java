@@ -1,5 +1,7 @@
 package com.example.uberapp_tim9.model;
 
+import com.example.uberapp_tim9.model.dtos.DriverIdEmailDTO;
+
 public class Driver extends User {
     public Driver(int mID,
                      String mName,
@@ -19,5 +21,9 @@ public class Driver extends User {
 
     public Driver(String mIme, String mPrezime) {
         super(mIme, mPrezime);
+    }
+
+    public Driver(DriverIdEmailDTO driver) {
+        super(driver.getId(), "Obrad", "Obradović", null, null, driver.getEmail(), null, null, false);
     }
 }

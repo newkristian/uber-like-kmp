@@ -91,4 +91,7 @@ public interface RestApiInterfaceDriver {
 
     @GET(RestApiManager.BASE_URL + USER_API_PATH  + "{user_id}/message?page=0&size=1000")
     Call<ResponseBody> getUserMessages(@Path("user_id") String userId);
+
+    @GET(RestApiManager.BASE_URL + DRIVER_API_PATH + "/{driver_id}")
+    Call<ResponseBody> getDriver(@Path("driver_id") Integer driverId);
 }
