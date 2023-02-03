@@ -15,6 +15,7 @@ import com.example.uberapp_tim9.driver.DriverMainActivity;
 import com.example.uberapp_tim9.driver.ride_history.adapters.DriverRidesAdapter;
 import com.example.uberapp_tim9.model.dtos.RideCreatedDTO;
 import com.example.uberapp_tim9.model.dtos.RidePageDTO;
+import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,7 +54,7 @@ public class DriverRideHistoryFragment extends Fragment {
         list.setLayoutManager(llm);
 
         final List<RideCreatedDTO>[] rides = new List[]{new ArrayList<>()};
-        Call<ResponseBody> ridesCall = RestApiManager.restApiInterfaceDriver.getDriversRides(Integer.toString(DriverMainActivity.driver_id));
+        Call<ResponseBody> ridesCall = RestApiManager.restApiInterfaceDriver.getDriversRides(Integer.toString(LoggedUserInfo.id));
         ridesCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

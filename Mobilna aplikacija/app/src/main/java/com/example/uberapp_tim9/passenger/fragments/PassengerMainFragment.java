@@ -201,7 +201,7 @@ public class PassengerMainFragment extends Fragment{
         Disposable subscriptionRideEnded = PassengerMainActivity.socketsConfiguration.stompClient.topic("/ride-ended/notification").subscribe(message ->
                 {
                     List<Integer> passengersId  = new Gson().fromJson(message.getPayload(), new TypeToken<List<Integer>>(){}.getType());
-                    if(passengersId.contains(PassengerMainActivity.passengerId)) {
+                    if(passengersId.contains(LoggedUserInfo.id)) {
                         NotificationService.createRideEndedNotification(PassengerMainActivity.CHANNEL_ID,getActivity());
                         updateUI(true);
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -297,7 +297,7 @@ public class PassengerMainFragment extends Fragment{
         vanVehicleRadioButton = v.findViewById(R.id.van_vehicle_radio_button);
         timeCheckBox = v.findViewById(R.id.time_checkbox);
 
-        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(PassengerMainActivity.passengerId);
+        MessagesListAdapter messagesListAdapter = new MessagesListAdapter(LoggedUserInfo.id);
         RecyclerView messagesList = v.findViewById(R.id.messages_list);
         LinearLayoutManager messagesLlm = new LinearLayoutManager(getActivity());
         messagesList.setLayoutManager(messagesLlm);

@@ -32,7 +32,6 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static final String CHANNEL_ID = "DN";
-    public static final int driver_id = LoggedUserInfo.id;
     private Button logout;
 
     @Override
@@ -41,7 +40,6 @@ public class DriverMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_driver_main);
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

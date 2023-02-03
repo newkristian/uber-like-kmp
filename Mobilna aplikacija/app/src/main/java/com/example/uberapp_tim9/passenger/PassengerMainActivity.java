@@ -55,7 +55,6 @@ public class PassengerMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static final SocketsConfiguration socketsConfiguration = new SocketsConfiguration();
-    public static final int passengerId = LoggedUserInfo.id;
     public static final String CHANNEL_ID = "PN";
     private Button logout;
     static class LocalDateAdapter implements JsonSerializer<LocalDateTime> {
@@ -103,8 +102,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         Disposable driverAtLocation = socketsConfiguration.stompClient.topic("/driver-at-location/notification").subscribe(message ->
                 {
                     List<Integer> passengersId  = new Gson().fromJson(message.getPayload(), new TypeToken<List<Integer>>(){}.getType());
-                    if(passengersId.contains(passengerId)) {
-
+                    if(passengersId.contains(LoggedUserInfo.id)) {
                         NotificationService.createOnLocationNotification(CHANNEL_ID,this);
                     }
                 },
@@ -114,7 +112,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 {
                     RideCreationDTO reserved  = gson.fromJson(message.getPayload(), new TypeToken<RideCreationDTO>(){}.getType());
                     for(PassengerIdEmailDTO passenger : reserved.getPassengers()){
-                        if(passenger.getId() == passengerId){
+                        if(passenger.getId() == LoggedUserInfo.id){
                             String formattedScheduleTime = reserved.getScheduledTime().format(DateTimeFormatter.ofPattern("HH:mm"));
                             NotificationService.createRideReservationNotification(CHANNEL_ID,this,formattedScheduleTime);
                             break;
@@ -128,7 +126,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 {
                     RideCreationDTO reserved  = gson.fromJson(message.getPayload(), new TypeToken<RideCreationDTO>(){}.getType());
                     for(PassengerIdEmailDTO passenger : reserved.getPassengers()){
-                        if(passenger.getId() == passengerId){
+                        if(passenger.getId() == LoggedUserInfo.id){
                             String formattedScheduleTime;
                             if(reserved.getScheduledTime() != null) {
                                 formattedScheduleTime = reserved.getScheduledTime().format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -146,7 +144,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         Disposable locationPing = socketsConfiguration.stompClient.topic("/location-tracker/notification").subscribe(message ->
                 {
                     TimeUntilOnDepartureDTO dto  = gson.fromJson(message.getPayload(), new TypeToken<TimeUntilOnDepartureDTO>(){}.getType());
-                    if(dto.getPassengersIds().contains(passengerId)) {
+                    if(dto.getPassengersIds().contains(LoggedUserInfo.id)) {
                         NotificationService.createLocationPingNotification(CHANNEL_ID, this, dto.getTimeFormatted());
                     }
                 },
