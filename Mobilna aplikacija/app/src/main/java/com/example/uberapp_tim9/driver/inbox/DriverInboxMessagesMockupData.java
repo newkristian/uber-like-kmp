@@ -32,7 +32,7 @@ public class DriverInboxMessagesMockupData {
                 u3, new User(), MessageType.PANIC, new Ride());
 
         User u4 = new User();
-        u4.setName("Natalija");
+        u4.setName("Lazar");
         Message m4 = new Message(4, "Gospodine, ne radimo dostavu",
                 LocalDateTime.of(2022, Month.DECEMBER, 21, 16, 30),
                 u4, new User(), MessageType.VOZNJA, new Ride());
