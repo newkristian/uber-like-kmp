@@ -45,6 +45,7 @@ import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
+import com.example.uberapp_tim9.shared.directions.RouteDrawer;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.example.uberapp_tim9.shared.sockets.SocketsConfiguration;
 import com.google.android.gms.maps.model.LatLng;
@@ -205,6 +206,7 @@ public class DriverMainFragment extends Fragment {
                         for (Polyline polyline : MapFragment.polylines) {
                             polyline.remove();
                         }
+                        RouteDrawer.clearPolyLine();
                     } else if (response.code() == 400){
                         Toast.makeText(getActivity(), "Ne možete završiti vožnju koja nije završena.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -256,7 +258,7 @@ public class DriverMainFragment extends Fragment {
                                 false,
                                 currentVehicle.getId(),
                                 true,
-                                1000,
+                                600,
                                 false,
                                 null);
                         displayTimer();
@@ -397,6 +399,7 @@ public class DriverMainFragment extends Fragment {
     }
 
     public static void updateTimer(int time) {
+        Log.d("REZ", "updateTimer: " + time);
         if (time > 0) {
             timer.setText(String.format("%ss do destinacije", String.valueOf(time)));
         } else {
@@ -413,6 +416,7 @@ public class DriverMainFragment extends Fragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Vožnja se odbija (putnici nisu na lokaciji nakon 5 minuta).", Toast.LENGTH_LONG).show();
+                        RouteDrawer.clearPolyLine();
                         updateUI(true);
                     }
                 }

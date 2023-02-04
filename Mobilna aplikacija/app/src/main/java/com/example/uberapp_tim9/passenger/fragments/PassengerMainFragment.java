@@ -48,9 +48,11 @@ import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.passenger.PassengerReviewRideActivity;
 import com.example.uberapp_tim9.passenger.adapters.MessagesListAdapter;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
+import com.example.uberapp_tim9.shared.directions.RouteDrawer;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -182,7 +184,7 @@ public class PassengerMainFragment extends Fragment{
                                                   false,
                                                   -1,
                                             false,
-                                            1000,
+                                            600,
                                             false,null);
                                 }
                                 catch (IOException e) {
@@ -211,10 +213,17 @@ public class PassengerMainFragment extends Fragment{
                                 MapFragment.clearCurrentRoute();
                                 Marker currentRideVehicle = MapFragment.driversMarkers.get(currentRide.getDriver().getId());
                                 currentRideVehicle.setIcon(MapFragment.BitmapFromVector(getActivity(), R.drawable.greencar));
+                                RouteDrawer.clearPolyLine();
+                                for (Polyline polyline : MapFragment.polylines) {
+                                    polyline.remove();
+                                }
                             }
                         });
-
                         startActivity(new Intent(getActivity(), PassengerReviewRideActivity.class).putExtra("rideId",currentRide.getId()));
+                        RouteDrawer.clearPolyLine();
+                        for (Polyline polyline : MapFragment.polylines) {
+                            polyline.remove();
+                        }
                     }
                 },
                 throwable -> Log.e(TAG, throwable.getMessage()));

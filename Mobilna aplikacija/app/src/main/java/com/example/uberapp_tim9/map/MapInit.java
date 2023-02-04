@@ -16,6 +16,7 @@ import com.example.uberapp_tim9.driver.notificationManager.NotificationActionRec
 import com.example.uberapp_tim9.model.dtos.LocationDTO;
 import com.example.uberapp_tim9.model.dtos.TimeUntilOnDepartureDTO;
 import com.example.uberapp_tim9.passenger.fragments.MapFragment;
+import com.example.uberapp_tim9.shared.directions.RouteDrawer;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -302,14 +303,19 @@ public class MapInit {
                               long animationDelayMs,
                               boolean pingServerLocation,
                               List<Integer> whoToPing) {
-        String url = getDirectionsUrl(departure,destination);
-        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId,animationDelayMs, pingServerLocation, whoToPing, changeVehiclePosition);
-        simulation.execute(url);
+        RouteDrawer drawer = new RouteDrawer(marker,hideMarker,showStart,vehicleId,changeVehiclePosition,animationDelayMs,pingServerLocation,whoToPing);
+        drawer.drawRoute(departure, destination, MapFragment.map, true);
+
+//        String url = getDirectionsUrl(departure,destination);
+//        SimulateRoute simulation = new SimulateRoute(marker,hideMarker,showStart,vehicleId,animationDelayMs, pingServerLocation, whoToPing, changeVehiclePosition);
+//        simulation.execute(url);
     }
 
-    public void DrawRoute(LatLng departure, LatLng destination,GoogleMap map) {
-        String url = getDirectionsUrl(departure,destination);
-        DrawRoute drawRoute = new DrawRoute(departure,destination,map);
-        drawRoute.execute(url);
+    public void DrawRoute(LatLng departure, LatLng destination, GoogleMap map) {
+        RouteDrawer drawer = new RouteDrawer();
+        drawer.drawRoute(departure, destination, map, false);
+//        String url = getDirectionsUrl(departure,destination);
+//        DrawRoute drawRoute = new DrawRoute(departure,destination,map);
+//        drawRoute.execute(url);
     }
 }

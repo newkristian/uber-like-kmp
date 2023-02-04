@@ -193,7 +193,9 @@ public class MapFragment extends Fragment {
         for(Marker marker : currentRideMarkers) {
             marker.remove();
         }
-        currentRideRoute.remove();
+        if (currentRideRoute != null) {
+            currentRideRoute.remove();
+        }
         currentRideRoute = null;
     }
 }
