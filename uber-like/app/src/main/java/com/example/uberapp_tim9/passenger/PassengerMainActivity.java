@@ -84,9 +84,9 @@ public class PassengerMainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         ShapeableImageView sidenavPicture = header.findViewById(R.id.passenger_profile_picture);
         TextView sidenavName = header.findViewById(R.id.passenger_name_surname);
-        byte[] decodedString = Base64.decode(LoggedUserInfo.profilePicture, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        sidenavPicture.setImageBitmap(decodedByte);
+        //byte[] decodedString = Base64.decode(LoggedUserInfo.profilePicture, Base64.DEFAULT);
+        //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        //sidenavPicture.setImageBitmap(decodedByte);
         sidenavName.setText(LoggedUserInfo.name + " " + LoggedUserInfo.surname);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.passenger_nav_home, R.id.passenger_nav_account, R.id.passenger_nav_inbox, R.id.passenger_nav_ride_history)

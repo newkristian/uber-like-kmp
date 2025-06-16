@@ -7,11 +7,11 @@
     <string name="or">ili</string>
     <string name="sign_up">Registracija</string>
     <string name="logout">Odjava</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">email@mail.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">email@mail.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="forgot_password">Zaboravljena lozinka? Promenite </string>
     <string name="here">ovde</string>
@@ -27,10 +27,10 @@
     <string name="menu_inbox">Poruke</string>
     <string name="menu_account">Nalog</string>
     <string name="menu_ride_history">Istorija vožnji</string>
-    <string name="title_activity_driver_main">DriverMainActivity</string>
+    <string name="title_activity_driver_main" translatable="false">DriverMainActivity</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_passenger_main">PassengerMainActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_passenger_main" translatable="false">PassengerMainActivity</string>
     <string name="register">Registracija</string>
     <string name="name_placeholder">Ime</string>
     <string name="surname_placeholder">Prezime</string>
@@ -88,4 +88,8 @@
     <string name="add_passenger">Dodaj putnika</string>
     <string name="now_checkbox">Najskoriji Moguć</string>
     <string name="message">Poruka</string>
+    <string name="edit_profile">Izmeni profil</string>
+    <string name="cancel">Otkaži</string>
+    <string name="favorite_routes">Omiljene rute</string>
+    <string name="reports">Izveštaji</string>
 </resources>

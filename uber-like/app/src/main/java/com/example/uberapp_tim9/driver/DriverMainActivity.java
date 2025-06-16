@@ -1,7 +1,8 @@
 package com.example.uberapp_tim9.driver;
 
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
@@ -11,8 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -47,6 +50,8 @@ public class DriverMainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     public static final String CHANNEL_ID = "DN";
     private Button logout;
+    private static final int PERMISSION_REQUEST_CODE = 123;
+    private boolean areNotificationsEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,9 @@ public class DriverMainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         ShapeableImageView sidenavPicture = header.findViewById(R.id.sidenav_profile_picture);
         TextView sidenavName = header.findViewById(R.id.sidenav_full_name);
-        byte[] decodedString = Base64.decode(LoggedUserInfo.profilePicture, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        sidenavPicture.setImageBitmap(decodedByte);
+        //byte[] decodedString = Base64.decode(LoggedUserInfo.profilePicture, Base64.DEFAULT);
+        //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        //sidenavPicture.setImageBitmap(decodedByte);
         sidenavName.setText(LoggedUserInfo.name + " " + LoggedUserInfo.surname);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -143,9 +148,31 @@ public class DriverMainActivity extends AppCompatActivity {
 
             startActivity(new Intent(this, LoginActivity.class));
         });
+
+        // Request permission for notifications
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+        } else {
+            areNotificationsEnabled = true;
+        }
+
         NotificationService.initContext(this);
         //Driver related notification channel
         NotificationService.createNotificationChannel("Driver","Driver's notifications",CHANNEL_ID);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                areNotificationsEnabled = true;
+                Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show();
+            } else {
+                areNotificationsEnabled = false;
+                Toast.makeText(this, "Notifications disabled", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

@@ -22,14 +22,12 @@ public class NotificationService {
     }
 
     public static void createNotificationChannel(String channel_name, String channel_description, String channel_id) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = channel_name;
-            String description = channel_description;
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
-            channel.setDescription(description);
-            notificationManager.createNotificationChannel(channel);
-        }
+        CharSequence name = channel_name;
+        String description = channel_description;
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+        channel.setDescription(description);
+        notificationManager.createNotificationChannel(channel);
     }
 
     public static void createRideAcceptanceNotification(Context context, String ride, String channel_id){
@@ -43,15 +41,16 @@ public class NotificationService {
 
         PendingIntent acceptRide = PendingIntent.getBroadcast(context,1,accept,PendingIntent.FLAG_MUTABLE);
         PendingIntent denyRide = PendingIntent.getBroadcast(context,2,deny,PendingIntent.FLAG_MUTABLE);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_logo)
-                .setContentTitle("Dobili ste vožnju")
+                .setContentTitle("Tienes un viaje")
                 .setContentText(ride)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(ride))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(R.drawable.ic_logo, "Prihvati", acceptRide)
-                .addAction(R.drawable.ic_logo, "Odbij", denyRide)
+                .addAction(R.drawable.ic_logo, "Aceptar", acceptRide)
+                .addAction(R.drawable.ic_logo, "Rechazar", denyRide)
                 .setChannelId(channel_id)
                 .setOngoing(true);
 

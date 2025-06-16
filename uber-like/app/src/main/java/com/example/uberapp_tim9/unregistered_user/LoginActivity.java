@@ -11,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uberapp_tim9.R;
 import com.example.uberapp_tim9.driver.DriverMainActivity;
+import com.example.uberapp_tim9.model.dtos.TokenDTO;
 import com.example.uberapp_tim9.model.dtos.UserLoginDTO;
 import com.example.uberapp_tim9.model.dtos.WorkingHoursDTO;
 import com.example.uberapp_tim9.model.dtos.WorkingHoursStartDTO;
 import com.example.uberapp_tim9.passenger.PassengerMainActivity;
 import com.example.uberapp_tim9.model.LoggedUserCredentials;
+import com.example.uberapp_tim9.shared.JwtUtils;
 import com.example.uberapp_tim9.shared.LoggedUserInfo;
 import com.example.uberapp_tim9.shared.rest.RestApiManager;
 import com.example.uberapp_tim9.unregistered_user.registration.RegisterFirstActivity;
@@ -92,15 +94,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200){
                     try {
-                        LoggedUserCredentials user = gson.fromJson(response.body().string(), new TypeToken<LoggedUserCredentials>(){}.getType());
-                        if(user == null || user.getRole() == null) {
-                            Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
+                        TokenDTO user = gson.fromJson(response.body().string(), new TypeToken<TokenDTO>(){}.getType());
+                        if(user == null || user.getAccessToken() == null) {
+                            Toast.makeText(getApplicationContext(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        LoggedUserInfo.cloneUserCredentials(user);
-                        if(user.getRole().equals("ROLE_PASSENGER")) {
+                        String token = user.getAccessToken();
+                        String role = JwtUtils.getClaim(token, "role", String.class);
+                        LoggedUserInfo.extractUserCredentials(token);
+                        if(role.equals("PASSENGER")) {
                             startActivity(new Intent(getApplicationContext(), PassengerMainActivity.class));
-                        } else if(user.getRole().equals("ROLE_DRIVER")) {
+                        } else if(role.equals("DRIVER")) {
                             Call<ResponseBody> startShift = RestApiManager.restApiInterfaceDriver.startShift(LoggedUserInfo.id, new WorkingHoursStartDTO());
                             startShift.enqueue(new Callback<ResponseBody>() {
                                 @Override
@@ -131,6 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         Toast.makeText(getApplicationContext(), "Pogrešan email ili lozinka!", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
                 }
                 else {

@@ -1,6 +1,6 @@
 package com.example.uberapp_tim9.shared.directions;
 
-import static com.example.uberapp_tim9.BuildConfig.MAPS_API_KEY;
+//import static com.example.uberapp_tim9.BuildConfig.MAPS_API_KEY;
 
 import android.os.AsyncTask;
 import android.util.Log;

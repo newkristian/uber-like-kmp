@@ -30,6 +30,7 @@ public class RestApiManager {
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
+                .addInterceptor(new AuthInterceptor())
                 .addInterceptor(interceptor).build();
         return client;
     }
